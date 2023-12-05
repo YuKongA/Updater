@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Updater</string>
+    <string name="login">Login</string>
+    <string name="codename">Codename</string>
+    <string name="system_version">System version</string>
+    <string name="android_version">Android version</string>
+    <string name="confirm">Confirm</string>
+</resources>
