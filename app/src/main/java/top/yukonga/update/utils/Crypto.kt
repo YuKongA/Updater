@@ -24,12 +24,11 @@ object Crypto {
         return Base64.getUrlEncoder().encodeToString(encrypted)
     }
 
-    fun miuiDecrypt(encryptedText: String, securityKey: ByteArray): JSONObject {
+    fun miuiDecrypt(encryptedText: String, securityKey: ByteArray): String {
         val cipher = miuiCipher(Cipher.DECRYPT_MODE, securityKey)
         val encryptedTextBytes = Base64.getMimeDecoder().decode(encryptedText)
         val decryptedTextBytes = cipher!!.doFinal(encryptedTextBytes)
-        val decryptedText = String(decryptedTextBytes, Charsets.UTF_8)
-        return JSONObject(decryptedText)
+        return String(decryptedTextBytes, Charsets.UTF_8)
     }
 
 }

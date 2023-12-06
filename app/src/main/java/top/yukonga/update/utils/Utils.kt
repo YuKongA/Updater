@@ -6,7 +6,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
 import top.yukonga.update.utils.Crypto.miuiDecrypt
 import top.yukonga.update.utils.Crypto.miuiEncrypt
 import java.io.File
@@ -30,7 +29,7 @@ object Utils {
         return Gson().toJson(data)
     }
 
-    fun getRomInfo(codename: String, romVersion: String, androidVersion: String): JSONObject {
+    fun getRomInfo(codename: String, romVersion: String, androidVersion: String): String {
         var userId = ""
         var serviceToken = ""
         var securityKey = securityKey.toByteArray(Charsets.UTF_8)
