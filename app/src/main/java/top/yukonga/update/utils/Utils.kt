@@ -1,11 +1,12 @@
 package top.yukonga.update.utils
 
-import android.util.Log
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
 import top.yukonga.update.utils.Crypto.miuiDecrypt
 import top.yukonga.update.utils.Crypto.miuiEncrypt
 import java.io.File
@@ -14,8 +15,9 @@ import java.util.Base64
 object Utils {
 
     private const val miuiUrl = "https://update.miui.com/updates/miotaV3.php"
+    private var securityKey = "miuiotavalided11"
 
-    fun generateJson(device: String, version: String, android: String, userId: String?): String {
+    private fun generateJson(device: String, version: String, android: String, userId: String?): String {
         val data = mutableMapOf<String, Any>()
         data["id"] = userId ?: "000000000"
         data["c"] = android
@@ -28,10 +30,10 @@ object Utils {
         return Gson().toJson(data)
     }
 
-    fun getRomInfo(codename: String, romVersion: String, androidVersion: String): String {
+    fun getRomInfo(codename: String, romVersion: String, androidVersion: String): JSONObject {
         var userId = ""
         var serviceToken = ""
-        var securityKey = Crypto.securityKey
+        var securityKey = securityKey.toByteArray(Charsets.UTF_8)
         var port = "1"
         val cookiesFile = File("cookies.json")
         if (cookiesFile.exists()) {
@@ -43,28 +45,17 @@ object Utils {
         val jsonData = generateJson(codename, romVersion, androidVersion, userId)
         val encryptedText = miuiEncrypt(jsonData, securityKey)
         if (serviceToken.isNotEmpty()) port = "2"
-        val postData = mutableMapOf<String, Any>()
-        postData["q"] = encryptedText
-        postData["t"] = serviceToken
-        postData["s"] = port
-        Log.i("MIUI_UPDATE_INFO", Gson().toJson(postData))
-        val requestedEncryptedText = request(Gson().toJson(postData))
-        return miuiDecrypt(requestedEncryptedText ?: "", securityKey)
+        val postData = "q=${encryptedText}&t=${serviceToken}&s=${port}"
+        val requestedEncryptedText = request(postData)
+        return miuiDecrypt(requestedEncryptedText, securityKey)
     }
 
-
-    private fun request(data: String): String? {
-        val client = OkHttpClient()
-        val mediaType = "application/json; charset=utf-8".toMediaType()
-        val body = data.toRequestBody(mediaType)
+    private fun request(jsonStr: String): String {
+        val okHttpClient = OkHttpClient()
+        val mediaType = "application/x-www-form-urlencoded".toMediaType()
+        val body: RequestBody = jsonStr.toRequestBody(mediaType)
         val request = Request.Builder().url(miuiUrl).post(body).build()
-        return client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) {
-                println("向服务器发送请求时出错: ${response.message}")
-                null
-            } else {
-                response.body?.string()
-            }
-        }
+        val response = okHttpClient.newCall(request).execute()
+        return response.body?.string() ?: ""
     }
 }

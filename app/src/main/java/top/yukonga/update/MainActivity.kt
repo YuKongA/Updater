@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val codenameText = codename.editText?.text.toString()
 
         val system = findViewById<View>(R.id.system_version) as TextInputLayout
-        system.editText?.setText("OS1.0.26.0.UNCCNXM")
+        system.editText?.setText("OS1.0.25.0.UNCCNXM")
         val systemText = system.editText?.text.toString()
 
         val android = findViewById<View>(R.id.android_version) as TextInputLayout
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.Default).launch {
                 val romInfo = getRomInfo(codenameText, systemText, androidText)
                 withContext(Dispatchers.Main) {
-                    Log.d("MIUI_UPDATE_INFO-rseult", romInfo)
+                    Log.d("MIUI_UPDATE_INFO", romInfo.toString())
                 }
             }
         }
