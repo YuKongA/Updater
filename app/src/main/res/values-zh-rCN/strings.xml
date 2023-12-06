@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="login">登录</string>
     <string name="codename">设备代号</string>
     <string name="system_version">系统版本</string>
     <string name="android_version">安卓版本</string>
     <string name="implement">执行</string>
+    <string name="big_version">大版本</string>
+    <string name="filename">文件名</string>
+    <string name="filesize">文件大小</string>
+    <string name="download">下载链接</string>
+    <string name="changelog">更新日志</string>
+    <string name="branch">分支</string>
 </resources>
