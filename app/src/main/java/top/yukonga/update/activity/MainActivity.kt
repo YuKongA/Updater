@@ -14,8 +14,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import top.yukonga.update.R
+import top.yukonga.update.data.RomInfo
+import top.yukonga.update.utils.JsonUtils.parseJSON
 import top.yukonga.update.utils.Utils
 
 class MainActivity : AppCompatActivity() {
@@ -59,21 +60,20 @@ class MainActivity : AppCompatActivity() {
         val implement = findViewById<ExtendedFloatingActionButton>(R.id.implement)
         implement.setOnClickListener {
             CoroutineScope(Dispatchers.Default).launch {
-                val romInfo = JSONObject(Utils.getRomInfo(codenameText, systemText, androidText))
+                val romInfo = Utils.getRomInfo(codenameText, systemText, androidText).parseJSON<RomInfo>()
                 withContext(Dispatchers.Main) {
-                    val romDevice = romInfo.getJSONObject("CurrentRom").getString("device")
-                    val romVersion = romInfo.getJSONObject("CurrentRom").getString("version")
-                    val romBigVersion = romInfo.getJSONObject("CurrentRom").getString("bigversion").replace("816", "HyperOS 1.0")
-                    val codebase = romInfo.getJSONObject("CurrentRom").getString("codebase")
-                    val romBranch = romInfo.getJSONObject("CurrentRom").getString("branch")
-                    val romFileName = romInfo.getJSONObject("CurrentRom").getString("filename")
-                    val romFileSize = romInfo.getJSONObject("CurrentRom").getString("filesize")
+                    val romDevice = romInfo.currentRom.device
+                    val romVersion = romInfo.currentRom.version
+                    val romBigVersion = romInfo.currentRom.bigversion.replace("816", "HyperOS 1.0")
+                    val codebase = romInfo.currentRom.codebase
+                    val romBranch = romInfo.currentRom.branch
+                    val romFileName = romInfo.currentRom.filename
+                    val romFileSize = romInfo.currentRom.filesize
+                    val romMd5 = romInfo.currentRom.md5
+                    val latestRomMd5 = romInfo.LatestRom.md5
+                    val latestRomFileName = romInfo.LatestRom.filename
 
-                    val romMd5 = romInfo.getJSONObject("CurrentRom").getString("md5")
-                    val latestRomMd5 = romInfo.getJSONObject("LatestRom").getString("md5")
-                    val latestRomFileName = romInfo.getJSONObject("LatestRom").getString("filename")
-
-                    val romChangelog = JSONObject(romInfo.getJSONObject("CurrentRom").getString("changelog")).toString()
+                    val romChangelog = romInfo.currentRom.changelog.toString()
 
                     val codeNameV = findViewById<MaterialTextView>(R.id.codename)
                     codeNameV.visibility = View.VISIBLE

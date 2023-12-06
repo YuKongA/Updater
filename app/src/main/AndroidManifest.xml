@@ -20,10 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.InfoActivity"
-            android:exported="true">
-        </activity>
     </application>
 
 </manifest>
