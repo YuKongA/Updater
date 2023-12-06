@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -16,11 +15,11 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:title="@string/app_name"
             android:fitsSystemWindows="false"
+            android:minHeight="?attr/actionBarSize"
             app:menu="@menu/top_app_bar"
-            app:navigationIcon="@drawable/ic_update" />
+            app:navigationIcon="@drawable/ic_update"
+            app:title="@string/app_name" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -28,13 +27,13 @@
     <include layout="@layout/main_content" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/confirm"
+        android:id="@+id/implement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:text="@string/confirm"
         android:layout_margin="20dp"
-        app:icon="@drawable/ic_check"
-        android:contentDescription="@string/confirm" />
+        android:contentDescription="@string/implement"
+        android:text="@string/implement"
+        app:icon="@drawable/ic_check" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

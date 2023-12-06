@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login">登录</string>
+    <string name="codename">设备代号</string>
+    <string name="system_version">系统版本</string>
+    <string name="android_version">安卓版本</string>
+    <string name="implement">执行</string>
+</resources>
