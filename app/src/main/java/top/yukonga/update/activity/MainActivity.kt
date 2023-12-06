@@ -4,9 +4,15 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+<<<<<<< HEAD
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+=======
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
+>>>>>>> origin/master
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -17,7 +23,10 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import top.yukonga.update.R
 import top.yukonga.update.utils.Utils
+<<<<<<< HEAD
 import top.yukonga.update.view.CustomAutoCompleteTextView
+=======
+>>>>>>> origin/master
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+<<<<<<< HEAD
         val autoCompleteTextView = findViewById<View>(R.id.android_version_dropdown) as CustomAutoCompleteTextView
         val dropDownList = arrayOf("12", "13", "14")
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, dropDownList)
@@ -43,6 +53,37 @@ class MainActivity : AppCompatActivity() {
         val android = findViewById<TextInputLayout>(R.id.android_version)
         android.editText?.setText("14")
         val androidText = android.editText?.text.toString()
+=======
+        val codename = findViewById<TextInputLayout>(R.id.code_name)
+        codename.editText?.setText("houji")
+
+        val system = findViewById<TextInputLayout>(R.id.system_version)
+        system.editText?.setText("OS1.0.25.0.UNCCNXM")
+
+        val android = findViewById<TextInputLayout>(R.id.android_version)
+        android.editText?.setText("14")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val codename = findViewById<TextInputLayout>(R.id.code_name)
+        var codenameText = codename.editText?.text.toString()
+        codename.editText?.doAfterTextChanged {
+            codenameText = it.toString()
+        }
+
+        val system = findViewById<TextInputLayout>(R.id.system_version)
+        var systemText = system.editText?.text.toString()
+        system.editText?.doAfterTextChanged {
+            systemText = it.toString()
+        }
+
+        val android = findViewById<TextInputLayout>(R.id.android_version)
+        var androidText = android.editText?.text.toString()
+        android.editText?.doAfterTextChanged {
+            androidText = it.toString()
+        }
+>>>>>>> origin/master
 
         val implement = findViewById<ExtendedFloatingActionButton>(R.id.implement)
         implement.setOnClickListener {
