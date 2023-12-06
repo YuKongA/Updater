@@ -1,6 +1,5 @@
 package top.yukonga.update.utils
 
-import org.json.JSONObject
 import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
