@@ -9,6 +9,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import top.yukonga.update.utils.Utils.getRomInfo
 import top.yukonga.update.view.CustomAutoCompleteTextView
 
@@ -39,9 +43,12 @@ class MainActivity : AppCompatActivity() {
 
         val implement = findViewById<View>(R.id.implement) as ExtendedFloatingActionButton
         implement.setOnClickListener {
-            val romInfo = getRomInfo(codenameText, systemText, androidText)
-            Log.d("MIUI_UPDATE_INFO-rseult", romInfo)
-            // TODO
+            CoroutineScope(Dispatchers.Default).launch {
+                val romInfo = getRomInfo(codenameText, systemText, androidText)
+                withContext(Dispatchers.Main) {
+                    Log.d("MIUI_UPDATE_INFO-rseult", romInfo)
+                }
+            }
         }
 
     }
