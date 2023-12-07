@@ -11,4 +11,7 @@
     <string name="download">Download Url</string>
     <string name="changelog">Changelog</string>
     <string name="branch">Branch</string>
+    <string name="default_system_version" translatable="false">OS1.0.25.0.UNCCNXM</string>
+    <string name="default_android_version" translatable="false">14</string>
+    <string name="default_device" translatable="false">houji</string>
 </resources>

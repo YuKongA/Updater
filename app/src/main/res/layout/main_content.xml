@@ -63,6 +63,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
+            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -73,8 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/codename"
-                android:visibility="gone" />
+                android:text="@string/codename" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/codename_info"
@@ -97,8 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/system_version"
-                android:visibility="gone" />
+                android:text="@string/system_version" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/system_info"
@@ -121,8 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/big_version"
-                android:visibility="gone" />
+                android:text="@string/big_version" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/big_version_info"
@@ -145,8 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/android_version"
-                android:visibility="gone" />
+                android:text="@string/android_version" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/codebase_info"
@@ -169,8 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/branch"
-                android:visibility="gone" />
+                android:text="@string/branch" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/branch_info"
@@ -193,8 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/filename"
-                android:visibility="gone" />
+                android:text="@string/filename" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/filename_info"
@@ -214,8 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/filesize"
-                android:visibility="gone" />
+                android:text="@string/filesize" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/filesize_info"
@@ -239,8 +233,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/download"
-                android:visibility="gone" />
+                android:text="@string/download" />
 
 
             <com.google.android.material.textview.MaterialTextView
@@ -253,6 +246,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="128dp"
             android:orientation="vertical">
 
             <com.google.android.material.textview.MaterialTextView
@@ -261,8 +255,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/changelog"
-                android:visibility="gone" />
+                android:text="@string/changelog" />
 
 
             <com.google.android.material.textview.MaterialTextView

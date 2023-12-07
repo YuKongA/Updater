@@ -1,6 +1,5 @@
 package top.yukonga.update.ui
 
-import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -19,29 +18,43 @@ import top.yukonga.update.R
 import top.yukonga.update.databinding.ActivityMainBinding
 import top.yukonga.update.databinding.MainContentBinding
 import top.yukonga.update.logic.data.InfoHelper
+import top.yukonga.update.logic.setTextAnimation
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.Utils
 
 class MainActivity : AppCompatActivity() {
 
-
+    // Start ViewBinding.
     private var _activityMainBinding: ActivityMainBinding? = null
     private val activityMainBinding get() = _activityMainBinding!!
     private val mainContentBinding: MainContentBinding get() = _activityMainBinding!!.mainContent
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Enable edge to edge.
         enableEdgeToEdge()
+
+        // Inflate view.
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+
+        // Initialize Dropdown List.
         val dropDownList = arrayOf("12", "13", "14")
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this,
             R.layout.dropdown_list_item, dropDownList)
+
+        // Setup default device information.
         mainContentBinding.apply {
-            codeName.editText?.setText("houji")
-            systemVersion.editText?.setText("OS1.0.25.0.UNCCNXM")
-            androidVersion.editText?.setText("14")
+            codeName.editText?.setText(
+                getString(R.string.default_device)
+            )
+            systemVersion.editText?.setText(
+                getString(R.string.default_system_version)
+            )
+            androidVersion.editText?.setText(
+                getString(R.string.default_android_version)
+            )
             (androidVersion.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         }
     }
@@ -51,10 +64,14 @@ class MainActivity : AppCompatActivity() {
         mainContentBinding.apply {
             activityMainBinding.implement.setOnClickListener {
                 CoroutineScope(Dispatchers.Default).launch {
-                    val codenameText = codeName.editText?.text.toString()
-                    val systemText = systemVersion.editText?.text.toString()
-                    val androidText = androidVersion.editText?.text.toString()
-                    val romInfo = Utils.getRomInfo(codenameText, systemText, androidText).parseJSON<InfoHelper.RomInfo>()
+
+                    // Acquire ROM info.
+                    val romInfo = Utils.getRomInfo(
+                        codeName.editText?.text.toString(),
+                        systemVersion.editText?.text.toString(),
+                        androidVersion.editText?.text.toString()
+                    ).parseJSON<InfoHelper.RomInfo>()
+
                     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     withContext(Dispatchers.Main) {
                         val romDevice = romInfo.currentRom?.device
@@ -68,60 +85,53 @@ class MainActivity : AppCompatActivity() {
                         val romMd5 = romInfo.currentRom?.md5
                         val latestRomFileName = romInfo.latestRom?.filename
                         val latestRomMd5 = romInfo.latestRom?.md5
-                        if (romBranch == null) Toast.makeText(this@MainActivity, "未获取到任何信息", Toast.LENGTH_SHORT).show()
-                        codename.visibility = if (romDevice != null) View.VISIBLE else View.GONE
-                        codenameInfo.apply {
-                            visibility = if (romDevice != null) View.VISIBLE else View.GONE
-                            text = romDevice
+
+                        // Show a toast if we didn't get anything from request
+                        if (romBranch == null) {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "未获取到任何信息",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                        system.visibility = if (romVersion != null) View.VISIBLE else View.GONE
-                        systemInfo.apply {
-                            visibility = if (romVersion != null) View.VISIBLE else View.GONE
-                            text = romVersion
-                        }
-                        bigVersion.visibility = if (romBigVersion != null) View.VISIBLE else View.GONE
-                        bigVersionInfo.apply {
-                            visibility = if (romBigVersion != null) View.VISIBLE else View.GONE
-                            text = romBigVersion
-                        }
-                        mainContentBinding.codebase.visibility = if (codebase != null) View.VISIBLE else View.GONE
-                        codebaseInfo.apply {
-                            visibility = if (codebase != null) View.VISIBLE else View.GONE
-                            text = codebase
-                        }
-                        branch.visibility = if (romBranch != null) View.VISIBLE else View.GONE
-                        branchInfo.apply {
-                            visibility = if (romBranch != null) View.VISIBLE else View.GONE
-                            text = romBranch
-                        }
-                        filename.visibility = if (romFileName != null) View.VISIBLE else View.GONE
-                        filenameInfo.apply {
-                            visibility = if (romFileName != null) View.VISIBLE else View.GONE
-                            text = romFileName
-                        }
-                        filesize.visibility = if (romFileSize != null) View.VISIBLE else View.GONE
-                        filesizeInfo.apply {
-                            visibility = if (romFileSize != null) View.VISIBLE else View.GONE
-                            text = romFileSize
-                        }
-                        download.visibility = if (romMd5 != null) View.VISIBLE else View.GONE
-                        downloadInfo.apply {
-                            visibility = if (romMd5 != null) View.VISIBLE else View.GONE
-                            text = if (romMd5 == latestRomMd5) "https://ultimateota.d.miui.com/${romVersion}/${latestRomFileName}" else "https://bigota.d.miui.com/${romVersion}/${romFileName}"
-                        }
+
+                        codenameInfo.setTextAnimation(romDevice)
+
+                        systemInfo.setTextAnimation(romVersion)
+
+                        bigVersionInfo.setTextAnimation(romBigVersion)
+
+                        codebaseInfo.setTextAnimation(codebase)
+
+                        branchInfo.setTextAnimation(romBranch)
+
+                        filenameInfo.setTextAnimation(romFileName)
+
+                        filesizeInfo.setTextAnimation(romFileSize)
+
+                        downloadInfo.setTextAnimation(
+                            if (romMd5 == latestRomMd5)
+                                "https://ultimateota.d.miui.com/${romVersion}/${latestRomFileName}"
+                            else
+                                "https://bigota.d.miui.com/${romVersion}/${romFileName}"
+                        )
+
                         downloadInfo.setOnClickListener {
                             val clip = ClipData.newPlainText("label", downloadInfo.text)
                             clipboard.setPrimaryClip(clip)
                             Toast.makeText(this@MainActivity, "链接已复制到剪贴板", Toast.LENGTH_SHORT).show()
                         }
-                        changelog.visibility = if (romMd5 != null) View.VISIBLE else View.GONE
+
+                        val log = StringBuilder()
+                        romChangelog!!.forEach {
+                            log.append(it.key).append("\n").append(it.value.txt.joinToString("\n")).append("\n")
+                        }
+
+                        changelogInfo.setTextAnimation(
+                            log.toString()
+                        )
+
                         changelogInfo.apply {
-                            visibility = if (romMd5 != null) View.VISIBLE else View.GONE
-                            val log = StringBuilder()
-                            romChangelog!!.forEach {
-                                log.append(it.key).append("\n").append(it.value.txt.joinToString("\n")).append("\n")
-                            }
-                            text = log.toString()
                             setOnClickListener {
                                 val clip = ClipData.newPlainText("label", changelogInfo.text)
                                 clipboard.setPrimaryClip(clip)
