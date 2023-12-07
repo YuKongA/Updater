@@ -10,8 +10,7 @@ data class RomInfo(
     val Cta: Int,
 //    SerializedName注释的意思是，将json中的CurrentRom字段映射到currentRom变量中
 //    如果不加这个注释，必须和json中的字段名一致，包括大小写
-    @SerializedName("CurrentRom")
-    val currentRom: CurrentRom,
+    @SerializedName("CurrentRom") val currentRom: CurrentRom,
     val DnsType: Int,
     val FailedInterval: String,
     val FailedThreshold: String,
@@ -36,13 +35,11 @@ data class System(
 )
 
 data class Code(
-    val code: Int,
-    val message: String
+    val code: Int, val message: String
 )
 
 data class CrossRomCode(
-    val code: Int,
-    val message: String
+    val code: Int, val message: String
 )
 
 data class CurrentRom(
@@ -64,10 +61,7 @@ data class CurrentRom(
 )
 
 data class FileMirror(
-    val headimage: String,
-    val icon: String,
-    val image: String,
-    val video: String
+    val headimage: String, val icon: String, val image: String, val video: String
 )
 
 data class LatestRom(
@@ -88,14 +82,11 @@ data class LatestRom(
 )
 
 data class LatestRomCode(
-    val code: Int,
-    val message: String
+    val code: Int, val message: String
 )
 
 data class Signup(
-    val rank: String,
-    val total: String,
-    val version: String
+    val rank: String, val total: String, val version: String
 )
 
 data class UserCmtLink(
@@ -103,7 +94,5 @@ data class UserCmtLink(
 )
 
 data class Filepath(
-    val icon: String,
-    val image: String,
-    val video: String
+    val icon: String, val image: String, val video: String
 )

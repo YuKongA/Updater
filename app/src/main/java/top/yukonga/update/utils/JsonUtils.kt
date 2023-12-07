@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import java.io.InputStreamReader
 
-
 object JsonUtils {
     val gson = Gson()
 

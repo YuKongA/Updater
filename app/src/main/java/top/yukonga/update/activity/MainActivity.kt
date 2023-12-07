@@ -2,8 +2,9 @@ package top.yukonga.update.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        val dropDownList = arrayOf("12", "13", "14")
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.dropdown_list_item, dropDownList)
+
         val codename = findViewById<TextInputLayout>(R.id.code_name)
         codename.editText?.setText("houji")
 
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         val android = findViewById<TextInputLayout>(R.id.android_version)
         android.editText?.setText("14")
+        (android.editText as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
     override fun onResume() {
@@ -69,37 +74,32 @@ class MainActivity : AppCompatActivity() {
                     val romBranch = romInfo.currentRom.branch
                     val romFileName = romInfo.currentRom.filename
                     val romFileSize = romInfo.currentRom.filesize
+                    val romChangelog = romInfo.currentRom.changelog.toString()
                     val romMd5 = romInfo.currentRom.md5
+
                     val latestRomMd5 = romInfo.LatestRom.md5
                     val latestRomFileName = romInfo.LatestRom.filename
-
-                    val romChangelog = romInfo.currentRom.changelog.toString()
 
                     val codeNameV = findViewById<MaterialTextView>(R.id.codename)
                     codeNameV.visibility = View.VISIBLE
                     val codeNameInfo = findViewById<MaterialTextView>(R.id.codename_info)
                     codeNameInfo.text = romDevice
-                    textViewScrolling(codeNameInfo)
                     val systemV = findViewById<MaterialTextView>(R.id.system)
                     systemV.visibility = View.VISIBLE
                     val systemInfo = findViewById<MaterialTextView>(R.id.system_info)
                     systemInfo.text = romVersion
-                    textViewScrolling(systemInfo)
                     val bigVersionV = findViewById<MaterialTextView>(R.id.big_version)
                     bigVersionV.visibility = View.VISIBLE
                     val bigVersionInfo = findViewById<MaterialTextView>(R.id.big_version_info)
                     bigVersionInfo.text = romBigVersion
-                    textViewScrolling(bigVersionInfo)
                     val codeVaseV = findViewById<MaterialTextView>(R.id.codebase)
                     codeVaseV.visibility = View.VISIBLE
                     val codeBaseInfo = findViewById<MaterialTextView>(R.id.codebase_info)
                     codeBaseInfo.text = codebase
-                    textViewScrolling(codeBaseInfo)
                     val branchV = findViewById<MaterialTextView>(R.id.branch)
                     branchV.visibility = View.VISIBLE
                     val branchInfo = findViewById<MaterialTextView>(R.id.branch_info)
                     branchInfo.text = romBranch
-                    textViewScrolling(branchInfo)
                     val fileNameV = findViewById<MaterialTextView>(R.id.filename)
                     fileNameV.visibility = View.VISIBLE
                     val fileNameInfo = findViewById<MaterialTextView>(R.id.filename_info)
@@ -108,11 +108,11 @@ class MainActivity : AppCompatActivity() {
                     fileSizeV.visibility = View.VISIBLE
                     val fileSizeInfo = findViewById<MaterialTextView>(R.id.filesize_info)
                     fileSizeInfo.text = romFileSize
-                    textViewScrolling(fileSizeInfo)
                     val downloadV = findViewById<MaterialTextView>(R.id.download)
                     downloadV.visibility = View.VISIBLE
                     val downloadInfo = findViewById<MaterialTextView>(R.id.download_info)
-                    downloadInfo.text = if (romMd5 == latestRomMd5) "https://ultimateota.d.miui.com/${romVersion}/${latestRomFileName}" else "https://bigota.d.miui.com/${romVersion}/${romFileName}"
+                    downloadInfo.text =
+                        if (romMd5 == latestRomMd5) "https://ultimateota.d.miui.com/${romVersion}/${latestRomFileName}" else "https://bigota.d.miui.com/${romVersion}/${romFileName}"
                     val changelogV = findViewById<MaterialTextView>(R.id.changelog)
                     changelogV.visibility = View.VISIBLE
                     val changelogInfo = findViewById<MaterialTextView>(R.id.changelog_info)
@@ -121,13 +121,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-}
-
-private fun textViewScrolling(textView: MaterialTextView) {
-    textView.ellipsize = TextUtils.TruncateAt.MARQUEE
-    textView.isHorizontalFadingEdgeEnabled = true
-    textView.setSingleLine()
-    textView.marqueeRepeatLimit = -1
-    textView.isSelected = true
-    textView.setHorizontallyScrolling(true)
 }
