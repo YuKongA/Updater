@@ -5,7 +5,7 @@
     <string name="system_version">System version</string>
     <string name="android_version">Android version</string>
     <string name="implement">Implement</string>
-    <string name="big_version">Big Version</string>
+    <string name="big_version">Major Version</string>
     <string name="filename">File Name</string>
     <string name="filesize">File Size</string>
     <string name="download">Download Url</string>
