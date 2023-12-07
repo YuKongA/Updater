@@ -10,4 +10,6 @@
     <string name="download">下载链接</string>
     <string name="changelog">更新日志</string>
     <string name="branch">分支</string>
+    <string name="toast_no_info">无有效信息!</string>
+    <string name="toast_copied_to_pasteboard">已复制到粘贴板</string>
 </resources>
