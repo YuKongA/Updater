@@ -43,20 +43,13 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize Dropdown List.
         val dropDownList = arrayOf("12", "13", "14")
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this,
-            R.layout.dropdown_list_item, dropDownList)
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.dropdown_list_item, dropDownList)
 
         // Setup default device information.
         mainContentBinding.apply {
-            codeName.editText?.setText(
-                getString(R.string.default_device)
-            )
-            systemVersion.editText?.setText(
-                getString(R.string.default_system_version)
-            )
-            androidVersion.editText?.setText(
-                getString(R.string.default_android_version)
-            )
+            codeName.editText?.setText(getString(R.string.default_device))
+            systemVersion.editText?.setText(getString(R.string.default_system_version))
+            androidVersion.editText?.setText(getString(R.string.default_android_version))
             (androidVersion.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         }
     }
@@ -67,36 +60,25 @@ class MainActivity : AppCompatActivity() {
             activityMainBinding.implement.setOnClickListener {
 
                 val viewTitleArray = arrayOf(
-                    codename, system, bigVersion, codebase, branch, filename, filesize,
-                    download, changelog
+                    codename, system, bigVersion, codebase, branch, filename, filesize, download, changelog
                 )
 
                 val viewContentArray = arrayOf(
-                    codenameInfo, systemInfo, bigVersionInfo, codebaseInfo, branchInfo,
-                    filenameInfo, filesizeInfo, downloadInfo, changelogInfo
+                    codenameInfo, systemInfo, bigVersionInfo, codebaseInfo, branchInfo, filenameInfo, filesizeInfo, downloadInfo, changelogInfo
                 )
 
                 CoroutineScope(Dispatchers.Default).launch {
 
                     try {
                         // Acquire ROM info.
-                        val romInfo = Utils.getRomInfo(
-                            codeName.editText?.text.toString(),
-                            systemVersion.editText?.text.toString(),
-                            androidVersion.editText?.text.toString()
-                        ).parseJSON<InfoHelper.RomInfo>()
+                        val romInfo = Utils.getRomInfo(codeName.editText?.text.toString(), systemVersion.editText?.text.toString(), androidVersion.editText?.text.toString()).parseJSON<InfoHelper.RomInfo>()
 
-                        val clipboard =
-                            getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         withContext(Dispatchers.Main) {
 
                             // Show a toast if we didn't get anything from request
                             if (romInfo.currentRom?.branch == null) {
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    getString(R.string.toast_no_info),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@MainActivity, getString(R.string.toast_no_info), Toast.LENGTH_SHORT).show()
                                 throw NoSuchFieldException()
                             }
 
@@ -122,28 +104,17 @@ class MainActivity : AppCompatActivity() {
                             filesizeInfo.setTextAnimation(romInfo.currentRom.filesize)
 
                             downloadInfo.setTextAnimation(
-                                if (romInfo.currentRom.md5 == romInfo.latestRom?.md5)
-                                    getString(
-                                        R.string.https_ultimateota_d_miui_com,
-                                        romInfo.currentRom.version,
-                                        romInfo.latestRom?.filename
-                                    )
-                                else
-                                    getString(
-                                        R.string.https_bigota_d_miui_com,
-                                        romInfo.currentRom.version,
-                                        romInfo.currentRom.filename
-                                    )
+                                if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
+                                    R.string.https_ultimateota_d_miui_com, romInfo.currentRom.version, romInfo.latestRom?.filename
+                                )
+                                else getString(
+                                    R.string.https_bigota_d_miui_com, romInfo.currentRom.version, romInfo.currentRom.filename
+                                )
                             )
 
                             val log = StringBuilder()
                             romInfo.currentRom.changelog!!.forEach {
-                                log.append(it.key)
-                                    .append("\n")
-                                    .append(
-                                        it.value.txt.joinToString("\n")
-                                    )
-                                    .append("\n")
+                                log.append(it.key).append("\n").append(it.value.txt.joinToString("\n")).append("\n")
                             }
 
                             changelogInfo.setTextAnimation(
@@ -153,11 +124,7 @@ class MainActivity : AppCompatActivity() {
                             changelogInfo.setOnClickListener {
                                 val clip = ClipData.newPlainText("label", changelogInfo.text)
                                 clipboard.setPrimaryClip(clip)
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    getString(R.string.toast_copied_to_pasteboard),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT).show()
                             }
 
                             downloadInfo.setOnClickListener {
@@ -165,11 +132,7 @@ class MainActivity : AppCompatActivity() {
                                     "label", downloadInfo.text
                                 )
                                 clipboard.setPrimaryClip(clip)
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    getString(R.string.toast_copied_to_pasteboard),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Toast.makeText(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT).show()
                             }
                         } // Main context
                     } catch (e: Exception) {
