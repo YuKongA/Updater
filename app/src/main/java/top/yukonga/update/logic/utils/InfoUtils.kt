@@ -6,12 +6,12 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import top.yukonga.update.logic.utils.Crypto.miuiDecrypt
-import top.yukonga.update.logic.utils.Crypto.miuiEncrypt
+import top.yukonga.update.logic.utils.CryptoUtils.miuiDecrypt
+import top.yukonga.update.logic.utils.CryptoUtils.miuiEncrypt
 import java.io.File
 import java.util.Base64
 
-object Utils {
+object InfoUtils {
 
     private const val miuiUrl = "https://update.miui.com/updates/miotaV3.php"
     private var securityKey = "miuiotavalided11"

@@ -5,12 +5,18 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,15 +28,17 @@ import top.yukonga.update.logic.data.InfoHelper
 import top.yukonga.update.logic.fadInAnimation
 import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
+import top.yukonga.update.logic.utils.AppUtils.dp
+import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
-import top.yukonga.update.logic.utils.Utils
+
 
 class MainActivity : AppCompatActivity() {
 
     // Start ViewBinding.
-    private var _activityMainBinding: ActivityMainBinding? = null
-    private val activityMainBinding get() = _activityMainBinding!!
-    private val mainContentBinding: MainContentBinding get() = _activityMainBinding!!.mainContent
+    private lateinit var _activityMainBinding: ActivityMainBinding
+    private val activityMainBinding get() = _activityMainBinding
+    private val mainContentBinding: MainContentBinding get() = _activityMainBinding.mainContent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +61,9 @@ class MainActivity : AppCompatActivity() {
             androidVersion.editText?.setText(getString(R.string.default_android_version))
             (androidVersion.editText as? AutoCompleteTextView)?.setAdapter(adapter)
         }
+
+        // Setup TopAppBar.
+        setSupportActionBar(_activityMainBinding.topAppBar)
     }
 
     override fun onResume() {
@@ -80,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
                     try {
                         // Acquire ROM info.
-                        val romInfo = Utils.getRomInfo(
+                        val romInfo = InfoUtils.getRomInfo(
                             codeName.editText?.text.toString(), systemVersion.editText?.text.toString(), androidVersion.editText?.text.toString()
                         ).parseJSON<InfoHelper.RomInfo>()
 
@@ -198,6 +209,60 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _activityMainBinding = null
+        _activityMainBinding
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.login -> {
+                showDialog()
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showDialog() {
+        val view = LinearLayout(this@MainActivity).apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            orientation = LinearLayout.VERTICAL
+        }
+        val inputAccountLayout = TextInputLayout(this@MainActivity).apply {
+            hint = getString(R.string.account)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
+            }
+        }
+        val inputAccount = TextInputEditText(this@MainActivity)
+        inputAccountLayout.addView(inputAccount)
+        val inputPasswordLayout = TextInputLayout(this@MainActivity).apply {
+            hint = getString(R.string.password)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
+            }
+        }
+        val inputPassword = TextInputEditText(this@MainActivity)
+        inputPasswordLayout.addView(inputPassword)
+        view.addView(inputAccountLayout)
+        view.addView(inputPasswordLayout)
+        val builder = MaterialAlertDialogBuilder(this@MainActivity)
+        builder.setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+        builder.setPositiveButton(getString(R.string.login)) { _, _ ->
+            // TODO: Login
+            Toast.makeText(this@MainActivity, "TODO", Toast.LENGTH_SHORT).show()
+            val mInputAccount = inputAccount.getText().toString()
+            val mInputPassword = inputAccount.getText().toString()
+        }
+        builder.show()
     }
 }

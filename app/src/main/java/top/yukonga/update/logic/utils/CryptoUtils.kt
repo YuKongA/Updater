@@ -5,7 +5,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-object Crypto {
+object CryptoUtils {
 
     private const val iv = "0102030405060708"
 

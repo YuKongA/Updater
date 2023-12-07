@@ -9,7 +9,6 @@ object InfoHelper {
         @SerializedName("LatestRom") val latestRom: LatestRom? = null,
     )
 
-
     data class CurrentRom(
         val bigversion: String? = null,
         val branch: String? = null,
@@ -26,7 +25,6 @@ object InfoHelper {
     data class Changelog(
         val txt: List<String>
     )
-
 
     data class LatestRom(
         val filename: String? = null,
