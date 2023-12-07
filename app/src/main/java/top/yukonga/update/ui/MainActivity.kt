@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 val firstViewContentArray = arrayOf(
                     codenameInfo, systemInfo, codebaseInfo, branchInfo
                 )
-                
+
                 val secondViewContentArray = arrayOf(
                     bigVersionInfo, filenameInfo, filesizeInfo, downloadInfo, changelogInfo
                 )

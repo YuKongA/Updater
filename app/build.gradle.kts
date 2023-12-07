@@ -1,3 +1,6 @@
+import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import java.io.ByteArrayOutputStream
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -11,16 +14,15 @@ android {
         applicationId = "top.yukonga.update"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = getVersionCode()
+        versionName = "1.0" + "-" + getVersionName()
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -30,11 +32,55 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs = listOf(
+            "-Xno-param-assertions",
+            "-Xno-call-assertions",
+            "-Xno-receiver-assertions",
+            "-language-version=2.0",
+        )
     }
     buildFeatures {
         viewBinding = true
         buildConfig = true
     }
+    packaging {
+        resources {
+            excludes += "**"
+        }
+        applicationVariants.all {
+            outputs.all {
+                (this as BaseVariantOutputImpl).outputFileName = "Updater-$versionName($versionCode)-$name.apk"
+            }
+        }
+    }
+}
+
+fun getGitCommitCount(): Int {
+    val out = ByteArrayOutputStream()
+    exec {
+        commandLine("git", "rev-list", "--count", "HEAD")
+        standardOutput = out
+    }
+    return out.toString().trim().toInt()
+}
+
+fun getGitDescribe(): String {
+    val out = ByteArrayOutputStream()
+    exec {
+        commandLine("git", "describe", "--tags", "--always")
+        standardOutput = out
+    }
+    return out.toString().trim()
+}
+
+fun getVersionCode(): Int {
+    val commitCount = getGitCommitCount()
+    val major = 5
+    return major + commitCount
+}
+
+fun getVersionName(): String {
+    return getGitDescribe()
 }
 
 dependencies {
@@ -46,5 +92,5 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 }
