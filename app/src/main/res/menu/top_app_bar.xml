@@ -4,5 +4,6 @@
     <item
         android:icon="@drawable/ic_login"
         android:title="@string/login"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 </menu>
