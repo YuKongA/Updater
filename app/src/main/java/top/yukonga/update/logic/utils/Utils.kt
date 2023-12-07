@@ -1,4 +1,4 @@
-package top.yukonga.update.utils
+package top.yukonga.update.logic.utils
 
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaType
@@ -6,8 +6,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import top.yukonga.update.utils.Crypto.miuiDecrypt
-import top.yukonga.update.utils.Crypto.miuiEncrypt
+import top.yukonga.update.logic.utils.Crypto.miuiDecrypt
+import top.yukonga.update.logic.utils.Crypto.miuiEncrypt
 import java.io.File
 import java.util.Base64
 

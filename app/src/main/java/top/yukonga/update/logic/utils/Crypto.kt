@@ -1,4 +1,4 @@
-package top.yukonga.update.utils
+package top.yukonga.update.logic.utils
 
 import java.util.Base64
 import javax.crypto.Cipher

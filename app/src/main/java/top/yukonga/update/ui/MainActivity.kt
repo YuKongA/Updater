@@ -1,4 +1,4 @@
-package top.yukonga.update.activity
+package top.yukonga.update.ui
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -16,11 +16,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import top.yukonga.update.R
-import top.yukonga.update.data.RomInfo
 import top.yukonga.update.databinding.ActivityMainBinding
 import top.yukonga.update.databinding.MainContentBinding
-import top.yukonga.update.utils.JsonUtils.parseJSON
-import top.yukonga.update.utils.Utils
+import top.yukonga.update.logic.data.InfoHelper
+import top.yukonga.update.logic.utils.JsonUtils.parseJSON
+import top.yukonga.update.logic.utils.Utils
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
         val dropDownList = arrayOf("12", "13", "14")
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.dropdown_list_item, dropDownList)
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this,
+            R.layout.dropdown_list_item, dropDownList)
         mainContentBinding.apply {
             codeName.editText?.setText("houji")
             systemVersion.editText?.setText("OS1.0.25.0.UNCCNXM")
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     val codenameText = codeName.editText?.text.toString()
                     val systemText = systemVersion.editText?.text.toString()
                     val androidText = androidVersion.editText?.text.toString()
-                    val romInfo = Utils.getRomInfo(codenameText, systemText, androidText).parseJSON<RomInfo>()
+                    val romInfo = Utils.getRomInfo(codenameText, systemText, androidText).parseJSON<InfoHelper.RomInfo>()
                     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     withContext(Dispatchers.Main) {
                         val romDevice = romInfo.currentRom?.device
