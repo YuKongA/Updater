@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
@@ -80,18 +81,16 @@ class MainActivity : AppCompatActivity() {
                     try {
                         // Acquire ROM info.
                         val romInfo = Utils.getRomInfo(
-                            codeName.editText?.text.toString(),
-                            systemVersion.editText?.text.toString(),
-                            androidVersion.editText?.text.toString()
+                            codeName.editText?.text.toString(), systemVersion.editText?.text.toString(), androidVersion.editText?.text.toString()
                         ).parseJSON<InfoHelper.RomInfo>()
 
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         withContext(Dispatchers.Main) {
 
+                            Log.i("MainActivity", romInfo.toString())
                             // Show a toast if we didn't get anything from request
                             if (romInfo.currentRom?.branch == null) {
-                                Toast.makeText(this@MainActivity, getString(R.string.toast_no_info), Toast.LENGTH_SHORT)
-                                    .show()
+                                Toast.makeText(this@MainActivity, getString(R.string.toast_no_info), Toast.LENGTH_SHORT).show()
                                 throw NoSuchFieldException()
                             }
 
@@ -133,14 +132,10 @@ class MainActivity : AppCompatActivity() {
 
                                 downloadInfo.setTextAnimation(
                                     if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
-                                        R.string.https_ultimateota_d_miui_com,
-                                        romInfo.currentRom.version,
-                                        romInfo.latestRom.filename
+                                        R.string.https_ultimateota_d_miui_com, romInfo.currentRom.version, romInfo.latestRom.filename
                                     )
                                     else getString(
-                                        R.string.https_bigota_d_miui_com,
-                                        romInfo.currentRom.version,
-                                        romInfo.currentRom.filename
+                                        R.string.https_bigota_d_miui_com, romInfo.currentRom.version, romInfo.currentRom.filename
                                     )
                                 )
 
@@ -157,9 +152,7 @@ class MainActivity : AppCompatActivity() {
                                     val clip = ClipData.newPlainText("label", changelogInfo.text)
                                     clipboard.setPrimaryClip(clip)
                                     Toast.makeText(
-                                        this@MainActivity,
-                                        getString(R.string.toast_copied_to_pasteboard),
-                                        Toast.LENGTH_SHORT
+                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
                                     ).show()
                                 }
 
@@ -169,9 +162,7 @@ class MainActivity : AppCompatActivity() {
                                     )
                                     clipboard.setPrimaryClip(clip)
                                     Toast.makeText(
-                                        this@MainActivity,
-                                        getString(R.string.toast_copied_to_pasteboard),
-                                        Toast.LENGTH_SHORT
+                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
                                     ).show()
                                 }
                             }

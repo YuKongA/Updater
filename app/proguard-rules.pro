@@ -19,6 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class top.yukonga.update.data.*{*;}
--keep class com.google.gson.reflect.TypeToken { *;}
--keep class * extends com.google.gson.reflect.TypeToken
+-keep class top.yukonga.update.logic.data.** { *; }
+-keep class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+-dontobfuscate
