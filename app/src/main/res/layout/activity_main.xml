@@ -24,7 +24,8 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Note: A RecyclerView can also be used -->
-    <include layout="@layout/main_content" />
+    <include layout="@layout/main_content"
+        android:id="@+id/main_content"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/implement"
