@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,6 +18,8 @@ import top.yukonga.update.R
 import top.yukonga.update.databinding.ActivityMainBinding
 import top.yukonga.update.databinding.MainContentBinding
 import top.yukonga.update.logic.data.InfoHelper
+import top.yukonga.update.logic.fadInAnimation
+import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.Utils
@@ -62,74 +65,92 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         mainContentBinding.apply {
             activityMainBinding.implement.setOnClickListener {
+
+                val viewTitleArray = arrayOf(
+                    codename, system, bigVersion, codebase, branch, filename, filesize,
+                    download, changelog
+                )
+
+                val viewContentArray = arrayOf(
+                    codenameInfo, systemInfo, bigVersionInfo, codebaseInfo, branchInfo,
+                    filenameInfo, filesizeInfo, downloadInfo, changelogInfo
+                )
+
                 CoroutineScope(Dispatchers.Default).launch {
 
-                    // Acquire ROM info.
-                    val romInfo = Utils.getRomInfo(
-                        codeName.editText?.text.toString(),
-                        systemVersion.editText?.text.toString(),
-                        androidVersion.editText?.text.toString()
-                    ).parseJSON<InfoHelper.RomInfo>()
+                    try {
+                        // Acquire ROM info.
+                        val romInfo = Utils.getRomInfo(
+                            codeName.editText?.text.toString(),
+                            systemVersion.editText?.text.toString(),
+                            androidVersion.editText?.text.toString()
+                        ).parseJSON<InfoHelper.RomInfo>()
 
-                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    withContext(Dispatchers.Main) {
+                        val clipboard =
+                            getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        withContext(Dispatchers.Main) {
 
-                        // Show a toast if we didn't get anything from request
-                        if (romInfo.currentRom?.branch == null) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                getString(R.string.toast_no_info),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                            // Show a toast if we didn't get anything from request
+                            if (romInfo.currentRom?.branch == null) {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    getString(R.string.toast_no_info),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                throw NoSuchFieldException()
+                            }
 
-                        // Setup TextViews
-                        codenameInfo.setTextAnimation(romInfo.currentRom?.device)
+                            viewTitleArray.forEach {
+                                if (!it.isVisible) it.fadInAnimation()
+                            }
 
-                        systemInfo.setTextAnimation(romInfo.currentRom?.version)
+                            // Setup TextViews
+                            codenameInfo.setTextAnimation(romInfo.currentRom.device)
 
-                        bigVersionInfo.setTextAnimation(
-                            romInfo.currentRom?.bigversion?.replace("816", "HyperOS 1.0")
-                        )
+                            systemInfo.setTextAnimation(romInfo.currentRom.version)
 
-                        codebaseInfo.setTextAnimation(romInfo.currentRom?.codebase)
+                            bigVersionInfo.setTextAnimation(
+                                romInfo.currentRom.bigversion?.replace("816", "HyperOS 1.0")
+                            )
 
-                        branchInfo.setTextAnimation(romInfo.currentRom?.branch)
+                            codebaseInfo.setTextAnimation(romInfo.currentRom.codebase)
 
-                        filenameInfo.setTextAnimation(romInfo.currentRom?.filename)
+                            branchInfo.setTextAnimation(romInfo.currentRom.branch)
 
-                        filesizeInfo.setTextAnimation(romInfo.currentRom?.filesize)
+                            filenameInfo.setTextAnimation(romInfo.currentRom.filename)
 
-                        downloadInfo.setTextAnimation(
-                            if (romInfo.currentRom?.md5 == romInfo.latestRom?.md5)
-                                getString(
-                                    R.string.https_ultimateota_d_miui_com,
-                                    romInfo.currentRom?.version,
-                                    romInfo.latestRom?.filename
-                                )
-                            else
-                                getString(
-                                    R.string.https_bigota_d_miui_com,
-                                    romInfo.currentRom?.version,
-                                    romInfo.currentRom?.filename
-                                )
-                        )
+                            filesizeInfo.setTextAnimation(romInfo.currentRom.filesize)
 
-                        val log = StringBuilder()
-                        romInfo.currentRom?.changelog!!.forEach {
-                            log.append(it.key)
-                                .append("\n")
-                                .append(
-                                    it.value.txt.joinToString("\n")
-                                )
-                                .append("\n")
-                        }
+                            downloadInfo.setTextAnimation(
+                                if (romInfo.currentRom.md5 == romInfo.latestRom?.md5)
+                                    getString(
+                                        R.string.https_ultimateota_d_miui_com,
+                                        romInfo.currentRom.version,
+                                        romInfo.latestRom?.filename
+                                    )
+                                else
+                                    getString(
+                                        R.string.https_bigota_d_miui_com,
+                                        romInfo.currentRom.version,
+                                        romInfo.currentRom.filename
+                                    )
+                            )
 
-                        changelogInfo.setTextAnimation(
-                            log.toString()
-                        )
+                            val log = StringBuilder()
+                            romInfo.currentRom.changelog!!.forEach {
+                                log.append(it.key)
+                                    .append("\n")
+                                    .append(
+                                        it.value.txt.joinToString("\n")
+                                    )
+                                    .append("\n")
+                            }
 
-                        changelogInfo.setOnClickListener {
+                            changelogInfo.setTextAnimation(
+                                log.toString()
+                            )
+
+                            changelogInfo.setOnClickListener {
                                 val clip = ClipData.newPlainText("label", changelogInfo.text)
                                 clipboard.setPrimaryClip(clip)
                                 Toast.makeText(
@@ -137,20 +158,32 @@ class MainActivity : AppCompatActivity() {
                                     getString(R.string.toast_copied_to_pasteboard),
                                     Toast.LENGTH_SHORT
                                 ).show()
+                            }
+
+                            downloadInfo.setOnClickListener {
+                                val clip = ClipData.newPlainText(
+                                    "label", downloadInfo.text
+                                )
+                                clipboard.setPrimaryClip(clip)
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    getString(R.string.toast_copied_to_pasteboard),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } // Main context
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+
+                        viewTitleArray.forEach {
+                            if (it.isVisible) it.fadOutAnimation()
                         }
 
-                        downloadInfo.setOnClickListener {
-                            val clip = ClipData.newPlainText(
-                                "label", downloadInfo.text
-                            )
-                            clipboard.setPrimaryClip(clip)
-                            Toast.makeText(
-                                this@MainActivity,
-                                getString(R.string.toast_copied_to_pasteboard),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        viewContentArray.forEach {
+                            if (it.isVisible) it.fadOutAnimation()
                         }
-                    } // Main context
+
+                    }
 
                 } // CoroutineScope
 
