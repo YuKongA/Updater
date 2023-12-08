@@ -55,7 +55,7 @@ class LoginUtils {
         }
 
         val ssecurity = auth.getString("ssecurity")
-        val userId = auth.getInt("userId")
+        val userId = auth.getString("userId")
         val sha1 = MessageDigest.getInstance("SHA-1")
         sha1.update(("nonce=" + auth.getString("nonce") + "&" + ssecurity).toByteArray())
         val clientSign = Base64.getEncoder().encodeToString(sha1.digest())
@@ -67,7 +67,7 @@ class LoginUtils {
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
 
         val gson = GsonBuilder().disableHtmlEscaping().create()
-        val json = mutableMapOf<String, Any>()
+        val json = mutableMapOf<String, String>()
         json["userId"] = userId
         json["ssecurity"] = ssecurity
         json["serviceToken"] = serviceToken

@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
@@ -33,7 +32,6 @@ import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -103,7 +101,6 @@ class MainActivity : AppCompatActivity() {
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         withContext(Dispatchers.Main) {
 
-                            Log.i("MainActivity", romInfo.toString())
                             // Show a toast if we didn't get anything from request
                             if (romInfo.currentRom?.branch == null) {
                                 Toast.makeText(this@MainActivity, getString(R.string.toast_no_info), Toast.LENGTH_SHORT).show()
