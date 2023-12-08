@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -31,6 +32,7 @@ import top.yukonga.update.logic.setTextAnimation
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
+import top.yukonga.update.logic.utils.LoginUtils
 
 
 class MainActivity : AppCompatActivity() {
@@ -92,7 +94,10 @@ class MainActivity : AppCompatActivity() {
                     try {
                         // Acquire ROM info.
                         val romInfo = InfoUtils.getRomInfo(
-                            codeName.editText?.text.toString(), systemVersion.editText?.text.toString(), androidVersion.editText?.text.toString()
+                            this@MainActivity,
+                            codeName.editText?.text.toString(),
+                            systemVersion.editText?.text.toString(),
+                            androidVersion.editText?.text.toString()
                         ).parseJSON<InfoHelper.RomInfo>()
 
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -244,6 +249,7 @@ class MainActivity : AppCompatActivity() {
         val inputAccount = TextInputEditText(this@MainActivity)
         inputAccountLayout.addView(inputAccount)
         val inputPasswordLayout = TextInputLayout(this@MainActivity).apply {
+            endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
             hint = getString(R.string.password)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
@@ -251,17 +257,20 @@ class MainActivity : AppCompatActivity() {
                 setMargins(180.dp, 50.dp, 180.dp, 0.dp)
             }
         }
-        val inputPassword = TextInputEditText(this@MainActivity)
+        val inputPassword = TextInputEditText(this@MainActivity).apply {
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        }
         inputPasswordLayout.addView(inputPassword)
         view.addView(inputAccountLayout)
         view.addView(inputPasswordLayout)
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         builder.setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
         builder.setPositiveButton(getString(R.string.login)) { _, _ ->
-            // TODO: Login
-            Toast.makeText(this@MainActivity, "TODO", Toast.LENGTH_SHORT).show()
             val mInputAccount = inputAccount.getText().toString()
-            val mInputPassword = inputAccount.getText().toString()
+            val mInputPassword = inputPassword.getText().toString()
+            CoroutineScope(Dispatchers.Default).launch {
+                LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword)
+            }
         }
         builder.show()
     }
