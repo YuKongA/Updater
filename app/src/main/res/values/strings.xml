@@ -13,9 +13,6 @@
     <string name="branch">Branch</string>
     <string name="toast_no_info">No information!</string>
     <string name="toast_copied_to_pasteboard">Copied to pasteboard</string>
-    <string name="default_system_version" translatable="false">OS1.0.25.0.UNCCNXM</string>
-    <string name="default_android_version" translatable="false">14</string>
-    <string name="default_device" translatable="false">houji</string>
     <string name="https_ultimateota_d_miui_com" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
     <string name="https_bigota_d_miui_com" translatable="false">https://bigota.d.miui.com/%1$s/%2$s</string>
     <string name="account">Account</string>

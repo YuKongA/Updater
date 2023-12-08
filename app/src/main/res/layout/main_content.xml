@@ -21,10 +21,12 @@
             android:hint="@string/codename"
             app:startIconDrawable="@drawable/ic_developer_mode">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
+                android:id="@+id/code_name_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true" />
+                android:completionThreshold="1"
+                tools:ignore="LabelFor" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -63,9 +65,9 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <com.google.android.material.textview.MaterialTextView
@@ -74,9 +76,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
+                android:text="@string/codename"
                 android:textColor="?attr/colorOnSurface"
-                android:visibility="gone"
-                android:text="@string/codename" />
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/codename_info"
@@ -100,9 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:visibility="gone"
+                android:text="@string/system_version"
                 android:textColor="?attr/colorOnSurface"
-                android:text="@string/system_version" />
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/system_info"
@@ -126,9 +128,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:visibility="gone"
+                android:text="@string/big_version"
                 android:textColor="?attr/colorOnSurface"
-                android:text="@string/big_version" />
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/big_version_info"
@@ -152,9 +154,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:visibility="gone"
+                android:text="@string/android_version"
                 android:textColor="?attr/colorOnSurface"
-                android:text="@string/android_version" />
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/codebase_info"
@@ -178,9 +180,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:visibility="gone"
+                android:text="@string/branch"
                 android:textColor="?attr/colorOnSurface"
-                android:text="@string/branch" />
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/branch_info"
@@ -204,9 +206,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
+                android:text="@string/filename"
                 android:textColor="?attr/colorOnSurface"
-                android:visibility="gone"
-                android:text="@string/filename" />
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/filename_info"
@@ -227,9 +229,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
+                android:text="@string/filesize"
                 android:textColor="?attr/colorOnSurface"
-                android:visibility="gone"
-                android:text="@string/filesize" />
+                android:visibility="gone" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/filesize_info"
@@ -254,9 +256,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
+                android:text="@string/download"
                 android:textColor="?attr/colorOnSurface"
-                android:visibility="gone"
-                android:text="@string/download" />
+                android:visibility="gone" />
 
 
             <com.google.android.material.textview.MaterialTextView
@@ -279,9 +281,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
+                android:text="@string/changelog"
                 android:textColor="?attr/colorOnSurface"
-                android:visibility="gone"
-                android:text="@string/changelog" />
+                android:visibility="gone" />
 
 
             <com.google.android.material.textview.MaterialTextView
