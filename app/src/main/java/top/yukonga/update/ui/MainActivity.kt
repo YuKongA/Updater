@@ -28,7 +28,9 @@ import top.yukonga.update.logic.data.InfoHelper
 import top.yukonga.update.logic.fadInAnimation
 import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
+import top.yukonga.update.logic.utils.AppUtils.deviceCodeList
 import top.yukonga.update.logic.utils.AppUtils.dp
+import top.yukonga.update.logic.utils.AppUtils.dropDownList
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
@@ -51,146 +53,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(activityMainBinding.root)
 
         // Initialize DeviceCode List.
-        val deviceCodeList = arrayOf(
-            "duchamp",
-            "manet",
-            "vermeer",
-            "gale",
-            "shennong",
-            "houji",
-            "sapphiren",
-            "sapphire",
-            "aristotle",
-            "garnet",
-            "gold",
-            "zircon",
-            "xun",
-            "babylon",
-            "corot",
-            "yudi",
-            "sky",
-            "fire",
-            "pearl",
-            "yuechu",
-            "sea",
-            "ishtar",
-            "liuqin",
-            "pipa",
-            "sweet_k6a",
-            "topaz",
-            "tapas",
-            "marble",
-            "water",
-            "earth",
-            "redwood",
-            "rembrandt",
-            "socrates",
-            "mondrian",
-            "nuwa",
-            "fuxi",
-            "moonstone",
-            "sunstone",
-            "ruby",
-            "plato",
-            "yunluo",
-            "ziyi",
-            "ice",
-            "rosemary_p",
-            "rock",
-            "dagu",
-            "diting",
-            "zizhan",
-            "mayfly",
-            "thor",
-            "unicorn",
-            "daumier",
-            "taoyao",
-            "frost",
-            "xaga",
-            "zijin",
-            "lilac",
-            "dandelion",
-            "fog",
-            "rubens",
-            "matisse",
-            "munch",
-            "viva",
-            "lightcm",
-            "light",
-            "ingres",
-            "spesn",
-            "spes",
-            "veux",
-            "opal",
-            "fleur",
-            "zeus",
-            "psyche",
-            "cupid",
-            "evergreen",
-            "pissarro",
-            "evergo",
-            "selenes",
-            "mona",
-            "lisa",
-            "agate",
-            "vili",
-            "selene",
-            "odin",
-            "elish",
-            "enuma",
-            "nabu",
-            "chopin",
-            "camellia",
-            "biloba",
-            "ares",
-            "cetus",
-            "renoir",
-            "star",
-            "courbet",
-            "vayu",
-            "thyme",
-            "sweet",
-            "camellian",
-            "rosemary",
-            "mojito",
-            "haydn",
-            "alioth",
-            "venus",
-            "cannong",
-            "gauguin",
-            "cannon",
-            "lime",
-            "citrus",
-            "apollo",
-            "angelicain",
-            "shiva",
-            "surya",
-            "angelican",
-            "cattail",
-            "cas",
-            "cezanne",
-            "gram",
-            "dandelion",
-            "angelica",
-            "lancelot",
-            "toco",
-            "bomb",
-            "atom",
-            "picasso_48m",
-            "merlin",
-            "vangogh",
-            "monet",
-            "lmi",
-            "excalibur",
-            "curtana",
-            "joyeuse",
-            "cmi",
-            "umi"
-        )
         val deviceCodeListAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.dropdown_list_item, deviceCodeList)
 
         // Initialize Dropdown List.
-        val dropDownList = arrayOf("12", "13", "14")
         val dropDownAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.dropdown_list_item, dropDownList)
 
         // Setup default device information.
@@ -369,7 +234,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun showDialog() {
         val view = LinearLayout(this@MainActivity).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            )
             orientation = LinearLayout.VERTICAL
         }
         val inputAccountLayout = TextInputLayout(this@MainActivity).apply {

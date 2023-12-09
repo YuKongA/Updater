@@ -18,4 +18,8 @@
     <string name="account">Account</string>
     <string name="password">Password</string>
     <string name="cancel">Cancel</string>
+    <string name="logging_in">Logging in</string>
+    <string name="login_successful">Login successful</string>
+    <string name="request_sign_failed">Request for _sign failed</string>
+    <string name="account_or_password_empty">Account or password empty</string>
 </resources>

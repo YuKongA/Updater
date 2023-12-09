@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import top.yukonga.update.R
 import top.yukonga.update.logic.utils.FileUtils.saveFile
 import java.security.MessageDigest
 import java.util.Base64
@@ -18,14 +19,18 @@ class LoginUtils {
 
     suspend fun login(context: Context, account: String, password: String) {
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "$account：登录中", Toast.LENGTH_SHORT).show()
+            if (account.isEmpty() || password.isEmpty()) {
+                Toast.makeText(context, context.getString(R.string.account_or_password_empty), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, context.getString(R.string.logging_in), Toast.LENGTH_SHORT).show()
+            }
         }
 
         val client = OkHttpClient()
 
         val md = MessageDigest.getInstance("MD5")
         md.update(password.toByteArray())
-        val passwordHash = md.digest().joinToString("") { "%02x".format(it) }
+        val passwordHash = md.digest().joinToString("") { "%02x".format(it) }.uppercase()
 
         val url1 = "https://account.xiaomi.com/pass/serviceLogin"
         val request1 = Request.Builder().url(url1).build()
@@ -33,13 +38,13 @@ class LoginUtils {
         val _sign = response1.request.url.queryParameter("_sign")?.replace("2&V1_passport&", "")
         if (_sign == null) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, "$account：请求 _sign 失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.request_sign_failed), Toast.LENGTH_SHORT).show()
             }
             return
         }
 
         val url3 = "https://account.xiaomi.com/pass/serviceLoginAuth2"
-        val data = "_json=true&bizDeviceType=&user=$account&hash=${passwordHash.uppercase()}&sid=miuiromota&_sign=$_sign&_locale=zh_CN"
+        val data = "_json=true&bizDeviceType=&user=$account&hash=$passwordHash&sid=miuiromota&_sign=$_sign&_locale=zh_CN"
         val mediaType = "application/x-www-form-urlencoded".toMediaType()
         val body = data.toRequestBody(mediaType)
         val request2 = Request.Builder().url(url3).post(body).build()
@@ -47,9 +52,7 @@ class LoginUtils {
         val auth = JSONObject(response2.body!!.string().replace("&&&START&&&", ""))
         if (auth.getString("description") != "成功") {
             withContext(Dispatchers.Main) {
-                if (auth.getString("description") == "登录验证失败") {
-                    Toast.makeText(context, "$account：登录验证失败", Toast.LENGTH_SHORT).show()
-                } else Toast.makeText(context, "$account：登录失败", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, auth.getString("description"), Toast.LENGTH_SHORT).show()
             }
             return
         }
@@ -74,7 +77,7 @@ class LoginUtils {
 
         withContext(Dispatchers.Main) {
             saveFile(context, "cookies.json", gson.toJson(json))
-            Toast.makeText(context, "$account：登录成功", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
         }
     }
 }
