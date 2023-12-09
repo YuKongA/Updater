@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
@@ -113,6 +114,8 @@ class MainActivity : AppCompatActivity() {
                                 if (!it.isVisible) it.fadInAnimation()
                             }
 
+                            firstInfo.visibility = View.VISIBLE
+
                             // Setup TextViews
                             codenameInfo.setTextAnimation(romInfo.currentRom.device)
 
@@ -127,6 +130,7 @@ class MainActivity : AppCompatActivity() {
                                 secondViewTitleArray.forEach {
                                     if (!it.isVisible) it.fadInAnimation()
                                 }
+                                secondInfo.visibility = View.VISIBLE
                             } else {
                                 secondViewTitleArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
@@ -134,6 +138,7 @@ class MainActivity : AppCompatActivity() {
                                 secondViewContentArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
                                 }
+                                secondInfo.visibility = View.GONE
                             }
 
                             if (romInfo.currentRom.md5 != null) {
@@ -160,7 +165,7 @@ class MainActivity : AppCompatActivity() {
                                 }
 
                                 changelogInfo.setTextAnimation(
-                                    log.toString()
+                                    log.toString().trimEnd()
                                 )
 
                                 changelogInfo.setOnClickListener {
@@ -200,6 +205,9 @@ class MainActivity : AppCompatActivity() {
                         secondViewContentArray.forEach {
                             if (it.isVisible) it.fadOutAnimation()
                         }
+
+                        firstInfo.visibility = View.VISIBLE
+                        secondInfo.visibility = View.VISIBLE
 
                     }
 
