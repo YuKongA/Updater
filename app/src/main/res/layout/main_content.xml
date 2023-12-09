@@ -66,7 +66,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/code_name"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -75,10 +74,11 @@
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/code_name_dropdown"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
+                android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:textSize="16sp"
                 tools:ignore="LabelFor" />
@@ -94,8 +94,10 @@
             app:startIconDrawable="@drawable/ic_conversion_path">
 
             <com.google.android.material.textfield.TextInputEditText
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textSize="16sp" />
 
