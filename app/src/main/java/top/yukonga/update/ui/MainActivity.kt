@@ -3,11 +3,11 @@ package top.yukonga.update.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -43,8 +44,12 @@ class MainActivity : AppCompatActivity() {
     private val activityMainBinding get() = _activityMainBinding
     private val mainContentBinding: MainContentBinding get() = _activityMainBinding.mainContent
 
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
         // Enable edge to edge.
         enableEdgeToEdge()
@@ -72,6 +77,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         mainContentBinding.apply {
+            codeName.editText!!.setText(prefs.getString("codeName", ""))
+            systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
+            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
             activityMainBinding.implement.setOnClickListener {
 
                 val firstViewTitleArray = arrayOf(
@@ -101,6 +109,12 @@ class MainActivity : AppCompatActivity() {
                             androidVersion.editText?.text.toString()
                         ).parseJSON<InfoHelper.RomInfo>()
 
+                        prefs.edit()
+                            .putString("codeName", codeName.editText?.text.toString())
+                            .putString("systemVersion", systemVersion.editText?.text.toString())
+                            .putString("androidVersion", androidVersion.editText?.text.toString())
+                            .apply()
+
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         withContext(Dispatchers.Main) {
 
@@ -114,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                                 if (!it.isVisible) it.fadInAnimation()
                             }
 
-                            firstInfo.visibility = View.VISIBLE
+                            firstInfo.fadInAnimation()
 
                             // Setup TextViews
                             codenameInfo.setTextAnimation(romInfo.currentRom.device)
@@ -130,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                                 secondViewTitleArray.forEach {
                                     if (!it.isVisible) it.fadInAnimation()
                                 }
-                                secondInfo.visibility = View.VISIBLE
+                                secondInfo.fadInAnimation()
                             } else {
                                 secondViewTitleArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
@@ -138,7 +152,7 @@ class MainActivity : AppCompatActivity() {
                                 secondViewContentArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
                                 }
-                                secondInfo.visibility = View.GONE
+                                secondInfo.fadOutAnimation()
                             }
 
                             if (romInfo.currentRom.md5 != null) {
@@ -190,24 +204,25 @@ class MainActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         e.printStackTrace()
 
-                        firstViewTitleArray.forEach {
-                            if (it.isVisible) it.fadOutAnimation()
-                        }
+                        withContext(Dispatchers.Main) {
+                            firstViewTitleArray.forEach {
+                                if (it.isVisible) it.fadOutAnimation()
+                            }
 
-                        secondViewTitleArray.forEach {
-                            if (it.isVisible) it.fadOutAnimation()
-                        }
+                            secondViewTitleArray.forEach {
+                                if (it.isVisible) it.fadOutAnimation()
+                            }
 
-                        firstViewContentArray.forEach {
-                            if (it.isVisible) it.fadOutAnimation()
-                        }
+                            firstViewContentArray.forEach {
+                                if (it.isVisible) it.fadOutAnimation()
+                            }
 
-                        secondViewContentArray.forEach {
-                            if (it.isVisible) it.fadOutAnimation()
+                            secondViewContentArray.forEach {
+                                if (it.isVisible) it.fadOutAnimation()
+                            }
+                            firstInfo.fadOutAnimation()
+                            secondInfo.fadOutAnimation()
                         }
-
-                        firstInfo.visibility = View.VISIBLE
-                        secondInfo.visibility = View.VISIBLE
 
                     }
 

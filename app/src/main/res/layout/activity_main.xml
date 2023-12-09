@@ -34,8 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
-        android:contentDescription="@string/implement"
-        android:text="@string/implement"
-        app:icon="@drawable/ic_check" />
+        android:contentDescription="@string/submit"
+        android:text="@string/submit"
+        android:textColor="?attr/colorOnSecondaryContainer"
+        app:icon="@drawable/ic_check"
+        app:backgroundTint="?attr/colorSecondaryContainer"
+        app:iconTint="?attr/colorOnSecondaryContainer"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

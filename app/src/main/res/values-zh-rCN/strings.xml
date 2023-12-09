@@ -3,7 +3,7 @@
     <string name="codename">设备代号</string>
     <string name="system_version">系统版本</string>
     <string name="android_version">安卓版本</string>
-    <string name="implement">执行</string>
+    <string name="submit">提交</string>
     <string name="big_version">主要版本</string>
     <string name="filename">文件名</string>
     <string name="filesize">文件大小</string>
@@ -19,4 +19,6 @@
     <string name="login_successful">登录成功</string>
     <string name="request_sign_failed">请求 _sign 失败</string>
     <string name="account_or_password_empty">账号或密码为空</string>
+    <string name="no_account">未登陆</string>
+    <string name="login_desc">通过顶栏的按钮登陆账户</string>
 </resources>

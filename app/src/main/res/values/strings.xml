@@ -4,7 +4,7 @@
     <string name="codename">Codename</string>
     <string name="system_version">System version</string>
     <string name="android_version">Android version</string>
-    <string name="implement">Implement</string>
+    <string name="submit">Submit</string>
     <string name="big_version">Major Version</string>
     <string name="filename">File Name</string>
     <string name="filesize">File Size</string>
@@ -22,4 +22,6 @@
     <string name="login_successful">Login successful</string>
     <string name="request_sign_failed">Request for _sign failed</string>
     <string name="account_or_password_empty">Account or password empty</string>
+    <string name="no_account">No account</string>
+    <string name="login_desc">Login via the button in the top app bar</string>
 </resources>
