@@ -17,7 +17,7 @@ import java.util.Base64
 
 class LoginUtils {
 
-    suspend fun login(context: Context, account: String, password: String) {
+    suspend fun login(context: Context, account: String, password: String): Boolean {
         withContext(Dispatchers.Main) {
             if (account.isEmpty() || password.isEmpty()) {
                 Toast.makeText(context, context.getString(R.string.account_or_password_empty), Toast.LENGTH_SHORT).show()
@@ -40,7 +40,7 @@ class LoginUtils {
             withContext(Dispatchers.Main) {
                 Toast.makeText(context, context.getString(R.string.request_sign_failed), Toast.LENGTH_SHORT).show()
             }
-            return
+            return false
         }
 
         val url3 = "https://account.xiaomi.com/pass/serviceLoginAuth2"
@@ -54,7 +54,7 @@ class LoginUtils {
             withContext(Dispatchers.Main) {
                 Toast.makeText(context, auth.getString("description"), Toast.LENGTH_SHORT).show()
             }
-            return
+            return false
         }
 
         val ssecurity = auth.getString("ssecurity")
@@ -80,5 +80,6 @@ class LoginUtils {
             saveFile(context, "cookies.json", gson.toJson(json))
             Toast.makeText(context, context.getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
         }
+        return true
     }
 }

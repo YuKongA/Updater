@@ -8,7 +8,9 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -295,10 +297,20 @@ class MainActivity : AppCompatActivity() {
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         builder.setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
         builder.setPositiveButton(getString(R.string.login)) { _, _ ->
-            val mInputAccount = inputAccount.getText().toString()
-            val mInputPassword = inputPassword.getText().toString()
+            val mInputAccount = inputAccount.text.toString()
+            val mInputPassword = inputPassword.text.toString()
             CoroutineScope(Dispatchers.Default).launch {
-                LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword)
+                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword)
+                if (isValid) {
+                    withContext(Dispatchers.Main) {
+                        findViewById<ImageView>(R.id.login_icon)
+                            .setImageResource(R.drawable.ic_check)
+                        findViewById<TextView>(R.id.login_title).text =
+                            getString(R.string.logged_in)
+                        findViewById<TextView>(R.id.login_desc).text =
+                            getString(R.string.using_v2)
+                    }
+                }
             }
         }
         builder.show()
