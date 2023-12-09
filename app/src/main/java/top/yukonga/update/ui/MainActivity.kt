@@ -39,7 +39,6 @@ import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
-import java.util.Base64
 
 class MainActivity : AppCompatActivity() {
 
@@ -78,13 +77,14 @@ class MainActivity : AppCompatActivity() {
 
             codeName.editText!!.setText(prefs.getString("codeName", ""))
             systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
+            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
             val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
             if (cookiesFile.isNotEmpty()) {
                 val cookies = Gson().fromJson(cookiesFile, Map::class.java)
                 val description = cookies["description"] as String
                 if (description == "成功") {
-                    loginIcon.setImageResource(R.drawable.ic_check)
+                    loginIcon.setImageResource(R.drawable.ic_check_circle)
                     loginTitle.text = getString(R.string.logged_in)
                     loginDesc.text = getString(R.string.using_v2)
                 }
@@ -120,7 +120,8 @@ class MainActivity : AppCompatActivity() {
                         ).parseJSON<InfoHelper.RomInfo>()
 
                         prefs.edit().putString("codeName", codeName.editText?.text.toString())
-                            .putString("systemVersion", systemVersion.editText?.text.toString()).apply()
+                            .putString("systemVersion", systemVersion.editText?.text.toString())
+                            .putString("androidVersion", androidVersion.editText?.text.toString()).apply()
 
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         withContext(Dispatchers.Main) {
@@ -303,12 +304,9 @@ class MainActivity : AppCompatActivity() {
                 val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword)
                 if (isValid) {
                     withContext(Dispatchers.Main) {
-                        findViewById<ImageView>(R.id.login_icon)
-                            .setImageResource(R.drawable.ic_check)
-                        findViewById<TextView>(R.id.login_title).text =
-                            getString(R.string.logged_in)
-                        findViewById<TextView>(R.id.login_desc).text =
-                            getString(R.string.using_v2)
+                        findViewById<ImageView>(R.id.login_icon).setImageResource(R.drawable.ic_check_circle)
+                        findViewById<TextView>(R.id.login_title).text = getString(R.string.logged_in)
+                        findViewById<TextView>(R.id.login_desc).text = getString(R.string.using_v2)
                     }
                 }
             }

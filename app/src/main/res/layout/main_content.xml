@@ -30,7 +30,7 @@
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="20dp"
-                    android:src="@drawable/ic_close"
+                    android:src="@drawable/ic_cancel"
                     app:tint="?attr/colorOnPrimaryContainer"
                     tools:ignore="ContentDescription" />
 
@@ -79,6 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
+                android:singleLine="true"
                 android:textSize="16sp"
                 tools:ignore="LabelFor" />
 
@@ -109,7 +110,7 @@
             android:hint="@string/android_version"
             app:startIconDrawable="@drawable/ic_android">
 
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            <top.yukonga.update.logic.view.CustomMaterialAutoCompleteTextView
                 android:id="@+id/android_version_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -118,7 +119,6 @@
                 tools:ignore="LabelFor" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/first_info"

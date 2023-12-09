@@ -9,8 +9,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
@@ -18,15 +17,19 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="false"
             android:minHeight="?attr/actionBarSize"
+            app:layout_scrollEffect="compress"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/ic_update"
-            app:title="@string/app_name" />
+            app:title="@string/app_name"
+            app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Note: A RecyclerView can also be used -->
-    <include layout="@layout/main_content"
-        android:id="@+id/main_content"/>
+    <include
+        android:id="@+id/main_content"
+        layout="@layout/main_content" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/implement"
@@ -37,8 +40,8 @@
         android:contentDescription="@string/submit"
         android:text="@string/submit"
         android:textColor="?attr/colorOnSecondaryContainer"
-        app:icon="@drawable/ic_check"
         app:backgroundTint="?attr/colorSecondaryContainer"
-        app:iconTint="?attr/colorOnSecondaryContainer"/>
+        app:icon="@drawable/ic_check"
+        app:iconTint="?attr/colorOnSecondaryContainer" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
