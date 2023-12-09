@@ -15,9 +15,9 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            style="?materialCardViewFilledStyle"
+            style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="85dp"
             app:cardBackgroundColor="?attr/colorPrimaryContainer">
 
             <LinearLayout
@@ -31,7 +31,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="20dp"
                     android:src="@drawable/ic_close"
-                    app:tint="?attr/colorOnPrimaryContainer" />
+                    app:tint="?attr/colorOnPrimaryContainer"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/no_account"
                         android:textColor="?attr/colorOnPrimaryContainer"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/login_desc"
@@ -54,7 +55,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/login_desc"
-                        android:textColor="?attr/colorOnPrimaryContainer" />
+                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -64,17 +66,20 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/code_name"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:hint="@string/codename"
             app:startIconDrawable="@drawable/ic_developer_mode">
 
-            <AutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/code_name_dropdown"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
+                android:textSize="16sp"
                 tools:ignore="LabelFor" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +95,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,11 +109,12 @@
             android:hint="@string/android_version"
             app:startIconDrawable="@drawable/ic_android">
 
-            <AutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/android_version_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
+                android:textSize="16sp"
                 tools:ignore="LabelFor" />
 
         </com.google.android.material.textfield.TextInputLayout>

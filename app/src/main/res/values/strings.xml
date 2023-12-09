@@ -24,4 +24,6 @@
     <string name="account_or_password_empty">Account or password empty</string>
     <string name="no_account">No account</string>
     <string name="login_desc">Login via the button in the top app bar</string>
+    <string name="using_v2">Using v2 interface</string>
+    <string name="logged_in">Logged in</string>
 </resources>

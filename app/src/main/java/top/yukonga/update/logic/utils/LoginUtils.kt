@@ -71,6 +71,7 @@ class LoginUtils {
 
         val gson = GsonBuilder().disableHtmlEscaping().create()
         val json = mutableMapOf<String, String>()
+        json["description"] = auth.getString("description")
         json["userId"] = userId
         json["ssecurity"] = ssecurity
         json["serviceToken"] = serviceToken

@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -17,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,9 +33,11 @@ import top.yukonga.update.logic.setTextAnimation
 import top.yukonga.update.logic.utils.AppUtils.deviceCodeList
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.AppUtils.dropDownList
+import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
+import java.util.Base64
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,16 +60,10 @@ class MainActivity : AppCompatActivity() {
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        // Initialize DeviceCode List.
-        val deviceCodeListAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.dropdown_list_item, deviceCodeList)
-
-        // Initialize Dropdown List.
-        val dropDownAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.dropdown_list_item, dropDownList)
-
         // Setup default device information.
         mainContentBinding.apply {
-            (codeName.editText as? AutoCompleteTextView)?.setAdapter(deviceCodeListAdapter)
-            (androidVersion.editText as? AutoCompleteTextView)?.setAdapter(dropDownAdapter)
+            (codeName.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(deviceCodeList)
+            (androidVersion.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(dropDownList)
         }
 
         // Setup TopAppBar.
@@ -77,9 +73,21 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         mainContentBinding.apply {
+
             codeName.editText!!.setText(prefs.getString("codeName", ""))
             systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
-            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
+
+            val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
+            if (cookiesFile.isNotEmpty()) {
+                val cookies = Gson().fromJson(cookiesFile, Map::class.java)
+                val description = cookies["description"] as String
+                if (description == "成功") {
+                    loginIcon.setImageResource(R.drawable.ic_check)
+                    loginTitle.text = getString(R.string.logged_in)
+                    loginDesc.text = getString(R.string.using_v2)
+                }
+            }
+
             activityMainBinding.implement.setOnClickListener {
 
                 val firstViewTitleArray = arrayOf(
@@ -109,11 +117,8 @@ class MainActivity : AppCompatActivity() {
                             androidVersion.editText?.text.toString()
                         ).parseJSON<InfoHelper.RomInfo>()
 
-                        prefs.edit()
-                            .putString("codeName", codeName.editText?.text.toString())
-                            .putString("systemVersion", systemVersion.editText?.text.toString())
-                            .putString("androidVersion", androidVersion.editText?.text.toString())
-                            .apply()
+                        prefs.edit().putString("codeName", codeName.editText?.text.toString())
+                            .putString("systemVersion", systemVersion.editText?.text.toString()).apply()
 
                         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         withContext(Dispatchers.Main) {
