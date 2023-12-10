@@ -94,11 +94,11 @@ class MainActivity : AppCompatActivity() {
             activityMainBinding.implement.setOnClickListener {
 
                 val firstViewTitleArray = arrayOf(
-                    codename, system, codebase, branch
+                    codename, system, codebase, branch, firstInfo
                 )
 
                 val secondViewTitleArray = arrayOf(
-                    bigVersion, filename, filesize, download, changelog
+                    bigVersion, filename, filesize, download, changelog, secondInfo
                 )
 
                 val firstViewContentArray = arrayOf(
@@ -137,8 +137,6 @@ class MainActivity : AppCompatActivity() {
                                 if (!it.isVisible) it.fadInAnimation()
                             }
 
-                            firstInfo.fadInAnimation()
-
                             // Setup TextViews
                             codenameInfo.setTextAnimation(romInfo.currentRom.device)
 
@@ -153,7 +151,6 @@ class MainActivity : AppCompatActivity() {
                                 secondViewTitleArray.forEach {
                                     if (!it.isVisible) it.fadInAnimation()
                                 }
-                                secondInfo.fadInAnimation()
                             } else {
                                 secondViewTitleArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
@@ -258,8 +255,6 @@ class MainActivity : AppCompatActivity() {
                             secondViewContentArray.forEach {
                                 if (it.isVisible) it.fadOutAnimation()
                             }
-                            firstInfo.fadOutAnimation()
-                            secondInfo.fadOutAnimation()
                         }
 
                     }

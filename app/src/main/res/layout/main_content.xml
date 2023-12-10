@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="24dp"
         android:orientation="vertical">
 
@@ -47,7 +47,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/no_account"
                         android:textColor="?attr/colorOnPrimaryContainer"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/login_desc"
@@ -68,8 +69,9 @@
             android:id="@+id/code_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="18dp"
             android:hint="@string/codename"
+            app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_developer_mode">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -89,8 +91,9 @@
             android:id="@+id/system_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="18dp"
             android:hint="@string/system_version"
+            app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_conversion_path">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -108,8 +111,9 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="18dp"
             android:hint="@string/android_version"
+            app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_android">
 
             <top.yukonga.update.logic.view.CustomMaterialAutoCompleteTextView
@@ -127,7 +131,7 @@
             style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="18dp"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
@@ -136,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="18dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -150,8 +154,8 @@
                         android:gravity="center_vertical"
                         android:text="@string/codename"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/codename_info"
@@ -160,7 +164,8 @@
                         android:layout_weight="1.0"
                         android:gravity="end"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -172,22 +177,23 @@
                         android:id="@+id/system"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:gravity="center_vertical"
                         android:text="@string/system_version"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/system_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
                         android:gravity="end"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -199,22 +205,23 @@
                         android:id="@+id/big_version"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:gravity="center_vertical"
                         android:text="@string/big_version"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/big_version_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
                         android:gravity="end"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -226,22 +233,23 @@
                         android:id="@+id/codebase"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:gravity="center_vertical"
                         android:text="@string/android_version"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/codebase_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
                         android:gravity="end"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -253,22 +261,23 @@
                         android:id="@+id/branch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:gravity="center_vertical"
                         android:text="@string/branch"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/branch_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
                         android:gravity="end"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -279,7 +288,7 @@
             style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="18dp"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
@@ -288,7 +297,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="18dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -299,19 +308,20 @@
                         android:id="@+id/filename"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dp"
                         android:gravity="center_vertical"
                         android:text="@string/filename"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filename_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -321,22 +331,22 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filesize"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="6dp"
                         android:gravity="center_vertical"
                         android:text="@string/filesize"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filesize_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -348,20 +358,21 @@
                         android:id="@+id/changelog"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="6dp"
+
                         android:gravity="center_vertical"
                         android:text="@string/changelog"
                         android:textColor="?attr/colorOnSurface"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/changelog_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -373,7 +384,7 @@
             style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="18dp"
             android:layout_marginBottom="120dp"
             android:orientation="vertical"
             android:visibility="gone"
@@ -383,7 +394,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="18dp">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
@@ -392,6 +403,7 @@
                     android:gravity="center_vertical"
                     android:text="@string/download"
                     android:textColor="?attr/colorOnSurface"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -405,7 +417,8 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/official"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -418,7 +431,10 @@
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="18dp"
+                            android:minWidth="0dp"
+
+                            android:minHeight="0dp"
                             android:text="@string/copy_buttom" />
 
                         <com.google.android.material.button.MaterialButton
@@ -426,6 +442,8 @@
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:text="@string/download_buttom" />
 
                     </LinearLayout>
@@ -443,7 +461,8 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/cdn1"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -456,7 +475,9 @@
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="18dp"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:text="@string/copy_buttom" />
 
                         <com.google.android.material.button.MaterialButton
@@ -464,6 +485,8 @@
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:text="@string/download_buttom" />
 
                     </LinearLayout>
@@ -481,7 +504,8 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/cdn2"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true" />
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -493,8 +517,11 @@
                             android:id="@+id/cdn2_copy"
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="wrap_content"
+
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
+                            android:layout_marginEnd="18dp"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:text="@string/copy_buttom" />
 
                         <com.google.android.material.button.MaterialButton
@@ -502,6 +529,8 @@
                             style="?attr/materialButtonOutlinedStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
                             android:text="@string/download_buttom" />
 
                     </LinearLayout>

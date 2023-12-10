@@ -33,7 +33,6 @@ android {
                 keyPassword = pwd
                 enableV2Signing = true
                 enableV3Signing = true
-                enableV4Signing = true
             }
         }
     }

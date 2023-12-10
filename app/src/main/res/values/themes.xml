@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+
+    <!-- CustomShapeAppearanceLargeComponent -->
+    <style name="CustomInputLayoutShapeAppearance" parent="@style/ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">10dp</item>
+    </style>
+
 </resources>
