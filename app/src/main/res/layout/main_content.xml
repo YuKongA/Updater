@@ -150,6 +150,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/codename"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -175,6 +176,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/system_version"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -201,6 +203,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/big_version"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -227,6 +230,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/android_version"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -253,6 +257,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/branch"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -298,6 +303,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/filename"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -322,6 +328,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/filesize"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -346,6 +353,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/changelog"
                         android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
                         android:visibility="gone" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -383,7 +391,8 @@
                     android:layout_marginBottom="6dp"
                     android:gravity="center_vertical"
                     android:text="@string/download"
-                    android:textColor="?attr/colorOnSurface" />
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
