@@ -1,0 +1,28 @@
+<resources>
+    <string name="login">登陸</string>
+    <string name="codename">裝置代號</string>
+    <string name="system_version">系統版本</string>
+    <string name="android_version">安卓版本</string>
+    <string name="submit">提交</string>
+    <string name="big_version">主要版本</string>
+    <string name="filename">檔案名</string>
+    <string name="filesize">檔案大小</string>
+    <string name="download">下載連結</string>
+    <string name="changelog">更新日誌</string>
+    <string name="branch">分支</string>
+    <string name="toast_no_info">未取得到有效資訊!</string>
+    <string name="toast_copied_to_pasteboard">已複製到剪貼簿</string>
+    <string name="account">帳戶</string>
+    <string name="password">密碼</string>
+    <string name="cancel">取消</string>
+    <string name="logging_in">登陸中</string>
+    <string name="login_successful">登陸成功</string>
+    <string name="request_sign_failed">請求 _sign 失敗</string>
+    <string name="account_or_password_empty">帳號或密碼為空</string>
+    <string name="no_account">未登陸</string>
+    <string name="login_desc">正在使用 v1 介面\n透過頂欄右側按鈕登陸帳戶</string>
+    <string name="using_v2">正在使用 v2 介面</string>
+    <string name="logged_in">已登入</string>
+    <string name="copy_buttom">複製</string>
+    <string name="download_buttom">下載</string>
+</resources>
