@@ -13,8 +13,6 @@
     <string name="branch">Branch</string>
     <string name="toast_no_info">No information!</string>
     <string name="toast_copied_to_pasteboard">Copied to pasteboard</string>
-    <string name="https_ultimateota_d_miui_com" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
-    <string name="https_bigota_d_miui_com" translatable="false">https://bigota.d.miui.com/%1$s/%2$s</string>
     <string name="account">Account</string>
     <string name="password">Password</string>
     <string name="cancel">Cancel</string>
@@ -26,4 +24,13 @@
     <string name="login_desc">Login via the button in the top app bar</string>
     <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">Logged in</string>
+    <string name="official" translatable="false">Official</string>
+    <string name="cdn1" translatable="false">CDN1 (ks3orig)</string>
+    <string name="cdn2" translatable="false">CDN2 (airtel)</string>
+    <string name="official1_link" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
+    <string name="official2_link" translatable="false">https://bigota.d.miui.com/%1$s/%2$s</string>
+    <string name="cdn1_link" translatable="false">http://ks3orig.bigota.d.miui.com/%1$s/%2$s</string>
+    <string name="cdn2_link" translatable="false">https://airtel.bigota.d.miui.com/%1$s/%2$s</string>
+    <string name="copy_buttom">Copy</string>
+    <string name="download_buttom">Download</string>
 </resources>

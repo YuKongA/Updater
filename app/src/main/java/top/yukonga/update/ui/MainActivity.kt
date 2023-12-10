@@ -36,6 +36,7 @@ import top.yukonga.update.logic.utils.AppUtils.deviceCodeList
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.AppUtils.dropDownList
 import top.yukonga.update.logic.utils.FileUtils
+import top.yukonga.update.logic.utils.FileUtils.downloadFile
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
@@ -105,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 val secondViewContentArray = arrayOf(
-                    bigVersionInfo, filenameInfo, filesizeInfo, downloadInfo, changelogInfo
+                    bigVersionInfo, filenameInfo, filesizeInfo, changelogInfo
                 )
 
                 CoroutineScope(Dispatchers.Default).launch {
@@ -172,14 +173,53 @@ class MainActivity : AppCompatActivity() {
 
                                 filesizeInfo.setTextAnimation(romInfo.currentRom.filesize)
 
-                                downloadInfo.setTextAnimation(
-                                    if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
-                                        R.string.https_ultimateota_d_miui_com, romInfo.currentRom.version, romInfo.latestRom.filename
-                                    )
-                                    else getString(
-                                        R.string.https_bigota_d_miui_com, romInfo.currentRom.version, romInfo.currentRom.filename
-                                    )
-                                )
+                                val officialLink = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
+                                    R.string.official1_link, romInfo.currentRom.version, romInfo.latestRom.filename
+                                ) else getString(R.string.official2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
+
+                                officialCopy.setOnClickListener {
+                                    val clip = ClipData.newPlainText("label", officialLink)
+                                    clipboard.setPrimaryClip(clip)
+                                    Toast.makeText(
+                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                                officialDownload.setOnClickListener {
+                                    romInfo.currentRom.filename?.let { downloadFile(this@MainActivity, officialLink, it) }
+                                }
+
+                                val cdn1Link = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
+                                    R.string.cdn1_link, romInfo.currentRom.version, romInfo.latestRom.filename
+                                ) else getString(R.string.cdn2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
+
+                                cdn1Copy.setOnClickListener {
+                                    val clip = ClipData.newPlainText("label", cdn1Link)
+                                    clipboard.setPrimaryClip(clip)
+                                    Toast.makeText(
+                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                                cdn1Download.setOnClickListener {
+                                    romInfo.currentRom.filename?.let { downloadFile(this@MainActivity, cdn1Link, it) }
+                                }
+
+                                val cdn2Link = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
+                                    R.string.cdn2_link, romInfo.currentRom.version, romInfo.latestRom.filename
+                                ) else getString(R.string.cdn2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
+
+                                cdn2Copy.setOnClickListener {
+                                    val clip = ClipData.newPlainText("label", cdn2Link)
+                                    clipboard.setPrimaryClip(clip)
+                                    Toast.makeText(
+                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+
+                                cdn2Download.setOnClickListener {
+                                    romInfo.currentRom.filename?.let { downloadFile(this@MainActivity, cdn2Link, it) }
+                                }
 
                                 val log = StringBuilder()
                                 romInfo.currentRom.changelog!!.forEach {
@@ -192,16 +232,6 @@ class MainActivity : AppCompatActivity() {
 
                                 changelogInfo.setOnClickListener {
                                     val clip = ClipData.newPlainText("label", changelogInfo.text)
-                                    clipboard.setPrimaryClip(clip)
-                                    Toast.makeText(
-                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                                downloadInfo.setOnClickListener {
-                                    val clip = ClipData.newPlainText(
-                                        "label", downloadInfo.text
-                                    )
                                     clipboard.setPrimaryClip(clip)
                                     Toast.makeText(
                                         this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT

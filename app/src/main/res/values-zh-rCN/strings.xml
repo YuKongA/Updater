@@ -23,4 +23,6 @@
     <string name="login_desc">通过顶栏的按钮登陆账户</string>
     <string name="using_v2">正在使用 v2 接口</string>
     <string name="logged_in">已登录</string>
+    <string name="copy_buttom">复制</string>
+    <string name="download_buttom">下载</string>
 </resources>
