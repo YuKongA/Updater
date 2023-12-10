@@ -10,7 +10,7 @@
     <string name="download">下载链接</string>
     <string name="changelog">更新日志</string>
     <string name="branch">分支</string>
-    <string name="toast_no_info">无有效信息!</string>
+    <string name="toast_no_info">未获取到有效信息!</string>
     <string name="toast_copied_to_pasteboard">已复制到粘贴板</string>
     <string name="account">账号</string>
     <string name="password">密码</string>
@@ -19,8 +19,8 @@
     <string name="login_successful">登录成功</string>
     <string name="request_sign_failed">请求 _sign 失败</string>
     <string name="account_or_password_empty">账号或密码为空</string>
-    <string name="no_account">未登陆</string>
-    <string name="login_desc">通过顶栏的按钮登陆账户</string>
+    <string name="no_account">未登录</string>
+    <string name="login_desc">正在使用 v1 接口\n通过顶栏右侧按钮登录账户</string>
     <string name="using_v2">正在使用 v2 接口</string>
     <string name="logged_in">已登录</string>
     <string name="copy_buttom">复制</string>
