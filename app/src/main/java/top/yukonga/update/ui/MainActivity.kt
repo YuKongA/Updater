@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
             if (cookiesFile.isNotEmpty()) {
                 val cookies = Gson().fromJson(cookiesFile, Map::class.java)
-                val description = cookies["description"] as String
+                val description = if (cookies["description"] != null) cookies["description"].toString() else ""
                 if (description == "成功") {
                     loginIcon.setImageResource(R.drawable.ic_check_circle)
                     loginTitle.text = getString(R.string.logged_in)
