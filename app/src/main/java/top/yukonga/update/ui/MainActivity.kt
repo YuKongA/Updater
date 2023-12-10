@@ -223,7 +223,7 @@ class MainActivity : AppCompatActivity() {
 
                                 val log = StringBuilder()
                                 romInfo.currentRom.changelog!!.forEach {
-                                    log.append(it.key).append("\n").append(it.value.txt.joinToString("\n")).append("\n")
+                                    log.append(it.key).append("\n- ").append(it.value.txt.joinToString("\n- ")).append("\n\n")
                                 }
 
                                 changelogInfo.setTextAnimation(
