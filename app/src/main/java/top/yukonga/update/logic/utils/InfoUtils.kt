@@ -25,10 +25,6 @@ object InfoUtils {
         data["l"] = if (!device.contains("_global")) "zh_CN" else "en_US"
         data["r"] = if (!device.contains("_global")) "CN" else "GL"
         data["v"] = "miui-${version.replace("OS1", "V816")}"
-        data["options"] = mutableMapOf<String, Any>().also {
-            it["ab"] = "1"
-            it["cv"] = version.replace("OS1", "V816")
-        }
         return Gson().toJson(data)
     }
 

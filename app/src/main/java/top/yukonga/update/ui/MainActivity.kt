@@ -163,7 +163,11 @@ class MainActivity : AppCompatActivity() {
 
                             if (romInfo.currentRom.md5 != null) {
                                 bigVersionInfo.setTextAnimation(
-                                    romInfo.currentRom.bigversion?.replace("816", "HyperOS 1.0")
+                                    if (romInfo.currentRom.bigversion?.contains("816") == true) {
+                                        romInfo.currentRom.bigversion.replace("816", "HyperOS 1.0")
+                                    } else {
+                                        "MIUI ${romInfo.currentRom.bigversion}"
+                                    }
                                 )
 
                                 filenameInfo.setTextAnimation(romInfo.currentRom.filename)
