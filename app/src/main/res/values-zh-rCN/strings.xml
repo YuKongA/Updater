@@ -15,7 +15,7 @@
     <string name="account">账号</string>
     <string name="password">密码</string>
     <string name="cancel">取消</string>
-    <string name="logging_in">登陆中</string>
+    <string name="logging_in">登录中</string>
     <string name="login_successful">登录成功</string>
     <string name="request_sign_failed">请求 _sign 失败</string>
     <string name="account_or_password_empty">账号或密码为空</string>
