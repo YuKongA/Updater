@@ -16,10 +16,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textview.MaterialTextView
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -124,7 +126,6 @@ class MainActivity : AppCompatActivity() {
                             .putString("systemVersion", systemVersion.editText?.text.toString())
                             .putString("androidVersion", androidVersion.editText?.text.toString()).apply()
 
-                        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         withContext(Dispatchers.Main) {
 
                             // Show a toast if we didn't get anything from request
@@ -139,13 +140,9 @@ class MainActivity : AppCompatActivity() {
 
                             // Setup TextViews
                             codenameInfo.setTextAnimation(romInfo.currentRom.device)
-
                             systemInfo.setTextAnimation(romInfo.currentRom.version)
-
                             codebaseInfo.setTextAnimation(romInfo.currentRom.codebase)
-
                             branchInfo.setTextAnimation(romInfo.currentRom.branch)
-
 
                             if (romInfo.currentRom.filename != null) {
                                 secondViewTitleArray.forEach {
@@ -158,7 +155,6 @@ class MainActivity : AppCompatActivity() {
                                 secondViewContentArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
                                 }
-                                secondInfo.fadOutAnimation()
                             }
 
                             if (romInfo.currentRom.md5 != null) {
@@ -171,73 +167,33 @@ class MainActivity : AppCompatActivity() {
                                 )
 
                                 filenameInfo.setTextAnimation(romInfo.currentRom.filename)
-
                                 filesizeInfo.setTextAnimation(romInfo.currentRom.filesize)
 
                                 val officialLink = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
                                     R.string.official1_link, romInfo.currentRom.version, romInfo.latestRom.filename
                                 ) else getString(R.string.official2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
-
-                                officialCopy.setOnClickListener {
-                                    val clip = ClipData.newPlainText("label", officialLink)
-                                    clipboard.setPrimaryClip(clip)
-                                    Toast.makeText(
-                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                                officialDownload.setOnClickListener {
-                                    romInfo.currentRom.filename?.let { downloadFile(this@MainActivity, officialLink, it) }
-                                }
-
                                 val cdn1Link = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
                                     R.string.cdn1_link, romInfo.currentRom.version, romInfo.latestRom.filename
                                 ) else getString(R.string.cdn2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
-
-                                cdn1Copy.setOnClickListener {
-                                    val clip = ClipData.newPlainText("label", cdn1Link)
-                                    clipboard.setPrimaryClip(clip)
-                                    Toast.makeText(
-                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                                cdn1Download.setOnClickListener {
-                                    romInfo.currentRom.filename?.let { downloadFile(this@MainActivity, cdn1Link, it) }
-                                }
-
                                 val cdn2Link = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
                                     R.string.cdn2_link, romInfo.currentRom.version, romInfo.latestRom.filename
                                 ) else getString(R.string.cdn2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
 
-                                cdn2Copy.setOnClickListener {
-                                    val clip = ClipData.newPlainText("label", cdn2Link)
-                                    clipboard.setPrimaryClip(clip)
-                                    Toast.makeText(
-                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-
-                                cdn2Download.setOnClickListener {
-                                    romInfo.currentRom.filename?.let { downloadFile(this@MainActivity, cdn2Link, it) }
-                                }
+                                officialDownload.setDownloadClickListener(romInfo, officialLink)
+                                cdn1Download.setDownloadClickListener(romInfo, cdn1Link)
+                                cdn2Download.setDownloadClickListener(romInfo, cdn2Link)
+                                officialCopy.setCopyClickListener(officialLink)
+                                cdn1Copy.setCopyClickListener(cdn1Link)
+                                cdn2Copy.setCopyClickListener(cdn2Link)
 
                                 val log = StringBuilder()
                                 romInfo.currentRom.changelog!!.forEach {
                                     log.append(it.key).append("\n- ").append(it.value.txt.joinToString("\n- ")).append("\n\n")
                                 }
 
-                                changelogInfo.setTextAnimation(
-                                    log.toString().trimEnd()
-                                )
+                                changelogInfo.setTextAnimation(log.toString().trimEnd())
+                                changelogInfo.setCopyClickListener(log.toString().trimEnd())
 
-                                changelogInfo.setOnClickListener {
-                                    val clip = ClipData.newPlainText("label", changelogInfo.text)
-                                    clipboard.setPrimaryClip(clip)
-                                    Toast.makeText(
-                                        this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
-                                    ).show()
-                                }
                             }
                         } // Main context
                     } catch (e: Exception) {
@@ -294,33 +250,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun showDialog() {
         val view = LinearLayout(this@MainActivity).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            )
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             orientation = LinearLayout.VERTICAL
         }
-        val inputAccountLayout = TextInputLayout(this@MainActivity).apply {
-            hint = getString(R.string.account)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
-            }
-        }
-        val inputAccount = TextInputEditText(this@MainActivity)
+        val inputAccountLayout = createTextInputLayout(getString(R.string.account))
+        val inputAccount = createTextInputEditText()
         inputAccountLayout.addView(inputAccount)
-        val inputPasswordLayout = TextInputLayout(this@MainActivity).apply {
-            endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
-            hint = getString(R.string.password)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
-            }
-        }
-        val inputPassword = TextInputEditText(this@MainActivity).apply {
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        }
+        val inputPasswordLayout = createTextInputLayout(getString(R.string.password), TextInputLayout.END_ICON_PASSWORD_TOGGLE)
+        val inputPassword = createTextInputEditText(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         inputPasswordLayout.addView(inputPassword)
         view.addView(inputAccountLayout)
         view.addView(inputPasswordLayout)
@@ -341,5 +278,51 @@ class MainActivity : AppCompatActivity() {
             }
         }
         builder.show()
+    }
+
+    private fun MaterialButton.setDownloadClickListener(romInfo: InfoHelper.RomInfo, link: String) {
+        setOnClickListener {
+            romInfo.currentRom?.filename?.let { downloadFile(this@MainActivity, link, it) }
+        }
+    }
+
+    private fun MaterialButton.setCopyClickListener(link: CharSequence?) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        setOnClickListener {
+            val clip = ClipData.newPlainText("label", link)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(
+                this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun MaterialTextView.setCopyClickListener(text: CharSequence?) {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        setOnClickListener {
+            val clip = ClipData.newPlainText("label", text)
+            clipboard.setPrimaryClip(clip)
+            Toast.makeText(
+                this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun createTextInputLayout(hint: String, endIconMode: Int = TextInputLayout.END_ICON_NONE): TextInputLayout {
+        return TextInputLayout(this@MainActivity).apply {
+            this.hint = hint
+            this.endIconMode = endIconMode
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
+            }
+        }
+    }
+
+    private fun createTextInputEditText(inputType: Int = InputType.TYPE_CLASS_TEXT): TextInputEditText {
+        return TextInputEditText(this@MainActivity).apply {
+            this.inputType = inputType
+        }
     }
 }

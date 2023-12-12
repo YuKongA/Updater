@@ -28,7 +28,7 @@ object InfoUtils {
         return Gson().toJson(data)
     }
 
-    suspend fun getRomInfo(context: Context, codename: String, romVersion: String, androidVersion: String): String {
+    fun getRomInfo(context: Context, codename: String, romVersion: String, androidVersion: String): String {
         var userId = ""
         var securityKey = securityKey.toByteArray(Charsets.UTF_8)
         var serviceToken = ""
