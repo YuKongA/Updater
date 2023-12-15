@@ -284,10 +284,9 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 180.dp, 0.dp, 180.dp, 0.dp
         )
         val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 180.dp, 0.dp, 180.dp, 100.dp)
-        val appGithub =
-            createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
-                movementMethod = LinkMovementMethod.getInstance()
-            }
+        val appGithub = createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
+            movementMethod = LinkMovementMethod.getInstance()
+        }
         view.apply {
             addView(appSummary)
             addView(appVersion)
@@ -296,6 +295,24 @@ class MainActivity : AppCompatActivity() {
         }
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         builder.setTitle(getString(R.string.app_name)).setIcon(R.drawable.ic_launcher).setView(view).show()
+    }
+
+    private fun createTextInputLayout(hint: String, endIconMode: Int = TextInputLayout.END_ICON_NONE): TextInputLayout {
+        return TextInputLayout(this@MainActivity).apply {
+            this.hint = hint
+            this.endIconMode = endIconMode
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
+            }
+        }
+    }
+
+    private fun createTextInputEditText(inputType: Int = InputType.TYPE_CLASS_TEXT): TextInputEditText {
+        return TextInputEditText(this@MainActivity).apply {
+            this.inputType = inputType
+        }
     }
 
     private fun createTextView(text: CharSequence, textSize: Float, leftMargin: Int, topMargin: Int, rightMargin: Int, bottomMargin: Int): TextView {
@@ -336,21 +353,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createTextInputLayout(hint: String, endIconMode: Int = TextInputLayout.END_ICON_NONE): TextInputLayout {
-        return TextInputLayout(this@MainActivity).apply {
-            this.hint = hint
-            this.endIconMode = endIconMode
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
-            }
-        }
-    }
-
-    private fun createTextInputEditText(inputType: Int = InputType.TYPE_CLASS_TEXT): TextInputEditText {
-        return TextInputEditText(this@MainActivity).apply {
-            this.inputType = inputType
-        }
-    }
 }
