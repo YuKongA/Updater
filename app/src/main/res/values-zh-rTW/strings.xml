@@ -1,4 +1,7 @@
 <resources>
+    <string name="app_about">關於</string>
+    <string name="app_summary">取得 HyperOS/MIUI 更新信息</string>
+    <string name="app_github">在 &lt;a href="https://github.com/YuKongA/Updater">GitHub&lt;/a> 查看源码</string>
     <string name="login">登陸</string>
     <string name="codename">裝置代號</string>
     <string name="system_version">系統版本</string>

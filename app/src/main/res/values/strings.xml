@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">Updater</string>
+    <string name="app_version" translatable="false">%1$s(%2$s)</string>
+    <string name="app_about">About</string>
+    <string name="app_summary">Get HyperOS/MIUI update info</string>
+    <string name="app_github">View source code on &lt;a href="https://github.com/YuKongA/Updater">GitHub&lt;/a></string>
     <string name="login">Login</string>
     <string name="codename">Codename</string>
     <string name="system_version">System version</string>
@@ -25,8 +29,8 @@
     <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">Logged in</string>
     <string name="official" translatable="false">Official</string>
-    <string name="cdn1" translatable="false">CDN1 (ks3orig)</string>
-    <string name="cdn2" translatable="false">CDN2 (airtel)</string>
+    <string name="cdn1" translatable="false">CDN (ks3orig)</string>
+    <string name="cdn2" translatable="false">CDN (airtel)</string>
     <string name="official1_link" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
     <string name="official2_link" translatable="false">https://bigota.d.miui.com/%1$s/%2$s</string>
     <string name="cdn1_link" translatable="false">http://ks3orig.bigota.d.miui.com/%1$s/%2$s</string>

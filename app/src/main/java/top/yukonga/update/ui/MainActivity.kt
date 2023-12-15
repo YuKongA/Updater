@@ -5,9 +5,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Html
 import android.text.InputType
-import android.view.Menu
-import android.view.MenuItem
+import android.text.method.LinkMovementMethod
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -27,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import top.yukonga.update.BuildConfig
 import top.yukonga.update.R
 import top.yukonga.update.databinding.ActivityMainBinding
 import top.yukonga.update.databinding.MainContentBinding
@@ -71,7 +72,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Setup TopAppBar.
-        setSupportActionBar(_activityMainBinding.topAppBar)
+        _activityMainBinding.topAppBar.apply {
+            setNavigationOnClickListener {
+                showAboutDialog()
+            }
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.login -> showLoginDialog()
+                }
+                false
+            }
+        }
     }
 
     override fun onResume() {
@@ -232,25 +243,9 @@ class MainActivity : AppCompatActivity() {
         _activityMainBinding
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.top_app_bar, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.login -> {
-                showDialog()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun showDialog() {
+    private fun showLoginDialog() {
         val view = LinearLayout(this@MainActivity).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             orientation = LinearLayout.VERTICAL
         }
         val inputAccountLayout = createTextInputLayout(getString(R.string.account))
@@ -276,8 +271,41 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+        }.show()
+    }
+
+    private fun showAboutDialog() {
+        val view = LinearLayout(this@MainActivity).apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            orientation = LinearLayout.VERTICAL
         }
-        builder.show()
+        val appSummary = createTextView(getString(R.string.app_summary), 14f, 180.dp, 50.dp, 180.dp, 100.dp)
+        val appVersion = createTextView(
+            getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 180.dp, 0.dp, 180.dp, 0.dp
+        )
+        val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 180.dp, 0.dp, 180.dp, 100.dp)
+        val appGithub =
+            createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
+                movementMethod = LinkMovementMethod.getInstance()
+            }
+        view.apply {
+            addView(appSummary)
+            addView(appVersion)
+            addView(appBuild)
+            addView(appGithub)
+        }
+        val builder = MaterialAlertDialogBuilder(this@MainActivity)
+        builder.setTitle(getString(R.string.app_name)).setIcon(R.drawable.ic_launcher).setView(view).show()
+    }
+
+    private fun createTextView(text: CharSequence, textSize: Float, leftMargin: Int, topMargin: Int, rightMargin: Int, bottomMargin: Int): TextView {
+        return TextView(this@MainActivity).apply {
+            this.text = text
+            this.textSize = textSize
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                setMargins(leftMargin, topMargin, rightMargin, bottomMargin)
+            }
+        }
     }
 
     private fun MaterialButton.setDownloadClickListener(romInfo: InfoHelper.RomInfo, link: String) {
