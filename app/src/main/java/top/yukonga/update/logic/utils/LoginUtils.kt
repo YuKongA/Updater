@@ -57,7 +57,7 @@ class LoginUtils {
 
         if (description != "成功") {
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, auth["description"].toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, description, Toast.LENGTH_SHORT).show()
             }
             return false
         }

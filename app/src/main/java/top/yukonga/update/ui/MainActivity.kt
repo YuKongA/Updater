@@ -67,6 +67,10 @@ class MainActivity : AppCompatActivity() {
 
         // Setup default device information.
         mainContentBinding.apply {
+            codeName.editText!!.setText(prefs.getString("codeName", ""))
+            systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
+            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
+
             (codeName.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(deviceCodeList)
             (androidVersion.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(dropDownList)
         }
@@ -88,11 +92,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         mainContentBinding.apply {
-
-            codeName.editText!!.setText(prefs.getString("codeName", ""))
-            systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
-            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
-
             val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
             if (cookiesFile.isNotEmpty()) {
                 val cookies = Gson().fromJson(cookiesFile, Map::class.java)
