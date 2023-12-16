@@ -3,11 +3,10 @@ package top.yukonga.update.logic.utils
 import android.content.Context
 import com.google.gson.Gson
 import okhttp3.FormBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import top.yukonga.update.logic.utils.CryptoUtils.miuiDecrypt
 import top.yukonga.update.logic.utils.CryptoUtils.miuiEncrypt
 import top.yukonga.update.logic.utils.FileUtils.readFile
+import top.yukonga.update.logic.utils.NetworkUtils.postRequest
 import java.util.Base64
 
 object InfoUtils {
@@ -44,14 +43,8 @@ object InfoUtils {
         val jsonData = generateJson(codename, romVersion, androidVersion, userId)
         val encryptedText = miuiEncrypt(jsonData, securityKey)
         val requestBody = FormBody.Builder().add("q", encryptedText).add("t", serviceToken).add("s", port).build()
-        val requestedEncryptedText = request(requestBody)
+        val postRequest = postRequest(miuiUrl, requestBody)
+        val requestedEncryptedText = postRequest.body?.string() ?: ""
         return miuiDecrypt(requestedEncryptedText, securityKey)
-    }
-
-    private fun request(jsonStr: FormBody): String {
-        val okHttpClient = OkHttpClient()
-        val request = Request.Builder().url(miuiUrl).post(jsonStr).build()
-        val response = okHttpClient.newCall(request).execute()
-        return response.body?.string() ?: ""
     }
 }

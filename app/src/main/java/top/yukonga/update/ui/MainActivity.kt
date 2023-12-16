@@ -284,9 +284,10 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 180.dp, 0.dp, 180.dp, 0.dp
         )
         val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 180.dp, 0.dp, 180.dp, 100.dp)
-        val appGithub = createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
-            movementMethod = LinkMovementMethod.getInstance()
-        }
+        val appGithub =
+            createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
+                movementMethod = LinkMovementMethod.getInstance()
+            }
         view.apply {
             addView(appSummary)
             addView(appVersion)

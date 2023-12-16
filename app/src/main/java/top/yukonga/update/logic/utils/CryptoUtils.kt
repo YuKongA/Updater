@@ -25,6 +25,7 @@ object CryptoUtils {
 
     fun miuiDecrypt(encryptedText: String, securityKey: ByteArray): String {
         val cipher = miuiCipher(Cipher.DECRYPT_MODE, securityKey)
+        if (encryptedText.isEmpty()) return ""
         val encryptedTextBytes = Base64.getMimeDecoder().decode(encryptedText)
         val decryptedTextBytes = cipher.doFinal(encryptedTextBytes)
         return String(decryptedTextBytes, Charsets.UTF_8)
