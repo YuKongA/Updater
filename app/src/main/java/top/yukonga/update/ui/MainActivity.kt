@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.InputType
@@ -60,6 +61,9 @@ class MainActivity : AppCompatActivity() {
 
         // Enable edge to edge.
         enableEdgeToEdge()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
 
         // Inflate view.
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
