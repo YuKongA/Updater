@@ -161,8 +161,11 @@ class MainActivity : AppCompatActivity() {
 
                             // Show a toast if we didn't get anything from request
                             if (romInfo.currentRom?.branch == null) {
+                                activityMainBinding.implement.extend()
                                 MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_no_info), 0)
                                 throw NoSuchFieldException()
+                            } else {
+                                activityMainBinding.implement.shrink()
                             }
 
                             firstViewTitleArray.forEach {
