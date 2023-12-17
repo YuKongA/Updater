@@ -16,8 +16,8 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="13dp"
-            android:paddingEnd="18dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             app:layout_scrollEffect="compress"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/top_app_bar"
@@ -33,10 +33,10 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/implement"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="35dp"
+        android:layout_margin="24dp"
         android:contentDescription="@string/submit"
         android:text="@string/submit"
         android:textColor="?attr/colorOnSecondaryContainer"

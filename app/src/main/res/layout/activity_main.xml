@@ -8,6 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         app:contentScrim="?attr/colorSurface"
         app:liftOnScrollColor="?attr/colorSurface"
         app:statusBarScrim="?attr/colorSurface">
@@ -16,8 +17,8 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="5dp"
-            android:paddingEnd="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
             app:layout_scrollEffect="compress"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/top_app_bar"
@@ -37,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="20dp"
+        android:layout_margin="16dp"
         android:contentDescription="@string/submit"
         android:text="@string/submit"
         android:textColor="?attr/colorOnSecondaryContainer"
