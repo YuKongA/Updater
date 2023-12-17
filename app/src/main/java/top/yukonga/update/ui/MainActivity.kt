@@ -4,11 +4,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.InputType
 import android.text.method.LinkMovementMethod
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -45,6 +47,7 @@ import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
 import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast
 
+
 class MainActivity : AppCompatActivity() {
 
     // Start ViewBinding.
@@ -65,6 +68,13 @@ class MainActivity : AppCompatActivity() {
             window.isNavigationBarContrastEnforced = false
         }
 
+        // Setup Cutout mode.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val layoutParam = window.attributes
+            layoutParam.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            window.setAttributes(layoutParam)
+        }
+
         // Inflate view.
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
@@ -80,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Setup TopAppBar.
-        _activityMainBinding.topAppBar.apply {
+        activityMainBinding.topAppBar.apply {
             setNavigationOnClickListener {
                 showAboutDialog()
             }
@@ -158,9 +168,20 @@ class MainActivity : AppCompatActivity() {
                             codebaseInfo.setTextAnimation(romInfo.currentRom.codebase)
                             branchInfo.setTextAnimation(romInfo.currentRom.branch)
 
+                            val orientation = getResources().configuration.orientation
                             if (romInfo.currentRom.filename != null) {
                                 secondViewTitleArray.forEach {
                                     if (!it.isVisible) it.fadInAnimation()
+                                }
+                                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                    linearLayout?.removeView(firstInfo)
+                                    linearLayout2?.removeView(firstInfo)
+                                    linearLayout?.addView(firstInfo)
+                                    firstInfo.layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                                    ).apply {
+                                        topMargin = 18.dp
+                                    }
                                 }
                             } else {
                                 secondViewTitleArray.forEach {
@@ -168,6 +189,16 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 secondViewContentArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
+                                }
+                                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                    linearLayout?.removeView(firstInfo)
+                                    linearLayout2?.removeView(firstInfo)
+                                    linearLayout2?.addView(firstInfo)
+                                    firstInfo.layoutParams = LinearLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+                                    ).apply {
+                                        topMargin = 0.dp
+                                    }
                                 }
                             }
 
@@ -282,12 +313,10 @@ class MainActivity : AppCompatActivity() {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             orientation = LinearLayout.VERTICAL
         }
-        val appSummary = createTextView(getString(R.string.app_summary), 14f, 180.dp, 50.dp, 180.dp, 100.dp)
-        val appVersion = createTextView(
-            getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 180.dp, 0.dp, 180.dp, 0.dp
-        )
-        val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 180.dp, 0.dp, 180.dp, 100.dp)
-        val appGithub = createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
+        val appSummary = createTextView(getString(R.string.app_summary), 14f, 25.dp, 10.dp, 25.dp, 20.dp)
+        val appVersion = createTextView(getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 25.dp, 0.dp, 25.dp, 0.dp)
+        val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 25.dp, 0.dp, 25.dp, 20.dp)
+        val appGithub = createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 25.dp, 0.dp, 25.dp, 25.dp).apply {
             movementMethod = LinkMovementMethod.getInstance()
         }
         view.apply {
@@ -307,7 +336,7 @@ class MainActivity : AppCompatActivity() {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                setMargins(180.dp, 50.dp, 180.dp, 0.dp)
+                setMargins(25.dp, 8.dp, 25.dp, 0.dp)
             }
         }
     }

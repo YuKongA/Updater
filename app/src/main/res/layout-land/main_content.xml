@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="18dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +12,6 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:weightSum="1">
-
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -24,8 +22,7 @@
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.28">
-
+            app:layout_constraintWidth_percent="0.35">
 
             <com.google.android.material.card.MaterialCardView
                 style="?materialCardViewElevatedStyle"
@@ -300,6 +297,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
