@@ -1,7 +1,6 @@
 package top.yukonga.update.logic.utils
 
 import android.content.Context
-import android.widget.Toast
 import com.google.gson.GsonBuilder
 import com.google.gson.ToNumberPolicy
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +11,7 @@ import top.yukonga.update.R
 import top.yukonga.update.logic.utils.FileUtils.saveFile
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
+import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
 import java.security.MessageDigest
 import java.util.Base64
 
@@ -25,9 +25,9 @@ class LoginUtils {
     suspend fun login(context: Context, account: String, password: String): Boolean {
         withContext(Dispatchers.Main) {
             if (account.isEmpty() || password.isEmpty()) {
-                Toast.makeText(context, context.getString(R.string.account_or_password_empty), Toast.LENGTH_SHORT).show()
+                showStringToast(context, context.getString(R.string.account_or_password_empty), 0)
             } else {
-                Toast.makeText(context, context.getString(R.string.logging_in), Toast.LENGTH_SHORT).show()
+                showStringToast(context, context.getString(R.string.logging_in), 1)
             }
         }
 
@@ -39,7 +39,7 @@ class LoginUtils {
         val _sign = response1.request.url.queryParameter("_sign")?.replace("2&V1_passport&", "")
         if (_sign == null) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, context.getString(R.string.request_sign_failed), Toast.LENGTH_SHORT).show()
+                showStringToast(context, context.getString(R.string.request_sign_failed), 0)
             }
             return false
         }
@@ -57,7 +57,7 @@ class LoginUtils {
 
         if (description != "成功") {
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, description, Toast.LENGTH_SHORT).show()
+                showStringToast(context, description, 0)
             }
             return false
         }
@@ -79,7 +79,7 @@ class LoginUtils {
 
         withContext(Dispatchers.Main) {
             saveFile(context, "cookies.json", gson.toJson(json))
-            Toast.makeText(context, context.getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
+            showStringToast(context, context.getString(R.string.login_successful), 1)
         }
         return true
     }

@@ -12,7 +12,6 @@ import android.text.method.LinkMovementMethod
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -44,6 +43,7 @@ import top.yukonga.update.logic.utils.FileUtils.downloadFile
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
+import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast
 
 class MainActivity : AppCompatActivity() {
 
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity() {
 
                             // Show a toast if we didn't get anything from request
                             if (romInfo.currentRom?.branch == null) {
-                                Toast.makeText(this@MainActivity, getString(R.string.toast_no_info), Toast.LENGTH_SHORT).show()
+                                MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_no_info), 0)
                                 throw NoSuchFieldException()
                             }
 
@@ -287,10 +287,9 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 180.dp, 0.dp, 180.dp, 0.dp
         )
         val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 180.dp, 0.dp, 180.dp, 100.dp)
-        val appGithub =
-            createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
-                movementMethod = LinkMovementMethod.getInstance()
-            }
+        val appGithub = createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 180.dp, 50.dp, 180.dp, 225.dp).apply {
+            movementMethod = LinkMovementMethod.getInstance()
+        }
         view.apply {
             addView(appSummary)
             addView(appVersion)
@@ -340,9 +339,7 @@ class MainActivity : AppCompatActivity() {
         setOnClickListener {
             val clip = ClipData.newPlainText("label", link)
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(
-                this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
-            ).show()
+            MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }
     }
 
@@ -351,9 +348,7 @@ class MainActivity : AppCompatActivity() {
         setOnClickListener {
             val clip = ClipData.newPlainText("label", text)
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(
-                this@MainActivity, getString(R.string.toast_copied_to_pasteboard), Toast.LENGTH_SHORT
-            ).show()
+            MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }
     }
 

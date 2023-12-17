@@ -20,7 +20,13 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class top.yukonga.update.logic.data.** { *; }
+-keep class top.yukonga.update.logic.data.** {
+    *;
+}
+
+-keep class top.yukonga.update.logic.utils.miuiStringToast.res.** {
+    *;
+}
 
 -keepclassmembers,allowobfuscation class * {
     @com.google.gson.annotations.SerializedName <fields>;

@@ -1,5 +1,6 @@
 package top.yukonga.update.logic.utils
 
+import android.annotation.SuppressLint
 import android.content.res.Resources.getSystem
 
 object AppUtils {
@@ -7,6 +8,14 @@ object AppUtils {
     val Int.dp: Int get() = (this / getSystem().displayMetrics.density).toInt()
 
     val Int.px: Int get() = (this * getSystem().displayMetrics.density).toInt()
+
+    @SuppressLint("PrivateApi")
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    fun getProp(mKey: String): String = Class.forName("android.os.SystemProperties").getMethod("get", String::class.java).invoke(Class.forName("android.os.SystemProperties"), mKey).toString()
+
+    @SuppressLint("PrivateApi")
+    fun getProp(mKey: String, defaultValue: Boolean): Boolean = Class.forName("android.os.SystemProperties").getMethod("getBoolean", String::class.java, Boolean::class.javaPrimitiveType)
+        .invoke(Class.forName("android.os.SystemProperties"), mKey, defaultValue) as Boolean
 
     val deviceCodeList = arrayOf(
         "duchamp",
