@@ -61,6 +61,12 @@ class LoginUtils {
             }
             return false
         }
+        if (nonce.isEmpty() || ssecurity.isEmpty() || location.isEmpty() || userId.isEmpty()) {
+            withContext(Dispatchers.Main) {
+                showStringToast(context, context.getString(R.string.unknown_error), 0)
+            }
+            return false
+        }
 
         val sha1 = MessageDigest.getInstance("SHA-1")
         sha1.update(("nonce=$nonce&$ssecurity").toByteArray())

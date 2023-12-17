@@ -37,4 +37,5 @@
     <string name="cdn2_link" translatable="false">https://airtel.bigota.d.miui.com/%1$s/%2$s</string>
     <string name="copy_buttom">Copy</string>
     <string name="download_buttom">Download</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

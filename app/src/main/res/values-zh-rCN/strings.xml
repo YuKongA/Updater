@@ -28,4 +28,5 @@
     <string name="logged_in">已登录</string>
     <string name="copy_buttom">复制</string>
     <string name="download_buttom">下载</string>
+    <string name="unknown_error">未知错误</string>
 </resources>
