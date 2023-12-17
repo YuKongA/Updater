@@ -29,4 +29,8 @@
     <string name="copy_buttom">複製</string>
     <string name="download_buttom">下載</string>
     <string name="unknown_error">未知錯誤</string>
+    <string name="logout">登出</string>
+    <string name="confirm">確定</string>
+    <string name="logout_successful">登出成功</string>
+    <string name="logout_desc">確定要登出麼？</string>
 </resources>

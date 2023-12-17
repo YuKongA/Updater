@@ -89,4 +89,12 @@ class LoginUtils {
         }
         return true
     }
+
+    suspend fun logout(context: Context) {
+        withContext(Dispatchers.Main) {
+            saveFile(context, "cookies.json", "")
+            showStringToast(context, context.getString(R.string.logout_successful), 1)
+        }
+    }
+
 }

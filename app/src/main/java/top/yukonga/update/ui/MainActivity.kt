@@ -11,7 +11,6 @@ import android.text.Html
 import android.text.InputType
 import android.text.method.LinkMovementMethod
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -46,7 +45,6 @@ import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
 import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -97,26 +95,35 @@ class MainActivity : AppCompatActivity() {
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.login -> showLoginDialog()
+                    R.id.logout -> showLogOutDialog()
                 }
                 false
+            }
+        }
+
+        // Check if logged in.
+        val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
+        if (cookiesFile.isNotEmpty()) {
+            val cookies = Gson().fromJson(cookiesFile, Map::class.java)
+            val description = if (cookies["description"] != null) cookies["description"].toString() else ""
+            if (description == "成功") {
+                mainContentBinding.apply {
+                    loginIcon.setImageResource(R.drawable.ic_check_circle)
+                    loginTitle.text = getString(R.string.logged_in)
+                    loginDesc.text = getString(R.string.using_v2)
+                }
+                activityMainBinding.apply {
+                    topAppBar.menu.findItem(R.id.login).isVisible = false
+                    topAppBar.menu.findItem(R.id.logout).isVisible = true
+                }
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        mainContentBinding.apply {
-            val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
-            if (cookiesFile.isNotEmpty()) {
-                val cookies = Gson().fromJson(cookiesFile, Map::class.java)
-                val description = if (cookies["description"] != null) cookies["description"].toString() else ""
-                if (description == "成功") {
-                    loginIcon.setImageResource(R.drawable.ic_check_circle)
-                    loginTitle.text = getString(R.string.logged_in)
-                    loginDesc.text = getString(R.string.using_v2)
-                }
-            }
 
+        mainContentBinding.apply {
             activityMainBinding.implement.setOnClickListener {
 
                 val firstViewTitleArray = arrayOf(
@@ -299,9 +306,41 @@ class MainActivity : AppCompatActivity() {
                 val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword)
                 if (isValid) {
                     withContext(Dispatchers.Main) {
-                        findViewById<ImageView>(R.id.login_icon).setImageResource(R.drawable.ic_check_circle)
-                        findViewById<TextView>(R.id.login_title).text = getString(R.string.logged_in)
-                        findViewById<TextView>(R.id.login_desc).text = getString(R.string.using_v2)
+                        mainContentBinding.apply {
+                            loginIcon.setImageResource(R.drawable.ic_check_circle)
+                            loginTitle.text = getString(R.string.logged_in)
+                            loginDesc.text = getString(R.string.using_v2)
+                        }
+                        activityMainBinding.apply {
+                            topAppBar.menu.findItem(R.id.login).isVisible = false
+                            topAppBar.menu.findItem(R.id.logout).isVisible = true
+                        }
+                    }
+                }
+            }
+        }.show()
+    }
+
+    private fun showLogOutDialog() {
+        val view = LinearLayout(this@MainActivity).apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            orientation = LinearLayout.VERTICAL
+        }
+        val builder = MaterialAlertDialogBuilder(this@MainActivity)
+        builder.setTitle(getString(R.string.login)).setTitle(getString(R.string.logout)).setMessage(getString(R.string.logout_desc))
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+        builder.setPositiveButton(getString(R.string.confirm)) { _, _ ->
+            CoroutineScope(Dispatchers.Default).launch {
+                LoginUtils().logout(this@MainActivity)
+                withContext(Dispatchers.Main) {
+                    mainContentBinding.apply {
+                        loginIcon.setImageResource(R.drawable.ic_cancel)
+                        loginTitle.text = getString(R.string.no_account)
+                        loginDesc.text = getString(R.string.login_desc)
+                    }
+                    activityMainBinding.apply {
+                        topAppBar.menu.findItem(R.id.login).isVisible = true
+                        topAppBar.menu.findItem(R.id.logout).isVisible = false
                     }
                 }
             }
@@ -314,7 +353,8 @@ class MainActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
         }
         val appSummary = createTextView(getString(R.string.app_summary), 14f, 25.dp, 10.dp, 25.dp, 20.dp)
-        val appVersion = createTextView(getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 25.dp, 0.dp, 25.dp, 0.dp)
+        val appVersion =
+            createTextView(getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 25.dp, 0.dp, 25.dp, 0.dp)
         val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 25.dp, 0.dp, 25.dp, 20.dp)
         val appGithub = createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 25.dp, 0.dp, 25.dp, 25.dp).apply {
             movementMethod = LinkMovementMethod.getInstance()

@@ -25,7 +25,7 @@
     <string name="request_sign_failed">Request for _sign failed</string>
     <string name="account_or_password_empty">Account or password empty</string>
     <string name="no_account">No account</string>
-    <string name="login_desc">Login via the button in the top app bar</string>
+    <string name="login_desc">Using v1 interface\nLogin via the button in the top app bar</string>
     <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">Logged in</string>
     <string name="official" translatable="false">Official</string>
@@ -38,4 +38,8 @@
     <string name="copy_buttom">Copy</string>
     <string name="download_buttom">Download</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="logout">Logout</string>
+    <string name="confirm">Confirm</string>
+    <string name="logout_successful">Logout successful</string>
+    <string name="logout_desc">Are you sure you want to logouy?</string>
 </resources>

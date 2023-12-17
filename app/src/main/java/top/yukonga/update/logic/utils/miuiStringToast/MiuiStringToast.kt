@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
@@ -38,7 +36,7 @@ object MiuiStringToast {
             textParams.setTextColor(if (colorType == 1) colorToInt("#4CAF50") else colorToInt("#E53935"))
             val left = Left()
             left.setTextParams(textParams)
-            val iconParams: IconParams = newIconParams(Category.DRAWABLE, if (colorType == 1)"ic_update_toast" else "ic_update_toast_error", 1, FileType.SVG)
+            val iconParams: IconParams = newIconParams(Category.DRAWABLE, if (colorType == 1) "ic_update_toast" else "ic_update_toast_error", 1, FileType.SVG)
             val right = Right()
             right.setIconParams(iconParams)
             val stringToastBean = StringToastBean()
@@ -58,10 +56,11 @@ object MiuiStringToast {
                 .setParam(str)
                 .setStatusBarStrongToast("show_custom_strong_toast")
                 .onCreate()
-            val miCode = if (getProp("ro.miui.ui.version.code") =="") 0 else getProp("ro.miui.ui.version.code").toInt()
+            val miCode = if (getProp("ro.miui.ui.version.code") == "") 0 else getProp("ro.miui.ui.version.code").toInt()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && miCode >= 816) {
                 val service = context.getSystemService(Context.STATUS_BAR_SERVICE)
-                service.javaClass.getMethod("setStatus", Int::class.javaPrimitiveType, String::class.java, Bundle::class.java).invoke(service, 1, "strong_toast_action", bundle)
+                service.javaClass.getMethod("setStatus", Int::class.javaPrimitiveType, String::class.java, Bundle::class.java)
+                    .invoke(service, 1, "strong_toast_action", bundle)
             } else {
                 Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
             }
