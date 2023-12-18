@@ -55,9 +55,11 @@ jobs:
         with:
           name: Update-Release
           path: "app/build/outputs/apk/release/*.apk"
+          compression-level: 9
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: Updater-Debug
           path: "app/build/outputs/apk/debug/*.apk"
+          compression-level: 9
