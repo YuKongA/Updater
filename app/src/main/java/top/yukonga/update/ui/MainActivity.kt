@@ -10,7 +10,9 @@ import android.os.Bundle
 import android.text.Html
 import android.text.InputType
 import android.text.method.LinkMovementMethod
+import android.view.View.OnFocusChangeListener
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -124,6 +126,15 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
 
         mainContentBinding.apply {
+
+            // Hide input method when focus is on androidVersionDropdown.
+            androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+            }
+
             activityMainBinding.implement.setOnClickListener {
 
                 val firstViewTitleArray = arrayOf(
@@ -325,10 +336,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLogOutDialog() {
-        val view = LinearLayout(this@MainActivity).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            orientation = LinearLayout.VERTICAL
-        }
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         builder.setTitle(getString(R.string.login)).setTitle(getString(R.string.logout)).setMessage(getString(R.string.logout_desc))
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
