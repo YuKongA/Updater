@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.text.Html
 import android.text.InputType
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.View.OnFocusChangeListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -34,13 +35,16 @@ import top.yukonga.update.BuildConfig
 import top.yukonga.update.R
 import top.yukonga.update.databinding.ActivityMainBinding
 import top.yukonga.update.databinding.MainContentBinding
-import top.yukonga.update.logic.data.InfoHelper
+import top.yukonga.update.logic.data.DeviceInfoHelper
+import top.yukonga.update.logic.data.FastbootRomInfoHelper
+import top.yukonga.update.logic.data.RecoveryRomInfoHelper
 import top.yukonga.update.logic.fadInAnimation
 import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
+import top.yukonga.update.logic.utils.AppUtils.androidDropDownList
 import top.yukonga.update.logic.utils.AppUtils.deviceCodeList
 import top.yukonga.update.logic.utils.AppUtils.dp
-import top.yukonga.update.logic.utils.AppUtils.dropDownList
+import top.yukonga.update.logic.utils.AppUtils.regionsDropDownList
 import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.FileUtils.downloadFile
 import top.yukonga.update.logic.utils.InfoUtils
@@ -82,11 +86,13 @@ class MainActivity : AppCompatActivity() {
         // Setup default device information.
         mainContentBinding.apply {
             codeName.editText!!.setText(prefs.getString("codeName", ""))
+            deviceRegions.editText!!.setText(prefs.getString("regions", ""))
             systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
             androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
             (codeName.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(deviceCodeList)
-            (androidVersion.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(dropDownList)
+            (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(regionsDropDownList)
+            (androidVersion.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(androidDropDownList)
         }
 
         // Setup TopAppBar.
@@ -97,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.login -> showLoginDialog()
-                    R.id.logout -> showLogOutDialog()
+                    R.id.logout -> showLogoutDialog()
                 }
                 false
             }
@@ -127,7 +133,13 @@ class MainActivity : AppCompatActivity() {
 
         mainContentBinding.apply {
 
-            // Hide input method when focus is on androidVersionDropdown.
+            // Hide input method when focus is on dropdown.
+            deviceRegionsDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(view.windowToken, 0)
+                }
+            }
             androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
                     val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -142,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 val secondViewTitleArray = arrayOf(
-                    bigVersion, filename, filesize, download, changelog, secondInfo
+                    bigVersion, filename, filesize, filemd5, download, changelog, secondInfo
                 )
 
                 val firstViewContentArray = arrayOf(
@@ -150,28 +162,45 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 val secondViewContentArray = arrayOf(
-                    bigVersionInfo, filenameInfo, filesizeInfo, changelogInfo
+                    bigVersionInfo, filenameInfo, filesizeInfo, filemd5Info, changelogInfo
                 )
 
                 CoroutineScope(Dispatchers.Default).launch {
 
                     try {
-                        // Acquire ROM info.
-                        val romInfo = InfoUtils.getRomInfo(
-                            this@MainActivity,
-                            codeName.editText?.text.toString(),
-                            systemVersion.editText?.text.toString(),
-                            androidVersion.editText?.text.toString()
-                        ).parseJSON<InfoHelper.RomInfo>()
 
-                        prefs.edit().putString("codeName", codeName.editText?.text.toString())
-                            .putString("systemVersion", systemVersion.editText?.text.toString())
-                            .putString("androidVersion", androidVersion.editText?.text.toString()).apply()
+                        val codeNameText = codeName.editText?.text.toString()
+                        val codeNameTextExt = DeviceInfoHelper.codeName(codeName.editText?.text.toString())
+                        val regionsText = deviceRegions.editText?.text.toString()
+
+                        withContext(Dispatchers.Main) {
+                            // Show a toast if the region does not exist.
+                            val isExistRegions = DeviceInfoHelper.isExistRegions(codeNameTextExt, regionsText)
+                            if (!isExistRegions) {
+                                MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.non_region), 0)
+                                throw NoSuchFieldException()
+                            }
+                        }
+
+                        val codeNameTextExtR = codeNameTextExt + DeviceInfoHelper.regions(codeNameText, regionsText)
+                        val androidVersionText = androidVersion.editText?.text.toString()
+                        val systemVersionText = systemVersion.editText?.text.toString()
+                        val systemVersionTextExt = systemVersionText.replace("OS1", "V816").replace("AUTO", DeviceInfoHelper.deviceCode(androidVersionText, codeNameTextExt, regionsText))
+
+                        // Acquire ROM info.
+                        val recoveryRomInfo = InfoUtils.getRecoveryRomInfo(
+                            this@MainActivity, codeNameTextExtR, systemVersionTextExt, androidVersionText
+                        ).parseJSON<RecoveryRomInfoHelper.RomInfo>()
+
+                        val fastbootRomInfo = InfoUtils.getFastbootRomInfo(codeNameTextExtR).parseJSON<FastbootRomInfoHelper.RomInfo>()
+
+                        prefs.edit().putString("codeName", codeNameTextExt).putString("regions", regionsText).putString("systemVersion", systemVersionText)
+                            .putString("androidVersion", androidVersionText).apply()
 
                         withContext(Dispatchers.Main) {
 
                             // Show a toast if we didn't get anything from request
-                            if (romInfo.currentRom?.branch == null) {
+                            if (recoveryRomInfo.currentRom?.branch == null) {
                                 activityMainBinding.implement.extend()
                                 MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_no_info), 0)
                                 throw NoSuchFieldException()
@@ -184,13 +213,13 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             // Setup TextViews
-                            codenameInfo.setTextAnimation(romInfo.currentRom.device)
-                            systemInfo.setTextAnimation(romInfo.currentRom.version)
-                            codebaseInfo.setTextAnimation(romInfo.currentRom.codebase)
-                            branchInfo.setTextAnimation(romInfo.currentRom.branch)
+                            codenameInfo.setTextAnimation(recoveryRomInfo.currentRom.device)
+                            systemInfo.setTextAnimation(recoveryRomInfo.currentRom.version)
+                            codebaseInfo.setTextAnimation(recoveryRomInfo.currentRom.codebase)
+                            branchInfo.setTextAnimation(recoveryRomInfo.currentRom.branch)
 
                             val orientation = getResources().configuration.orientation
-                            if (romInfo.currentRom.filename != null) {
+                            if (recoveryRomInfo.currentRom.filename != null) {
                                 secondViewTitleArray.forEach {
                                     if (!it.isVisible) it.fadInAnimation()
                                 }
@@ -223,43 +252,43 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
 
-                            if (romInfo.currentRom.md5 != null) {
+                            if (recoveryRomInfo.currentRom.md5 != null) {
                                 bigVersionInfo.setTextAnimation(
-                                    if (romInfo.currentRom.bigversion?.contains("816") == true) {
-                                        romInfo.currentRom.bigversion.replace("816", "HyperOS 1.0")
+                                    if (recoveryRomInfo.currentRom.bigversion?.contains("816") == true) {
+                                        recoveryRomInfo.currentRom.bigversion.replace("816", "HyperOS 1.0")
                                     } else {
-                                        "MIUI ${romInfo.currentRom.bigversion}"
+                                        "MIUI ${recoveryRomInfo.currentRom.bigversion}"
                                     }
                                 )
 
-                                filenameInfo.setTextAnimation(romInfo.currentRom.filename)
-                                filesizeInfo.setTextAnimation(romInfo.currentRom.filesize)
+                                filenameInfo.setTextAnimation(recoveryRomInfo.currentRom.filename)
+                                filesizeInfo.setTextAnimation(recoveryRomInfo.currentRom.filesize)
+                                filemd5Info.setTextAnimation(recoveryRomInfo.currentRom.md5)
 
-                                val officialLink = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
-                                    R.string.official1_link, romInfo.currentRom.version, romInfo.latestRom.filename
-                                ) else getString(R.string.official2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
-                                val cdn1Link = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
-                                    R.string.cdn1_link, romInfo.currentRom.version, romInfo.latestRom.filename
-                                ) else getString(R.string.cdn2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
-                                val cdn2Link = if (romInfo.currentRom.md5 == romInfo.latestRom?.md5) getString(
-                                    R.string.cdn2_link, romInfo.currentRom.version, romInfo.latestRom.filename
-                                ) else getString(R.string.cdn2_link, romInfo.currentRom.version, romInfo.currentRom.filename)
+                                val officialLink = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                    R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                val cdn1Link = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                    R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                ) else getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                val cdn2Link = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                    R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                ) else getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
 
-                                officialDownload.setDownloadClickListener(romInfo, officialLink)
-                                cdn1Download.setDownloadClickListener(romInfo, cdn1Link)
-                                cdn2Download.setDownloadClickListener(romInfo, cdn2Link)
+                                officialDownload.setDownloadClickListener(recoveryRomInfo.currentRom.filename, officialLink)
+                                cdn1Download.setDownloadClickListener(recoveryRomInfo.currentRom.filename, cdn1Link)
+                                cdn2Download.setDownloadClickListener(recoveryRomInfo.currentRom.filename, cdn2Link)
                                 officialCopy.setCopyClickListener(officialLink)
                                 cdn1Copy.setCopyClickListener(cdn1Link)
                                 cdn2Copy.setCopyClickListener(cdn2Link)
 
                                 val log = StringBuilder()
-                                romInfo.currentRom.changelog!!.forEach {
+                                recoveryRomInfo.currentRom.changelog!!.forEach {
                                     log.append(it.key).append("\n- ").append(it.value.txt.joinToString("\n- ")).append("\n\n")
                                 }
 
                                 changelogInfo.setTextAnimation(log.toString().trimEnd())
                                 changelogInfo.setCopyClickListener(log.toString().trimEnd())
-
                             }
                         } // Main context
                     } catch (e: Exception) {
@@ -335,7 +364,7 @@ class MainActivity : AppCompatActivity() {
         }.show()
     }
 
-    private fun showLogOutDialog() {
+    private fun showLogoutDialog() {
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         builder.setTitle(getString(R.string.login)).setTitle(getString(R.string.logout)).setMessage(getString(R.string.logout_desc))
             .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
@@ -407,9 +436,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun MaterialButton.setDownloadClickListener(romInfo: InfoHelper.RomInfo, link: String) {
+    private fun MaterialButton.setDownloadClickListener(filename: String?, link: String) {
         setOnClickListener {
-            romInfo.currentRom?.filename?.let { downloadFile(this@MainActivity, link, it) }
+            filename?.let { downloadFile(this@MainActivity, link, it) }
         }
     }
 

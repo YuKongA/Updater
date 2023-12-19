@@ -6,12 +6,14 @@ import okhttp3.FormBody
 import top.yukonga.update.logic.utils.CryptoUtils.miuiDecrypt
 import top.yukonga.update.logic.utils.CryptoUtils.miuiEncrypt
 import top.yukonga.update.logic.utils.FileUtils.readFile
+import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
 import java.util.Base64
 
 object InfoUtils {
 
-    private const val miuiUrl = "https://update.miui.com/updates/miotaV3.php"
+    private const val recoveryUrl = "https://update.miui.com/updates/miotaV3.php"
+    private const val fastbootUrl = "https://update.miui.com/updates/miota-fullrom.php"
     private var securityKey = "miuiotavalided11"
 
     private fun generateJson(device: String, version: String, android: String, userId: String): String {
@@ -23,11 +25,11 @@ object InfoUtils {
         data["ov"] = version
         data["l"] = if (!device.contains("_global")) "zh_CN" else "en_US"
         data["r"] = if (!device.contains("_global")) "CN" else "GL"
-        data["v"] = "miui-${version.replace("OS1", "V816")}"
+        data["v"] = "miui-${version}"
         return Gson().toJson(data)
     }
 
-    fun getRomInfo(context: Context, codename: String, romVersion: String, androidVersion: String): String {
+    fun getRecoveryRomInfo(context: Context, codename: String, romVersion: String, androidVersion: String): String {
         var userId = ""
         var securityKey = securityKey.toByteArray(Charsets.UTF_8)
         var serviceToken = ""
@@ -43,8 +45,14 @@ object InfoUtils {
         val jsonData = generateJson(codename, romVersion, androidVersion, userId)
         val encryptedText = miuiEncrypt(jsonData, securityKey)
         val requestBody = FormBody.Builder().add("q", encryptedText).add("t", serviceToken).add("s", port).build()
-        val postRequest = postRequest(miuiUrl, requestBody)
+        val postRequest = postRequest(recoveryUrl, requestBody)
         val requestedEncryptedText = postRequest.body?.string() ?: ""
         return miuiDecrypt(requestedEncryptedText, securityKey)
+    }
+
+    fun getFastbootRomInfo(codename: String): String {
+        val url = "$fastbootUrl?d=$codename&b=F&r=cn"
+        val getRequest = getRequest(url)
+        return getRequest.body?.string() ?: ""
     }
 }

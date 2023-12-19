@@ -4,6 +4,7 @@
     <string name="app_github">在 &lt;a href="https://github.com/YuKongA/Updater">GitHub&lt;/a> 查看源码</string>
     <string name="login">登陸</string>
     <string name="codename">裝置代號</string>
+    <string name="market_name">裝置代號/裝置名稱</string>
     <string name="system_version">系統版本</string>
     <string name="android_version">安卓版本</string>
     <string name="submit">提交</string>
@@ -33,4 +34,7 @@
     <string name="confirm">確定</string>
     <string name="logout_successful">登出成功</string>
     <string name="logout_desc">確定要登出麼？</string>
+    <string name="filemd5">檔案MD5</string>
+    <string name="regions_code">區域代號</string>
+    <string name="non_region">Non-existent region version</string>
 </resources>

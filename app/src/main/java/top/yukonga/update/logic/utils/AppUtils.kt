@@ -136,16 +136,13 @@ object AppUtils {
         "surya",
         "angelican",
         "cattail",
-        "cas",
+        "cas", // TODO ↑↑↑
         "cezanne",
         "gram",
-        "dandelion",
-        "angelica",
         "lancelot",
         "toco",
         "bomb",
         "atom",
-        "picasso_48m",
         "merlin",
         "vangogh",
         "monet",
@@ -154,9 +151,13 @@ object AppUtils {
         "curtana",
         "joyeuse",
         "cmi",
-        "umi"
+        "umi",
+        "picasso",
+        "phoenixin",
+        "phoenix"
     )
 
-    val dropDownList = arrayOf("12", "13", "14")
+    val androidDropDownList = arrayOf("12", "13", "14")
 
+    val regionsDropDownList = arrayOf("CN", "MI", "EU", "RU", "TW", "ID", "TR", "KR", "JP", "IN")
 }
