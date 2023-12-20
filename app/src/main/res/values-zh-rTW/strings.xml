@@ -3,8 +3,8 @@
     <string name="app_summary">取得 HyperOS/MIUI 更新信息</string>
     <string name="app_github">在 &lt;a href="https://github.com/YuKongA/Updater">GitHub&lt;/a> 查看源码</string>
     <string name="login">登陸</string>
-    <string name="codename">裝置代號</string>
-    <string name="market_name">裝置代號/裝置名稱</string>
+    <string name="codename">設備代號</string>
+    <string name="market_name">設備代號/設備名稱</string>
     <string name="system_version">系統版本</string>
     <string name="android_version">安卓版本</string>
     <string name="submit">提交</string>
@@ -14,18 +14,18 @@
     <string name="download">下載連結</string>
     <string name="changelog">更新日誌</string>
     <string name="branch">分支</string>
-    <string name="toast_no_info">未取得到有效資訊!</string>
+    <string name="toast_no_info">未取得到有效讯息！</string>
     <string name="toast_copied_to_pasteboard">已複製到剪貼簿</string>
     <string name="account">帳戶</string>
     <string name="password">密碼</string>
     <string name="cancel">取消</string>
     <string name="logging_in">登陸中</string>
     <string name="login_successful">登陸成功</string>
-    <string name="request_sign_failed">請求 _sign 失敗</string>
+    <string name="request_sign_failed">請求 _sign 失敗！</string>
     <string name="account_or_password_empty">帳號或密碼為空</string>
     <string name="no_account">未登陸</string>
-    <string name="login_desc">正在使用 v1 介面\n透過頂欄右側按鈕登陸帳戶</string>
-    <string name="using_v2">正在使用 v2 介面</string>
+    <string name="login_desc">正在使用 v1 端口\n透過頂欄右側按鈕登陸帳戶</string>
+    <string name="using_v2">正在使用 v2 端口</string>
     <string name="logged_in">已登入</string>
     <string name="copy_buttom">複製</string>
     <string name="download_buttom">下載</string>
@@ -36,5 +36,5 @@
     <string name="logout_desc">確定要登出麼？</string>
     <string name="filemd5">檔案MD5</string>
     <string name="regions_code">區域代號</string>
-    <string name="non_region">Non-existent region version</string>
+    <string name="non_region">此設備不存在該地區版本！</string>
 </resources>

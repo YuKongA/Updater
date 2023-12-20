@@ -192,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                             this@MainActivity, codeNameTextExtR, systemVersionTextExt, androidVersionText
                         ).parseJSON<RecoveryRomInfoHelper.RomInfo>()
 
-                        val fastbootRomInfo = InfoUtils.getFastbootRomInfo(codeNameTextExtR).parseJSON<FastbootRomInfoHelper.RomInfo>()
+                        // val fastbootRomInfo = InfoUtils.getFastbootRomInfo(codeNameTextExtR).parseJSON<FastbootRomInfoHelper.RomInfo>()
 
                         prefs.edit().putString("codeName", codeNameTextExt).putString("regions", regionsText).putString("systemVersion", systemVersionText)
                             .putString("androidVersion", androidVersionText).apply()

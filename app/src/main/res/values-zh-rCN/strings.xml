@@ -14,14 +14,14 @@
     <string name="download">下载链接</string>
     <string name="changelog">更新日志</string>
     <string name="branch">分支</string>
-    <string name="toast_no_info">未获取到有效信息!</string>
+    <string name="toast_no_info">未获取到有效信息！</string>
     <string name="toast_copied_to_pasteboard">已复制到剪贴板</string>
     <string name="account">账号</string>
     <string name="password">密码</string>
     <string name="cancel">取消</string>
     <string name="logging_in">登录中</string>
     <string name="login_successful">登录成功</string>
-    <string name="request_sign_failed">请求 _sign 失败</string>
+    <string name="request_sign_failed">请求 _sign 失败！</string>
     <string name="account_or_password_empty">账号或密码为空</string>
     <string name="no_account">未登录</string>
     <string name="login_desc">正在使用 v1 接口\n通过顶栏右侧按钮登录账号</string>
@@ -36,5 +36,5 @@
     <string name="logout_desc">确定要登出么？</string>
     <string name="filemd5">文件MD5</string>
     <string name="regions_code">区域代号</string>
-    <string name="non_region">Non-existent region version</string>
+    <string name="non_region">此设备不存在该地区版本！</string>
 </resources>

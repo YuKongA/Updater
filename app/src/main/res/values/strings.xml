@@ -45,5 +45,5 @@
     <string name="logout_desc">Are you sure you want to logouy?</string>
     <string name="filemd5">File MD5</string>
     <string name="regions_code">Regions code</string>
-    <string name="non_region">Non-existent region version</string>
+    <string name="non_region">Non-existent region version!</string>
 </resources>
