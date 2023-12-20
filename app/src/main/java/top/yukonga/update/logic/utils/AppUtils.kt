@@ -97,10 +97,9 @@ object AppUtils {
         "evergreen",
         "pissarro",
         "evergo",
-        "selenes",
         "mona",
         "lisa",
-        "agate",
+        "agate", // TODO ↑↑↑
         "vili",
         "selene",
         "odin",
@@ -112,7 +111,7 @@ object AppUtils {
         "biloba",
         "ares",
         "cetus",
-        "renoir", // TODO ↑↑↑
+        "renoir",
         "star",
         "courbet",
         "vayu",
