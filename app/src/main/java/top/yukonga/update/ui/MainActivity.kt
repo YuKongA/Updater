@@ -36,6 +36,7 @@ import top.yukonga.update.BuildConfig
 import top.yukonga.update.R
 import top.yukonga.update.databinding.ActivityMainBinding
 import top.yukonga.update.databinding.MainContentBinding
+import top.yukonga.update.logic.adapter.CustomAdapter
 import top.yukonga.update.logic.data.DeviceInfoHelper
 import top.yukonga.update.logic.data.RecoveryRomInfoHelper
 import top.yukonga.update.logic.fadInAnimation
@@ -95,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
             // Setup DropDownList.
-            val deviceNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.deviceNames)
+            val deviceNamesAdapter = CustomAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, ArrayList(DeviceInfoHelper.deviceNames))
             val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.codeNames)
             (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceNamesAdapter)
             (codeName.editText as? MaterialAutoCompleteTextView)?.setAdapter(codeNamesAdapter)

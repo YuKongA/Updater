@@ -21,15 +21,14 @@ object DeviceInfoHelper {
     private val TW = DeviceRegions("_tw_global", "TW")
     private val ID = DeviceRegions("_id_global", "ID")
     private val TR = DeviceRegions("_tr_global", "TR")
-    private val KR = DeviceRegions("_kr_global", "KR")
     private val JP = DeviceRegions("_jp_global", "JP")
     private val IN = DeviceRegions("_in_global", "IN")
 
-    private val Xiaomi = "XM"
+    private const val Xiaomi = "XM"
 
     private val devices = listOf(
         Device("Redmi K30 4G", "phoenix", "GH", listOf(CN)),
-        Device("Poco X2", "phoenixin", "GH", listOf(IN)),
+        Device("POCO X2", "phoenixin", "GH", listOf(IN)),
         Device("Redmi K30 / K30i", "picasso", "GI", listOf(CN)),
         Device("Xiaomi 10", "umi", "JB", listOf(CN, GL, EEA, RU, ID, TR, IN)),
         Device("Xiaomi 10 Pro", "cmi", "JA", listOf(CN, GL, EEA)),
@@ -120,8 +119,8 @@ object DeviceInfoHelper {
         Device("Redmi Pad", "yunluo", "LY", listOf(CN, GL, IN, RU, TW, TR, EEA, ID)),
         Device("Xiaomi 12T", "plato", "LQ", listOf(GL, ID, RU, TW, TR, EEA)),
         Device("Redmi Note 12 Pro", "ruby", "MO", listOf(CN, GL, ID, RU, TW, IN, EEA)),
-        Device("Redmi Note 12 / Note 12R Pro", "sunstone", "MQ", listOf(CN, GL, TW, IN)),
-        Device("POCO X5 5G ", "moonstone", "MP", listOf(GL, TW, IN, ID, EEA, RU, TR)),
+        Device("Redmi Note 12 / Note 12R Pro", "sunstone", "MQ", listOf(CN, GL, TW, IN, EEA)),
+        Device("POCO X5", "moonstone", "MP", listOf(GL, TW, IN, ID, EEA, RU, TR)),
         Device("Xiaomi 13", "fuxi", "MC", listOf(CN, GL, TW, EEA, RU, TR)),
         Device("Xiaomi 13 Pro", "nuwa", "MB", listOf(CN, GL, TW, IN, EEA, RU, TR)),
         Device("Redmi K60 / POCO F5 Pro", "mondrian", "MN", listOf(CN, GL, TW, EEA, RU, TR)),
@@ -154,7 +153,7 @@ object DeviceInfoHelper {
         Device("Redmi 13C / POCO C65", "gale", "GP", listOf(GL, EEA, IN, TW)),
         Device("Redmi K70 / POCO F6 Pro", "vermeer", "NK", listOf(CN)),
         Device("Redmi K70 Pro", "manet", "NM", listOf(CN)),
-        Device("红米 K70E / POCO X6 Pro", "duchamp", "NL", listOf(CN)),
+        Device("Redmi K70E / POCO X6 Pro", "duchamp", "NL", listOf(CN)),
     )
 
     val deviceNames = devices.map { it.deviceName }

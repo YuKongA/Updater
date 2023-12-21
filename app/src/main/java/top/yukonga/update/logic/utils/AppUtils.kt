@@ -20,7 +20,7 @@ object AppUtils {
         Class.forName("android.os.SystemProperties").getMethod("getBoolean", String::class.java, Boolean::class.javaPrimitiveType)
             .invoke(Class.forName("android.os.SystemProperties"), mKey, defaultValue) as Boolean
 
-    val androidDropDownList = arrayOf("12", "13", "14")
+    val androidDropDownList = arrayOf("14", "13", "12", "11")
 
-    val regionsDropDownList = arrayOf("CN", "MI", "EU", "RU", "TW", "ID", "TR", "KR", "JP", "IN")
+    val regionsDropDownList = arrayOf("CN", "MI", "EU", "RU", "TW", "ID", "TR", "JP", "IN")
 }
