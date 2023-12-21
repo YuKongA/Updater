@@ -4,16 +4,18 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.text.Html
 import android.text.InputType
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View.OnFocusChangeListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -36,7 +38,6 @@ import top.yukonga.update.R
 import top.yukonga.update.databinding.ActivityMainBinding
 import top.yukonga.update.databinding.MainContentBinding
 import top.yukonga.update.logic.data.DeviceInfoHelper
-import top.yukonga.update.logic.data.FastbootRomInfoHelper
 import top.yukonga.update.logic.data.RecoveryRomInfoHelper
 import top.yukonga.update.logic.fadInAnimation
 import top.yukonga.update.logic.fadOutAnimation
@@ -61,6 +62,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var prefs: SharedPreferences
 
+    lateinit var codeNameWatcher: TextWatcher
+    lateinit var deviceNameWatcher: TextWatcher
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -83,16 +87,59 @@ class MainActivity : AppCompatActivity() {
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
 
-        // Setup default device information.
+        // Setup main information.
         mainContentBinding.apply {
+            // Setup default device information.
+            deviceName.editText!!.setText(prefs.getString("deviceName", ""))
             codeName.editText!!.setText(prefs.getString("codeName", ""))
             deviceRegions.editText!!.setText(prefs.getString("regions", ""))
             systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
             androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
+            // Setup DropDownList.
+            val adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.deviceNames)
+            (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(adapter)
             (codeName.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(deviceCodeList)
             (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(regionsDropDownList)
             (androidVersion.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(androidDropDownList)
+
+            // Setup TextChangedListener.
+            codeNameWatcher = object : TextWatcher {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    deviceName.editText!!.removeTextChangedListener(deviceNameWatcher)
+                    val text = try {
+                        DeviceInfoHelper.deviceName(s.toString())
+                    } catch (ex: Exception) {
+                        null
+                    }
+                    Log.d("MainActivity", "onTextChanged: $text")
+                    if (text != null) deviceName.editText!!.setText(text)
+                }
+
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun afterTextChanged(s: Editable) {
+                    deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
+                }
+            }
+            deviceNameWatcher = object : TextWatcher {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    codeName.editText!!.removeTextChangedListener(codeNameWatcher)
+                    val text = try {
+                        DeviceInfoHelper.codeName(s.toString())
+                    } catch (ex: Exception) {
+                        null
+                    }
+                    Log.d("MainActivity", "onTextChanged: $text")
+                    if (text != null) codeName.editText!!.setText(text)
+                }
+
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun afterTextChanged(s: Editable) {
+                    codeName.editText!!.addTextChangedListener(codeNameWatcher)
+                }
+            }
+            codeName.editText!!.addTextChangedListener(codeNameWatcher)
+            deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
         }
 
         // Setup TopAppBar.
@@ -147,6 +194,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            // Setup Fab OnClickListener.
             activityMainBinding.implement.setOnClickListener {
 
                 val firstViewTitleArray = arrayOf(
@@ -169,23 +217,24 @@ class MainActivity : AppCompatActivity() {
 
                     try {
 
-                        val codeNameText = codeName.editText?.text.toString()
-                        val codeNameTextExt = DeviceInfoHelper.codeName(codeName.editText?.text.toString())
                         val regionsText = deviceRegions.editText?.text.toString()
+                        val codeNameText = codeName.editText?.text.toString()
+                        val deviceNameText = deviceName.editText?.text.toString()
 
                         withContext(Dispatchers.Main) {
                             // Show a toast if the region does not exist.
-                            val isExistRegions = DeviceInfoHelper.isExistRegions(codeNameTextExt, regionsText)
+                            val isExistRegions = DeviceInfoHelper.isExistRegions(codeNameText, regionsText)
                             if (!isExistRegions) {
                                 MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.non_region), 0)
                                 throw NoSuchFieldException()
                             }
                         }
 
-                        val codeNameTextExtR = codeNameTextExt + DeviceInfoHelper.regions(codeNameText, regionsText)
+                        val codeNameTextExtR = codeNameText + DeviceInfoHelper.regions(codeNameText, regionsText)
                         val androidVersionText = androidVersion.editText?.text.toString()
                         val systemVersionText = systemVersion.editText?.text.toString()
-                        val systemVersionTextExt = systemVersionText.replace("OS1", "V816").replace("AUTO", DeviceInfoHelper.deviceCode(androidVersionText, codeNameTextExt, regionsText))
+                        val systemVersionTextExt =
+                            systemVersionText.replace("OS1", "V816").replace("AUTO", DeviceInfoHelper.deviceCode(androidVersionText, codeNameText, regionsText))
 
                         // Acquire ROM info.
                         val recoveryRomInfo = InfoUtils.getRecoveryRomInfo(
@@ -194,8 +243,8 @@ class MainActivity : AppCompatActivity() {
 
                         // val fastbootRomInfo = InfoUtils.getFastbootRomInfo(codeNameTextExtR).parseJSON<FastbootRomInfoHelper.RomInfo>()
 
-                        prefs.edit().putString("codeName", codeNameTextExt).putString("regions", regionsText).putString("systemVersion", systemVersionText)
-                            .putString("androidVersion", androidVersionText).apply()
+                        prefs.edit().putString("deviceName", deviceNameText).putString("codeName", codeNameText).putString("regions", regionsText)
+                            .putString("systemVersion", systemVersionText).putString("androidVersion", androidVersionText).apply()
 
                         withContext(Dispatchers.Main) {
 
@@ -218,20 +267,9 @@ class MainActivity : AppCompatActivity() {
                             codebaseInfo.setTextAnimation(recoveryRomInfo.currentRom.codebase)
                             branchInfo.setTextAnimation(recoveryRomInfo.currentRom.branch)
 
-                            val orientation = getResources().configuration.orientation
                             if (recoveryRomInfo.currentRom.filename != null) {
                                 secondViewTitleArray.forEach {
                                     if (!it.isVisible) it.fadInAnimation()
-                                }
-                                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                                    linearLayout?.removeView(firstInfo)
-                                    linearLayout2?.removeView(firstInfo)
-                                    linearLayout?.addView(firstInfo)
-                                    firstInfo.layoutParams = LinearLayout.LayoutParams(
-                                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-                                    ).apply {
-                                        topMargin = 18.dp
-                                    }
                                 }
                             } else {
                                 secondViewTitleArray.forEach {
@@ -239,16 +277,6 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 secondViewContentArray.forEach {
                                     if (it.isVisible) it.fadOutAnimation()
-                                }
-                                if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                                    linearLayout?.removeView(firstInfo)
-                                    linearLayout2?.removeView(firstInfo)
-                                    linearLayout2?.addView(firstInfo)
-                                    firstInfo.layoutParams = LinearLayout.LayoutParams(
-                                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-                                    ).apply {
-                                        topMargin = 0.dp
-                                    }
                                 }
                             }
 

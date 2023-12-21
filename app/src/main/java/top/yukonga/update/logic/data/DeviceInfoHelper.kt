@@ -2,9 +2,14 @@ package top.yukonga.update.logic.data
 
 object DeviceInfoHelper {
 
-    fun codeName(name: String): String {
-        val device = devices.find { it.name == name } ?: return name
+    fun codeName(deviceName: String): String? {
+        val device = devices.find { it.deviceName == deviceName } ?: return null
         return device.codeName
+    }
+
+    fun deviceName(codeName: String): String? {
+        val device = devices.find { it.codeName == codeName } ?: return null
+        return device.deviceName
     }
 
     fun regions(codeName: String, regions: String): String {
@@ -29,7 +34,7 @@ object DeviceInfoHelper {
 
     data class DeviceRegions(val codeNameExt: String, val version: String)
 
-    data class Device(val name: String, val codeName: String, val deviceCode: String, val regions: List<DeviceRegions>)
+    data class Device(val deviceName: String, val codeName: String, val deviceCode: String, val regions: List<DeviceRegions>)
 
     private val androidS = AndroidVersion("12", "S")
     private val androidT = AndroidVersion("13", "T")
@@ -110,4 +115,6 @@ object DeviceInfoHelper {
         Device("Xiaomi 14 Pro", "shennong", "NB", listOf(CN)),
         // TODO ↓↓↓
     )
+
+    val deviceNames = devices.map { it.deviceName }
 }

@@ -5,8 +5,8 @@
     <string name="app_summary">Get HyperOS/MIUI update info</string>
     <string name="app_github">View source code on &lt;a href="https://github.com/YuKongA/Updater">GitHub&lt;/a></string>
     <string name="login">Login</string>
-    <string name="codename">Code Name</string>
-    <string name="market_name">Code Name / Device Name</string>
+    <string name="code_name">Code Name</string>
+    <string name="device_name">Device Name</string>
     <string name="system_version">System Version</string>
     <string name="android_version">Android Version</string>
     <string name="submit">Submit</string>
