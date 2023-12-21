@@ -150,7 +150,7 @@ object DeviceInfoHelper {
         Device("Redmi Note 13 Pro", "garnet", "NR", listOf(CN)),
         Device("Xiaomi 13T", "aristotle", "MF", listOf(GL, EEA, ID, RU, TW, TR)),
         Device("Xiaomi 14", "houji", "NC", listOf(CN)),
-        Device("Xiaomi 14 Pro", "shennong", "KT", listOf(CN)),
+        Device("Xiaomi 14 Pro", "shennong", "NB", listOf(CN)),
         Device("Redmi 13C / POCO C65", "gale", "GP", listOf(GL, EEA, IN, TW)),
         Device("Redmi K70 / POCO F6 Pro", "vermeer", "NK", listOf(CN)),
         Device("Redmi K70 Pro", "manet", "NM", listOf(CN)),
