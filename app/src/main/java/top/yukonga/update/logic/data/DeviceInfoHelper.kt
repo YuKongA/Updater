@@ -2,34 +2,6 @@ package top.yukonga.update.logic.data
 
 object DeviceInfoHelper {
 
-    fun codeName(deviceName: String): String? {
-        val device = devices.find { it.deviceName == deviceName } ?: return null
-        return device.codeName
-    }
-
-    fun deviceName(codeName: String): String? {
-        val device = devices.find { it.codeName == codeName } ?: return null
-        return device.deviceName
-    }
-
-    fun regions(codeName: String, regions: String): String {
-        val device = devices.find { it.codeName == codeName } ?: return ""
-        val newRegions = device.regions.find { it.version == regions } ?: return ""
-        return newRegions.codeNameExt
-    }
-
-    fun isExistRegions(codeName: String, regions: String): Boolean {
-        val device = devices.find { it.codeName == codeName } ?: return true // Need to be completed
-        device.regions.find { it.version == regions } ?: return false
-        return true
-    }
-
-    fun deviceCode(android: String, codeName: String, variant: String): String {
-        val newAndroid = androids.find { it.version == android } ?: return ""
-        val device = devices.find { it.codeName == codeName } ?: return ""
-        return "${newAndroid.android}${device.deviceCode}${variant}${Xiaomi}"
-    }
-
     data class AndroidVersion(val version: String, val android: String)
 
     data class DeviceRegions(val codeNameExt: String, val version: String)
@@ -105,16 +77,115 @@ object DeviceInfoHelper {
         Device("Xiaomi Pad 5 Pro WiFi", "elish", "KY", listOf(CN)),
         Device("Xiaomi Pad 5 Pro", "enuma", "KZ", listOf(CN)),
         Device("Xiaomi MIX 4", "odin", "KM", listOf(CN)),
-        Device("Redmi 10 / 10 Prime/ Note 11 4G", "selene", "KU", listOf(CN, GL, EEA, RU, TR, ID, TW, IN)),
+        Device("Redmi 10 / 10 Prime / Note 11 4G", "selene", "KU", listOf(CN, GL, EEA, RU, TR, ID, TW, IN)),
         Device("Xiaomi 11T Pro", "vili", "KD", listOf(GL, EEA, RU, TR, ID, TW, IN, JP)),
         Device("Xiaomi 11T", "agate", "KW", listOf(GL, EEA, RU, TR, ID, TW)),
-        // TODO ↓↓↓
-
+        Device("Xiaomi 11 LE / 11 Lite NE", "lisa", "KO", listOf(CN, GL, EEA, RU, TR, TW, IN)),
+        Device("Xiaomi Civi", "mona", "KV", listOf(CN)),
+        Device("Redmi Note 11 / Note 11T", "evergo", "GB", listOf(CN, IN)),
+        Device("Xiaomi 11i / Redmi Note 11 Pro / Note 11 Pro+", "pissarro", "GC", listOf(CN, RU, TW, TR, EEA, GL, IN)),
+        Device("POCO M4 Pro", "evergreen", "GB", listOf(GL, EEA, RU, TR, TW)),
+        Device("Xiaomi 12", "cupid", "LC", listOf(CN, GL, EEA, RU, TW, ID, TR)),
+        Device("Xiaomi 12X", "psyche", "LD", listOf(CN, GL, EEA, RU, TW)),
+        Device("Xiaomi 12 Pro", "zeus", "LB", listOf(CN, GL, IN, EEA, RU, TW, ID, TR)),
+        Device("Redmi Note 11S 4G / POCO M4 Pro 4G", "fleur", "KE", listOf(IN, GL, EEA, RU, TW, ID, TR)),
+        Device("Redmi Note 11S", "opal", "GL", listOf(EEA, GL, RU, TW)),
+        Device("Redmi Note 11E Pro / Note 11 Pro / POCO X4 Pro", "veux", "KC", listOf(CN, JP, EEA, RU, TW, IN, ID, TR)),
+        Device("Redmi Note 11", "spes", "GC", listOf(GL, IN, TR)),
+        Device("Redmi Note 11 NFC", "spesn", "GK", listOf(GL, EEA, RU, ID)),
+        Device("Redmi K50G / POCO F4 GT", "ingres", "LJ", listOf(CN, EEA, RU, TR, ID, TW)),
+        Device("Redmi 10 / 11 Prime / Note 11E / POCO M4", "light", "LS", listOf(CN, GL, IN, TR, EEA, RU, ID, TW)),
+        Device("Redmi Note 11R", "lightcm", "LS", listOf(CN)),
+        Device("Redmi Note 11 Pro 4G", "viva", "GD", listOf(GL, EEA, TW, ID, RU, TR)),
+        Device("Redmi K40S / POCO F4", "munch", "LM", listOf(CN, EEA, IN, ID, TW, TR, GL, RU)),
+        Device("Redmi K50 Pro", "matisse", "LK", listOf(CN)),
+        Device("Redmi K50", "rubens", "LN", listOf(CN)),
+        Device("Redmi 10C", "fog", "GE", listOf(GL, ID, EEA, IN, RU, TW, TR)),
+        Device("Redmi 9A / 9i / 9AT / 10A", "dandelion", "CD", listOf(CN, GL, EEA, IN, RU, TW, TR, ID)),
+        Device("Redmi Note 10T", "lilac", "KN", listOf(JP)),
+        Device("Xiaomi Civi 1S", "zijin", "LP", listOf(CN)),
+        Device("Redmi K50i / Note 11T Pro / POCO X4 GT", "xaga", "LO", listOf(CN, GL, EEA, RU, TW, IN, TR)),
+        Device("POCO C40", "frost", "GF", listOf(GL, EEA, RU, TW, TR)),
+        Device("Xiaomi 12 Lite", "taoyao", "LI", listOf(GL, EEA, RU, TW, ID, TR)),
+        Device("Xiaomi 12 Pro Dimensity", "daumier", "LG", listOf(CN)),
+        Device("Xiaomi 12S Pro", "unicorn", "LE", listOf(CN)),
+        Device("Xiaomi 12S", "mayfly", "LT", listOf(CN)),
+        Device("Xiaomi 12S Ultra", "thor", "LA", listOf(CN)),
+        Device("Xiaomi MIX Fold 2", "zizhan", "LR", listOf(CN)),
+        Device("Xiaomi 12T Pro / Redmi K50 Ultra", "diting", "LF", listOf(CN, GL, EEA, JP, TR, RU, TW)),
+        Device("Xiaomi Pad 5 Pro 12.4", "dagu", "LZ", listOf(CN)),
+        Device("Redmi 11 Prime 4G / POCO M5", "rock", "LU", listOf(GL, EEA, IN, TW, TR, ID, RU)),
+        Device("Redmi A1 / POCO C50", "ice", "GM", listOf(EEA, GL, IN, ID, RU, TW)),
+        Device("Xiaomi 13 Lite / Civi 2 ", "ziyi", "LL", listOf(CN, GL, EEA, RU, TW, TR)),
+        Device("Redmi Pad", "yunluo", "LY", listOf(CN, GL, IN, RU, TW, TR, EEA, ID)),
+        Device("Xiaomi 12T", "plato", "LQ", listOf(GL, ID, RU, TW, TR, EEA)),
+        Device("Redmi Note 12 Pro", "ruby", "MO", listOf(CN, GL, ID, RU, TW, IN, EEA)),
+        Device("Redmi Note 12 / Note 12R Pro", "sunstone", "MQ", listOf(CN, GL, TW, IN)),
+        Device("POCO X5 5G ", "moonstone", "MP", listOf(GL, TW, IN, ID, EEA, RU, TR)),
+        Device("Xiaomi 13", "fuxi", "MC", listOf(CN, GL, TW, EEA, RU, TR)),
+        Device("Xiaomi 13 Pro", "nuwa", "MB", listOf(CN, GL, TW, IN, EEA, RU, TR)),
+        Device("Redmi K60 / POCO F5 Pro", "mondrian", "MN", listOf(CN, GL, TW, EEA, RU, TR)),
+        Device("Redmi K60 Pro", "socrates", "MK", listOf(CN)),
+        Device("Redmi K60E", "rembrandt", "MM", listOf(CN)),
+        Device("Redmi Note 12 Pro Speed / POCO X5 Pro", "redwood", "MS", listOf(CN, EEA, ID, TW, TR, GL, IN, RU)),
+        Device("Redmi 12C / POCO C55", "earth", "CV", listOf(CN, GL, TW, IN, EEA, ID, RU, TR)),
+        Device("Redmi A2 / POCO C51", "water", "GO", listOf(GL, TW, EEA, IN, ID, RU)),
+        Device("Redmi Note 12 Turbo / POCO F5", "marble", "MR", listOf(CN, GL, TW, EEA, IN, ID, RU, TR)),
+        Device("Redmi Note 12 4G", "tapas", "MT", listOf(GL, IN, TR)),
+        Device("Redmi Note 12 4G NFC", "topaz", "MG", listOf(GL, EEA, ID, RU)),
+        Device("Xiaomi Pad 6", "pipa", "MZ", listOf(CN, GL, TW, EEA, IN, ID, RU, TR)),
+        Device("Xiaomi Pad 6 Pro", "liuqin", "MY", listOf(CN)),
         Device("Xiaomi 13 Ultra", "ishtar", "MA", listOf(CN, GL, EEA, RU, TW)),
+        Device("Redmi Note 12S", "sea", "HZ", listOf(TR, GL, EEA, RU, TW)),
+        Device("Xiaomi Civi 3", "yuechu", "MI", listOf(CN)),
+        Device("Redmi Note 12T Pro", "pearl", "LH", listOf(CN)),
+        Device("Redmi 12", "fire", "MX", listOf(GL, EEA, IN, ID, RU, TR)),
+        Device("Redmi Note 12 / Note 12R / POCO M6 Pro", "sky", "MW", listOf(CN, EEA, GL, IN, TW)),
+        Device("Xiaomi Pad 6 Max 14", "yudi", "MH", listOf(CN)),
+        Device("Xiaomi 13T Pro / Redmi K60 Ultra", "corot", "ML", listOf(CN, EEA, GL, RU, TW, TR)),
+        Device("Xiaomi MIX Fold 3", "babylon", "MV", listOf(CN)),
+        Device("Redmi Pad SE", "xun", "MU", listOf(CN, EEA, GL, ID, RU, TW, TR)),
+        Device("Redmi Note 13 Pro+", "zircon", "NO", listOf(CN)),
+        Device("Redmi Note 13 / 13R Pro", "gold", "NQ", listOf(CN)),
+        Device("Redmi Note 13 Pro", "garnet", "NR", listOf(CN)),
+        Device("Xiaomi 13T", "aristotle", "MF", listOf(GL, EEA, ID, RU, TW, TR)),
         Device("Xiaomi 14", "houji", "NC", listOf(CN)),
-        Device("Xiaomi 14 Pro", "shennong", "NB", listOf(CN)),
-        // TODO ↓↓↓
+        Device("Xiaomi 14 Pro", "shennong", "KT", listOf(CN)),
+        Device("Redmi 13C / POCO C65", "gale", "GP", listOf(GL, EEA, IN, TW)),
+        Device("Redmi K70 / POCO F6 Pro", "vermeer", "NK", listOf(CN)),
+        Device("Redmi K70 Pro", "manet", "NM", listOf(CN)),
+        Device("红米 K70E / POCO X6 Pro", "duchamp", "NL", listOf(CN)),
     )
 
     val deviceNames = devices.map { it.deviceName }
+
+    val codeNames = devices.map { it.codeName }
+
+
+    fun codeName(deviceName: String): String? {
+        val device = devices.find { it.deviceName == deviceName } ?: return null
+        return device.codeName
+    }
+
+    fun deviceName(codeName: String): String? {
+        val device = devices.find { it.codeName == codeName } ?: return null
+        return device.deviceName
+    }
+
+    fun regions(codeName: String, regions: String): String {
+        val device = devices.find { it.codeName == codeName } ?: return ""
+        val newRegions = device.regions.find { it.version == regions } ?: return ""
+        return newRegions.codeNameExt
+    }
+
+    fun existRegions(codeName: String): List<String> {
+        val device = devices.find { it.codeName == codeName } ?: return emptyList()
+        return device.regions.map { it.version }
+    }
+
+    fun deviceCode(android: String, codeName: String, variant: String): String {
+        val newAndroid = androids.find { it.version == android } ?: return ""
+        val device = devices.find { it.codeName == codeName } ?: return ""
+        return "${newAndroid.android}${device.deviceCode}${variant}${Xiaomi}"
+    }
 }

@@ -11,7 +11,6 @@ import android.text.Html
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.View.OnFocusChangeListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -43,7 +42,6 @@ import top.yukonga.update.logic.fadInAnimation
 import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
 import top.yukonga.update.logic.utils.AppUtils.androidDropDownList
-import top.yukonga.update.logic.utils.AppUtils.deviceCodeList
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.AppUtils.regionsDropDownList
 import top.yukonga.update.logic.utils.FileUtils
@@ -97,9 +95,10 @@ class MainActivity : AppCompatActivity() {
             androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
             // Setup DropDownList.
-            val adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.deviceNames)
-            (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(adapter)
-            (codeName.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(deviceCodeList)
+            val deviceNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.deviceNames)
+            val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.codeNames)
+            (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceNamesAdapter)
+            (codeName.editText as? MaterialAutoCompleteTextView)?.setAdapter(codeNamesAdapter)
             (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(regionsDropDownList)
             (androidVersion.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(androidDropDownList)
 
@@ -112,8 +111,13 @@ class MainActivity : AppCompatActivity() {
                     } catch (ex: Exception) {
                         null
                     }
-                    Log.d("MainActivity", "onTextChanged: $text")
-                    if (text != null) deviceName.editText!!.setText(text)
+                    if (text != null) {
+                        deviceName.editText!!.setText(text)
+                        val deviceRegionsAdapter = ArrayAdapter(
+                            this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.existRegions(DeviceInfoHelper.codeName(text)!!)
+                        )
+                        (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionsAdapter)
+                    } else (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(regionsDropDownList)
                 }
 
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -129,8 +133,12 @@ class MainActivity : AppCompatActivity() {
                     } catch (ex: Exception) {
                         null
                     }
-                    Log.d("MainActivity", "onTextChanged: $text")
-                    if (text != null) codeName.editText!!.setText(text)
+                    if (text != null) {
+                        codeName.editText!!.setText(text)
+                        val deviceRegionsAdapter =
+                            ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.existRegions(text))
+                        (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionsAdapter)
+                    } else (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(regionsDropDownList)
                 }
 
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -220,15 +228,6 @@ class MainActivity : AppCompatActivity() {
                         val regionsText = deviceRegions.editText?.text.toString()
                         val codeNameText = codeName.editText?.text.toString()
                         val deviceNameText = deviceName.editText?.text.toString()
-
-                        withContext(Dispatchers.Main) {
-                            // Show a toast if the region does not exist.
-                            val isExistRegions = DeviceInfoHelper.isExistRegions(codeNameText, regionsText)
-                            if (!isExistRegions) {
-                                MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.non_region), 0)
-                                throw NoSuchFieldException()
-                            }
-                        }
 
                         val codeNameTextExtR = codeNameText + DeviceInfoHelper.regions(codeNameText, regionsText)
                         val androidVersionText = androidVersion.editText?.text.toString()

@@ -36,5 +36,4 @@
     <string name="logout_desc">确定要登出么？</string>
     <string name="filemd5">文件MD5</string>
     <string name="regions_code">区域代号</string>
-    <string name="non_region">此设备不存在该地区版本！</string>
 </resources>
