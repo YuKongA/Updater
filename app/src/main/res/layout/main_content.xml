@@ -66,11 +66,33 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/device_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:hint="@string/device_name"
+            app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
+            app:startIconDrawable="@drawable/ic_developer_mode">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/device_name_dropdown"
+                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:textSize="16sp"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/code_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:hint="@string/codename"
+            android:hint="@string/code_name"
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_developer_mode">
 
@@ -82,6 +104,26 @@
                 android:completionThreshold="1"
                 android:imeOptions="actionNext"
                 android:singleLine="true"
+                android:textSize="16sp"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/device_regions"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:hint="@string/regions_code"
+            app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
+            app:startIconDrawable="@drawable/ic_developer_mode">
+
+            <top.yukonga.update.logic.view.CustomMaterialAutoCompleteTextView
+                android:id="@+id/device_regions_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
                 android:textSize="16sp"
                 tools:ignore="LabelFor" />
 
@@ -152,7 +194,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="@string/codename"
+                        android:text="@string/code_name"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -341,6 +383,32 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filesize_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="24dp"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filemd5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:gravity="center_vertical"
+                        android:text="@string/filemd5"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/filemd5_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="24dp"

@@ -5,9 +5,10 @@
     <string name="app_summary">Get HyperOS/MIUI update info</string>
     <string name="app_github">View source code on &lt;a href="https://github.com/YuKongA/Updater">GitHub&lt;/a></string>
     <string name="login">Login</string>
-    <string name="codename">Codename</string>
-    <string name="system_version">System version</string>
-    <string name="android_version">Android version</string>
+    <string name="code_name">Code Name</string>
+    <string name="device_name">Device Name</string>
+    <string name="system_version">System Version</string>
+    <string name="android_version">Android Version</string>
     <string name="submit">Submit</string>
     <string name="big_version">Major Version</string>
     <string name="filename">File Name</string>
@@ -42,4 +43,6 @@
     <string name="confirm">Confirm</string>
     <string name="logout_successful">Logout successful</string>
     <string name="logout_desc">Are you sure you want to logouy?</string>
+    <string name="filemd5">File MD5</string>
+    <string name="regions_code">Regions code</string>
 </resources>

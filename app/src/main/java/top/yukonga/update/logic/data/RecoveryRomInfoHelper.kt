@@ -2,7 +2,7 @@ package top.yukonga.update.logic.data
 
 import com.google.gson.annotations.SerializedName
 
-object InfoHelper {
+object RecoveryRomInfoHelper {
 
     data class RomInfo(
         @SerializedName("CurrentRom") val currentRom: CurrentRom? = null,

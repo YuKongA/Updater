@@ -3,7 +3,8 @@
     <string name="app_summary">获取 HyperOS/MIUI 更新信息</string>
     <string name="app_github">在 &lt;a href="https://github.com/YuKongA/Updater">GitHub&lt;/a> 查看源码</string>
     <string name="login">登录</string>
-    <string name="codename">设备代号</string>
+    <string name="code_name">设备代号</string>
+    <string name="device_name">设备名称</string>
     <string name="system_version">系统版本</string>
     <string name="android_version">安卓版本</string>
     <string name="submit">提交</string>
@@ -13,14 +14,14 @@
     <string name="download">下载链接</string>
     <string name="changelog">更新日志</string>
     <string name="branch">分支</string>
-    <string name="toast_no_info">未获取到有效信息!</string>
+    <string name="toast_no_info">未获取到有效信息！</string>
     <string name="toast_copied_to_pasteboard">已复制到剪贴板</string>
     <string name="account">账号</string>
     <string name="password">密码</string>
     <string name="cancel">取消</string>
     <string name="logging_in">登录中</string>
     <string name="login_successful">登录成功</string>
-    <string name="request_sign_failed">请求 _sign 失败</string>
+    <string name="request_sign_failed">请求 _sign 失败！</string>
     <string name="account_or_password_empty">账号或密码为空</string>
     <string name="no_account">未登录</string>
     <string name="login_desc">正在使用 v1 接口\n通过顶栏右侧按钮登录账号</string>
@@ -33,4 +34,6 @@
     <string name="confirm">确定</string>
     <string name="logout_successful">登出成功</string>
     <string name="logout_desc">确定要登出么？</string>
+    <string name="filemd5">文件MD5</string>
+    <string name="regions_code">区域代号</string>
 </resources>
