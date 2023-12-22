@@ -22,5 +22,5 @@ object AppUtils {
 
     val androidDropDownList = arrayOf("14", "13", "12", "11")
 
-    val regionsDropDownList = arrayOf("CN", "MI", "EU", "RU", "TW", "ID", "TR", "JP", "IN")
+    val regionsDropDownList = arrayOf("CN", "GL", "EEA", "RU", "TW", "ID", "TR", "JP", "IN")
 }

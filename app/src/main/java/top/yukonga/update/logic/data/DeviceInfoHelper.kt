@@ -6,7 +6,7 @@ object DeviceInfoHelper {
 
     data class DeviceRegions(val codeNameExt: String, val version: String)
 
-    data class Device(val deviceName: String, val codeName: String, val deviceCode: String, val regions: List<DeviceRegions>)
+    data class Device(val deviceName: String, val codeName: String, val deviceCode: String, val regionCode: List<DeviceRegions>)
 
     private val androidR = AndroidVersion("11", "R")
     private val androidS = AndroidVersion("12", "S")
@@ -16,8 +16,8 @@ object DeviceInfoHelper {
     private val androids = listOf(androidR, androidS, androidT, androidU)
 
     private val CN = DeviceRegions("", "CN")
-    private val GL = DeviceRegions("_global", "MI")
-    private val EEA = DeviceRegions("_eea_global", "EU")
+    private val GL = DeviceRegions("_global", "GL") // MI
+    private val EEA = DeviceRegions("_eea_global", "EEA")  // EU
     private val RU = DeviceRegions("_ru_global", "RU")
     private val TW = DeviceRegions("_tw_global", "TW")
     private val ID = DeviceRegions("_id_global", "ID")
@@ -174,18 +174,19 @@ object DeviceInfoHelper {
 
     fun regions(codeName: String, regions: String): String {
         val device = devices.find { it.codeName == codeName } ?: return ""
-        val newRegions = device.regions.find { it.version == regions } ?: return ""
+        val newRegions = device.regionCode.find { it.version == regions } ?: return ""
         return newRegions.codeNameExt
     }
 
     fun existRegions(codeName: String): List<String> {
         val device = devices.find { it.codeName == codeName } ?: return emptyList()
-        return device.regions.map { it.version }
+        return device.regionCode.map { it.version }
     }
 
     fun deviceCode(android: String, codeName: String, variant: String): String {
         val newAndroid = androids.find { it.version == android } ?: return ""
         val device = devices.find { it.codeName == codeName } ?: return ""
-        return "${newAndroid.android}${device.deviceCode}${variant}${Xiaomi}"
+        val newVariant = variant.replace("GL", "MI").replace("EEA", "EU")
+        return "${newAndroid.android}${device.deviceCode}${newVariant}${Xiaomi}"
     }
 }
