@@ -11,8 +11,8 @@ import android.widget.Filterable
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 
-class CustomAdapter(context: Context, @LayoutRes val resource: Int, private var showData: MutableList<String>) : BaseAdapter(), Filterable {
-    private val listForRemember: MutableList<String> = showData
+class CustomArrayAdapter(context: Context, @LayoutRes val resource: Int, private var showData: List<String>) : BaseAdapter(), Filterable {
+    private val listForRemember = ArrayList(showData)
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var customAdapterFilter: CustomAdapterFilter? = null
 
