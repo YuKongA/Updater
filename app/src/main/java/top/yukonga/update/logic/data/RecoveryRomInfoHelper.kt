@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 object RecoveryRomInfoHelper {
 
     data class RomInfo(
+        @SerializedName("AuthResult") val authResult: Int? = null,
         @SerializedName("CurrentRom") val currentRom: CurrentRom? = null,
         @SerializedName("LatestRom") val latestRom: LatestRom? = null,
     )

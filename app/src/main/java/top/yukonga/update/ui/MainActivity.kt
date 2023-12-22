@@ -136,8 +136,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     if (text != null) {
                         codeName.editText!!.setText(text)
-                        val deviceRegionsAdapter =
-                            ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.existRegions(text))
+                        val deviceRegionsAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.existRegions(text))
                         (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionsAdapter)
                     } else (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setSimpleItems(regionsDropDownList)
                 }
@@ -233,18 +232,27 @@ class MainActivity : AppCompatActivity() {
                         val codeNameTextExtR = codeNameText + DeviceInfoHelper.regions(codeNameText, regionsText)
                         val androidVersionText = androidVersion.editText?.text.toString()
                         val systemVersionText = systemVersion.editText?.text.toString()
-                        val systemVersionTextExt =
-                            systemVersionText.replace("OS1", "V816").replace("AUTO", DeviceInfoHelper.deviceCode(androidVersionText, codeNameText, regionsText))
+                        val systemVersionTextExt = systemVersionText
+                            .replace("OS1", "V816")
+                            .replace("AUTO", DeviceInfoHelper.deviceCode(androidVersionText, codeNameText, regionsText))
 
                         // Acquire ROM info.
                         val recoveryRomInfo = InfoUtils.getRecoveryRomInfo(
-                            this@MainActivity, codeNameTextExtR, systemVersionTextExt, androidVersionText
+                            this@MainActivity,
+                            codeNameTextExtR,
+                            systemVersionTextExt,
+                            androidVersionText
                         ).parseJSON<RecoveryRomInfoHelper.RomInfo>()
 
                         // val fastbootRomInfo = InfoUtils.getFastbootRomInfo(codeNameTextExtR).parseJSON<FastbootRomInfoHelper.RomInfo>()
 
-                        prefs.edit().putString("deviceName", deviceNameText).putString("codeName", codeNameText).putString("regions", regionsText)
-                            .putString("systemVersion", systemVersionText).putString("androidVersion", androidVersionText).apply()
+                        prefs.edit()
+                            .putString("deviceName", deviceNameText)
+                            .putString("codeName", codeNameText)
+                            .putString("regions", regionsText)
+                            .putString("systemVersion", systemVersionText)
+                            .putString("androidVersion", androidVersionText)
+                            .apply()
 
                         withContext(Dispatchers.Main) {
 
@@ -255,6 +263,16 @@ class MainActivity : AppCompatActivity() {
                                 throw NoSuchFieldException()
                             } else {
                                 activityMainBinding.implement.shrink()
+                            }
+
+                            // Show a toast if we detect that the login has expired
+                            val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
+                            if (cookiesFile.isNotEmpty()) {
+                                val cookies = Gson().fromJson(cookiesFile, Map::class.java)
+                                val description = if (cookies["description"] != null) cookies["description"].toString() else ""
+                                if (description == "成功" && recoveryRomInfo.authResult != 1) {
+                                    MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.login_expired), 0)
+                                }
                             }
 
                             firstViewTitleArray.forEach {

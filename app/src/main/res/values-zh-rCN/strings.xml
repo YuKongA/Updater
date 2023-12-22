@@ -36,4 +36,5 @@
     <string name="logout_desc">确定要登出么？</string>
     <string name="filemd5">文件MD5</string>
     <string name="regions_code">区域代号</string>
+    <string name="login_expired">检测到登录已过期，建议重新登录</string>
 </resources>
