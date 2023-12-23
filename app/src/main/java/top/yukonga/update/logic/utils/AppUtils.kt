@@ -19,8 +19,4 @@ object AppUtils {
     fun getProp(mKey: String, defaultValue: Boolean): Boolean =
         Class.forName("android.os.SystemProperties").getMethod("getBoolean", String::class.java, Boolean::class.javaPrimitiveType)
             .invoke(Class.forName("android.os.SystemProperties"), mKey, defaultValue) as Boolean
-
-    val androidDropDownList = arrayOf("14", "13", "12", "11")
-
-    val regionsDropDownList = arrayOf("CN", "GL", "EEA", "RU", "TW", "ID", "TR", "JP", "IN")
 }
