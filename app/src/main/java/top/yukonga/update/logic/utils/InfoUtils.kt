@@ -12,11 +12,12 @@ import java.util.Base64
 
 object InfoUtils {
 
-    private const val recoveryUrl = "https://update.miui.com/updates/miotaV3.php"
+    private const val cnRecoveryUrl = "https://update.miui.com/updates/miotaV3.php"
+    private const val intlRecoveryUrl = "https://update.intl.miui.com/updates/miotaV3.php"
     private const val fastbootUrl = "https://update.miui.com/updates/miota-fullrom.php"
     private var securityKey = "miuiotavalided11"
 
-    private fun generateJson(device: String, version: String, android: String, userId: String): String {
+    private fun generateJson(device: String, region: String, version: String, android: String, userId: String): String {
         val data = mutableMapOf<String, Any>()
         data["id"] = userId
         data["c"] = android
@@ -24,27 +25,30 @@ object InfoUtils {
         data["f"] = "1"
         data["ov"] = version
         data["l"] = if (!device.contains("_global")) "zh_CN" else "en_US"
-        data["r"] = if (!device.contains("_global")) "CN" else "GL"
+        data["r"] = region.replace("GL", "MI").replace("EEA", "EU")
         data["v"] = "miui-${version}"
         return Gson().toJson(data)
     }
 
-    fun getRecoveryRomInfo(context: Context, codename: String, romVersion: String, androidVersion: String): String {
+    fun getRecoveryRomInfo(context: Context, codeName: String, regionCode: String, romVersion: String, androidVersion: String): String {
         var userId = ""
+        var accountType = "CN"
         var securityKey = securityKey.toByteArray(Charsets.UTF_8)
         var serviceToken = ""
         var port = "1"
         val cookiesFile = readFile(context, "cookies.json")
         if (cookiesFile.isNotEmpty()) {
             val cookies = Gson().fromJson(cookiesFile, Map::class.java)
-            userId = cookies["userId"] as String
-            securityKey = Base64.getDecoder().decode((cookies["ssecurity"] as String))
-            serviceToken = cookies["serviceToken"] as String
+            userId = cookies["userId"].toString()
+            accountType = if (cookies["accountType"].toString() != "") cookies["accountType"].toString() else "CN"
+            securityKey = Base64.getDecoder().decode((cookies["ssecurity"].toString()))
+            serviceToken = cookies["serviceToken"].toString()
             port = "2"
         }
-        val jsonData = generateJson(codename, romVersion, androidVersion, userId)
+        val jsonData = generateJson(codeName, regionCode, romVersion, androidVersion, userId)
         val encryptedText = miuiEncrypt(jsonData, securityKey)
         val requestBody = FormBody.Builder().add("q", encryptedText).add("t", serviceToken).add("s", port).build()
+        val recoveryUrl = if (accountType == "GL") intlRecoveryUrl else cnRecoveryUrl
         val postRequest = postRequest(recoveryUrl, requestBody)
         val requestedEncryptedText = postRequest.body?.string() ?: ""
         return miuiDecrypt(requestedEncryptedText, securityKey)

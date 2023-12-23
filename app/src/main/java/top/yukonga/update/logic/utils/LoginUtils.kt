@@ -22,7 +22,7 @@ class LoginUtils {
     private val mediaType = "application/x-www-form-urlencoded".toMediaType()
     private val gson = GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LAZILY_PARSED_NUMBER).disableHtmlEscaping().create()
 
-    suspend fun login(context: Context, account: String, password: String): Boolean {
+    suspend fun login(context: Context, account: String, password: String, global: String): Boolean {
         withContext(Dispatchers.Main) {
             if (account.isEmpty() || password.isEmpty()) {
                 showStringToast(context, context.getString(R.string.account_or_password_empty), 0)
@@ -44,7 +44,9 @@ class LoginUtils {
             return false
         }
 
-        val data = "_json=true&bizDeviceType=&user=$account&hash=$passwordHash&sid=miuiromota&_sign=$_sign&_locale=zh_CN"
+        val sid = if (global == "1") "miuiota_intl" else "miuiromota"
+        val _locale = if (global == "1") "en_US" else "zh_CN"
+        val data = "_json=true&bizDeviceType=&user=$account&hash=$passwordHash&sid=$sid&_sign=$_sign&_locale=$_locale"
         val requestBody = data.toRequestBody(mediaType)
         val response2 = postRequest(loginAuth2Url, requestBody)
 
@@ -54,6 +56,7 @@ class LoginUtils {
         val ssecurity = auth["ssecurity"].toString()
         val location = auth["location"].toString()
         val userId = auth["userId"].toString()
+        val accountType = if (global == "1") "GL" else "CN"
 
         if (description != "成功") {
             withContext(Dispatchers.Main) {
@@ -79,6 +82,7 @@ class LoginUtils {
 
         val json = mutableMapOf<String, String>()
         json["description"] = description
+        json["accountType"] = accountType
         json["userId"] = userId
         json["ssecurity"] = ssecurity
         json["serviceToken"] = serviceToken

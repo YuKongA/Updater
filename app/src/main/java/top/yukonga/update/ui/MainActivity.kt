@@ -23,6 +23,7 @@ import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -240,6 +241,7 @@ class MainActivity : AppCompatActivity() {
                         val recoveryRomInfo = InfoUtils.getRecoveryRomInfo(
                             this@MainActivity,
                             codeNameTextExtR,
+                            regionsText,
                             systemVersionTextExt,
                             androidVersionText
                         ).parseJSON<RecoveryRomInfoHelper.RomInfo>()
@@ -378,21 +380,42 @@ class MainActivity : AppCompatActivity() {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             orientation = LinearLayout.VERTICAL
         }
+        val switch = MaterialSwitch(this@MainActivity).apply {
+            text = prefs.getString("global", "")?.let {
+                if (it == "1") getString(R.string.global) else getString(R.string.china)
+            } ?: getString(R.string.china)
+            isChecked = prefs.getString("global", "") == "1"
+            textSize = 16f
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                setMargins(28.dp, 8.dp, 28.dp, 0.dp)
+            }
+        }
+        switch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                buttonView.text = getString(R.string.global)
+                prefs.edit().putString("global", "1").apply()
+            } else {
+                buttonView.text = getString(R.string.china)
+                prefs.edit().putString("global", "0").apply()
+            }
+        }
         val inputAccountLayout = createTextInputLayout(getString(R.string.account))
         val inputAccount = createTextInputEditText()
         inputAccountLayout.addView(inputAccount)
         val inputPasswordLayout = createTextInputLayout(getString(R.string.password), TextInputLayout.END_ICON_PASSWORD_TOGGLE)
         val inputPassword = createTextInputEditText(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         inputPasswordLayout.addView(inputPassword)
+        view.addView(switch)
         view.addView(inputAccountLayout)
         view.addView(inputPasswordLayout)
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         builder.setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
         builder.setPositiveButton(getString(R.string.login)) { _, _ ->
+            val global = prefs.getString("global", "") ?: ""
             val mInputAccount = inputAccount.text.toString()
             val mInputPassword = inputPassword.text.toString()
             CoroutineScope(Dispatchers.Default).launch {
-                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword)
+                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
                 if (isValid) {
                     withContext(Dispatchers.Main) {
                         mainContentBinding.apply {
