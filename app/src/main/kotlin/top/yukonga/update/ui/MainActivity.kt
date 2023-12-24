@@ -367,23 +367,16 @@ class MainActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
         }
         val switch = MaterialSwitch(this@MainActivity).apply {
-            text = prefs.getString("global", "")?.let {
-                if (it == "1") getString(R.string.global) else getString(R.string.china)
-            } ?: getString(R.string.china)
+            text = getString(R.string.global)
             isChecked = prefs.getString("global", "") == "1"
             textSize = 16f
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
                 setMargins(28.dp, 8.dp, 28.dp, 0.dp)
             }
         }
-        switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                buttonView.text = getString(R.string.global)
-                prefs.edit().putString("global", "1").apply()
-            } else {
-                buttonView.text = getString(R.string.china)
-                prefs.edit().putString("global", "0").apply()
-            }
+        switch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) prefs.edit().putString("global", "1").apply()
+            else prefs.edit().putString("global", "0").apply()
         }
         val inputAccountLayout = createTextInputLayout(getString(R.string.account))
         val inputAccount = createTextInputEditText()
@@ -397,7 +390,7 @@ class MainActivity : AppCompatActivity() {
         val builder = MaterialAlertDialogBuilder(this@MainActivity)
         builder.setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
         builder.setPositiveButton(getString(R.string.login)) { _, _ ->
-            val global = prefs.getString("global", "") ?: ""
+            val global = prefs.getString("global", "") ?: "0"
             val mInputAccount = inputAccount.text.toString()
             val mInputPassword = inputPassword.text.toString()
             CoroutineScope(Dispatchers.Default).launch {

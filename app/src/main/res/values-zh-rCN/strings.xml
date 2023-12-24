@@ -37,6 +37,5 @@
     <string name="filemd5">文件MD5</string>
     <string name="regions_code">区域代号</string>
     <string name="login_expired">检测到登录已过期，建议重新登录</string>
-    <string name="china">国区账号</string>
-    <string name="global">海外账号</string>
+    <string name="global">全球账号</string>
 </resources>

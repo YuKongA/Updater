@@ -46,6 +46,5 @@
     <string name="filemd5">File MD5</string>
     <string name="regions_code">Regions code</string>
     <string name="login_expired">Checked that the login has expired. It is recommended to log in again</string>
-    <string name="china">Chinese account</string>
     <string name="global">Global account</string>
 </resources>

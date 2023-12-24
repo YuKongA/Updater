@@ -37,6 +37,5 @@
     <string name="filemd5">檔案MD5</string>
     <string name="regions_code">區域代號</string>
     <string name="login_expired">偵測到登陸已過期，建議重新登陸</string>
-    <string name="china">國區帳戶</string>
-    <string name="global">海外帳戶</string>
+    <string name="global">全球帳戶</string>
 </resources>
