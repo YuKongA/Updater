@@ -18,15 +18,16 @@ object InfoUtils {
     private var securityKey = "miuiotavalided11"
 
     private fun generateJson(device: String, region: String, version: String, android: String, userId: String): String {
-        val data = mutableMapOf<String, Any>()
-        data["id"] = userId
-        data["c"] = android
-        data["d"] = device
-        data["f"] = "1"
-        data["ov"] = version
-        data["l"] = if (!device.contains("_global")) "zh_CN" else "en_US"
-        data["r"] = region.replace("GL", "MI").replace("EEA", "EU")
-        data["v"] = "miui-${version}"
+        val data = mutableMapOf<String, Any>(
+            "id" to userId,
+            "c" to android,
+            "d" to device,
+            "f" to "1",
+            "ov" to version,
+            "l" to if (!device.contains("_global")) "zh_CN" else "en_US",
+            "r" to region.replace("GL", "MI").replace("EEA", "EU"),
+            "v" to "miui-$version"
+        )
         return Gson().toJson(data)
     }
 
@@ -40,7 +41,7 @@ object InfoUtils {
         if (cookiesFile.isNotEmpty()) {
             val cookies = Gson().fromJson(cookiesFile, Map::class.java)
             userId = cookies["userId"].toString()
-            accountType = if (cookies["accountType"].toString() != "") cookies["accountType"].toString() else "CN"
+            accountType = cookies["accountType"].toString().ifEmpty { "CN" }
             securityKey = Base64.getDecoder().decode((cookies["ssecurity"].toString()))
             serviceToken = cookies["serviceToken"].toString()
             port = "2"
