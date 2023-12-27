@@ -80,12 +80,13 @@ class LoginUtils {
         val cookies = response3.headers("Set-Cookie").joinToString("; ") { it.split(";")[0] }
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
 
-        val json = mutableMapOf<String, String>()
-        json["description"] = description
-        json["accountType"] = accountType
-        json["userId"] = userId
-        json["ssecurity"] = ssecurity
-        json["serviceToken"] = serviceToken
+        val json = mutableMapOf(
+            "description" to description,
+            "accountType" to accountType,
+            "userId" to userId,
+            "ssecurity" to ssecurity,
+            "serviceToken" to serviceToken
+        )
 
         withContext(Dispatchers.Main) {
             saveFile(context, "cookies.json", gson.toJson(json))
