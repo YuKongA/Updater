@@ -64,6 +64,9 @@ android {
         viewBinding = true
         buildConfig = true
     }
+    androidResources {
+        generateLocaleConfig = true
+    }
     packaging {
         resources {
             excludes += "**"
