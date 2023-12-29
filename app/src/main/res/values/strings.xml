@@ -42,9 +42,9 @@
     <string name="logout">Logout</string>
     <string name="confirm">Confirm</string>
     <string name="logout_successful">Logout successful</string>
-    <string name="logout_desc">Are you sure you want to logouy?</string>
+    <string name="logout_desc">Are you sure you want to logout?</string>
     <string name="filemd5">File MD5</string>
     <string name="regions_code">Regions code</string>
-    <string name="login_expired">Checked that the login has expired. It is recommended to log in again</string>
+    <string name="login_expired">Checked that the login has expired. It is recommended to log in again.</string>
     <string name="global">Global account</string>
 </resources>
