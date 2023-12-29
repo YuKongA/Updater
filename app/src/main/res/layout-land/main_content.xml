@@ -25,7 +25,7 @@
             app:layout_constraintWidth_percent="0.35">
 
             <com.google.android.material.card.MaterialCardView
-                style="?materialCardViewElevatedStyle"
+                style="?materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
                 app:cardBackgroundColor="?attr/colorPrimaryContainer">
@@ -186,8 +186,6 @@
             android:id="@+id/linearLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/linearLayout"
@@ -198,6 +196,8 @@
                 style="?materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible">
@@ -205,8 +205,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="18dp">
+                    android:layout_margin="18dp"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -354,7 +354,9 @@
                 style="?materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="18dp"
+                android:layout_marginEnd="32dp"
                 android:orientation="vertical"
                 android:visibility="gone"
                 tools:visibility="visible">
@@ -362,8 +364,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="18dp">
+                    android:layout_margin="18dp"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -475,7 +477,9 @@
                 style="?materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="18dp"
+                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="120dp"
                 android:orientation="vertical"
                 android:visibility="gone"
@@ -484,8 +488,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="18dp">
+                    android:layout_margin="18dp"
+                    android:orientation="vertical">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"
@@ -506,6 +510,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:elegantTextHeight="true"
                             android:text="@string/official"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textIsSelectable="true"
@@ -521,10 +526,10 @@
                                 android:id="@+id/official_copy"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="48dp"
                                 android:layout_marginEnd="18dp"
+                                android:elegantTextHeight="true"
                                 android:minWidth="0dp"
-
                                 android:minHeight="0dp"
                                 android:text="@string/copy_buttom" />
 
@@ -532,7 +537,8 @@
                                 android:id="@+id/official_download"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="48dp"
+                                android:elegantTextHeight="true"
                                 android:minWidth="0dp"
                                 android:minHeight="0dp"
                                 android:text="@string/download_buttom" />
@@ -550,6 +556,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:elegantTextHeight="true"
                             android:text="@string/cdn1"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textIsSelectable="true"
@@ -565,8 +572,9 @@
                                 android:id="@+id/cdn1_copy"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="48dp"
                                 android:layout_marginEnd="18dp"
+                                android:elegantTextHeight="true"
                                 android:minWidth="0dp"
                                 android:minHeight="0dp"
                                 android:text="@string/copy_buttom" />
@@ -575,7 +583,8 @@
                                 android:id="@+id/cdn1_download"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="48dp"
+                                android:elegantTextHeight="true"
                                 android:minWidth="0dp"
                                 android:minHeight="0dp"
                                 android:text="@string/download_buttom" />
@@ -593,6 +602,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:elegantTextHeight="true"
                             android:text="@string/cdn2"
                             android:textColor="?attr/colorOnSurfaceVariant"
                             android:textIsSelectable="true"
@@ -608,9 +618,9 @@
                                 android:id="@+id/cdn2_copy"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
-
-                                android:layout_height="wrap_content"
+                                android:layout_height="48dp"
                                 android:layout_marginEnd="18dp"
+                                android:elegantTextHeight="true"
                                 android:minWidth="0dp"
                                 android:minHeight="0dp"
                                 android:text="@string/copy_buttom" />
@@ -619,7 +629,8 @@
                                 android:id="@+id/cdn2_download"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="48dp"
+                                android:elegantTextHeight="true"
                                 android:minWidth="0dp"
                                 android:minHeight="0dp"
                                 android:text="@string/download_buttom" />

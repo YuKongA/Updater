@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            style="?materialCardViewElevatedStyle"
+            style="?materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="85dp"
             android:layout_marginStart="24dp"
