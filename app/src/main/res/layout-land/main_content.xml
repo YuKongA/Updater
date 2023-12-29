@@ -29,6 +29,7 @@
                 style="?materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
                 app:cardBackgroundColor="?attr/colorPrimaryContainer">
 
                 <LinearLayout
@@ -81,7 +82,7 @@
                 android:id="@+id/device_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
                 android:hint="@string/device_name"
                 app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
                 app:startIconDrawable="@drawable/ic_device">
@@ -103,7 +104,7 @@
                 android:id="@+id/code_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
                 android:hint="@string/code_name"
                 app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
                 app:startIconDrawable="@drawable/ic_developer_mode">
@@ -126,7 +127,7 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
                 android:hint="@string/regions_code"
                 app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
                 app:startIconDrawable="@drawable/ic_region">
@@ -145,7 +146,7 @@
                 android:id="@+id/system_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
                 android:hint="@string/system_version"
                 app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
                 app:startIconDrawable="@drawable/ic_conversion_path">
@@ -165,7 +166,7 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
                 android:hint="@string/android_version"
                 app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
                 app:startIconDrawable="@drawable/ic_android">
@@ -212,13 +213,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="18dp"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/codename"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="18dp"
                             android:contentDescription="@string/code_name"
                             android:gravity="center_vertical"
                             android:text="@string/code_name"
@@ -240,13 +241,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="18dp"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/system"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="18dp"
                             android:contentDescription="@string/system_version"
                             android:gravity="center_vertical"
                             android:text="@string/system_version"
@@ -268,13 +269,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="18dp"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/big_version"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="18dp"
                             android:contentDescription="@string/big_version"
                             android:gravity="center_vertical"
                             android:text="@string/big_version"
@@ -296,13 +297,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="18dp"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/codebase"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="18dp"
                             android:contentDescription="@string/android_version"
                             android:gravity="center_vertical"
                             android:text="@string/android_version"
