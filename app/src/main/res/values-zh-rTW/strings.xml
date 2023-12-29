@@ -13,7 +13,7 @@
     <string name="filesize">檔案大小</string>
     <string name="download">下載連結</string>
     <string name="changelog">更新日誌</string>
-    <string name="branch">分支</string>
+    <string name="branch">版本分支</string>
     <string name="toast_no_info">未取得到有效讯息！</string>
     <string name="toast_copied_to_pasteboard">已複製到剪貼簿</string>
     <string name="account">帳戶</string>
