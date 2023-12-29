@@ -13,7 +13,7 @@
     <string name="filesize">文件大小</string>
     <string name="download">下载链接</string>
     <string name="changelog">更新日志</string>
-    <string name="branch">分支</string>
+    <string name="branch">版本分支</string>
     <string name="toast_no_info">未获取到有效信息！</string>
     <string name="toast_copied_to_pasteboard">已复制到剪贴板</string>
     <string name="account">账号</string>
@@ -34,8 +34,7 @@
     <string name="confirm">确定</string>
     <string name="logout_successful">登出成功</string>
     <string name="logout_desc">确定要登出么？</string>
-    <string name="filemd5">文件MD5</string>
     <string name="regions_code">区域代号</string>
-    <string name="login_expired">检测到登录已过期，建议重新登录</string>
+    <string name="login_expired">检测到登录已过期，建议重新登录。</string>
     <string name="global">全球账号</string>
 </resources>

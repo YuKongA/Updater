@@ -44,6 +44,7 @@ android {
         }
         debug {
             if (keystorePath != null) signingConfig = signingConfigs.getByName("release")
+            applicationIdSuffix = ".debug"
         }
     }
     compileOptions {
@@ -62,6 +63,9 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+    androidResources {
+        generateLocaleConfig = true
     }
     packaging {
         resources {

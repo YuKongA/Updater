@@ -13,7 +13,7 @@
     <string name="filesize">檔案大小</string>
     <string name="download">下載連結</string>
     <string name="changelog">更新日誌</string>
-    <string name="branch">分支</string>
+    <string name="branch">版本分支</string>
     <string name="toast_no_info">未取得到有效讯息！</string>
     <string name="toast_copied_to_pasteboard">已複製到剪貼簿</string>
     <string name="account">帳戶</string>
@@ -34,8 +34,7 @@
     <string name="confirm">確定</string>
     <string name="logout_successful">登出成功</string>
     <string name="logout_desc">確定要登出麼？</string>
-    <string name="filemd5">檔案MD5</string>
     <string name="regions_code">區域代號</string>
-    <string name="login_expired">偵測到登陸已過期，建議重新登陸</string>
+    <string name="login_expired">偵測到登陸已過期，建議重新登陸。</string>
     <string name="global">全球帳戶</string>
 </resources>

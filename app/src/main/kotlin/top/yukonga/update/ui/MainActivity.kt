@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 val secondViewTitleArray = arrayOf(
-                    bigVersion, filename, filesize, filemd5, download, changelog, secondInfo
+                    bigVersion, filename, filesize, download, changelog, secondInfo
                 )
 
                 val firstViewContentArray = arrayOf(
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 val secondViewContentArray = arrayOf(
-                    bigVersionInfo, filenameInfo, filesizeInfo, filemd5Info, changelogInfo
+                    bigVersionInfo, filenameInfo, filesizeInfo, changelogInfo
                 )
 
                 CoroutineScope(Dispatchers.Default).launch {
@@ -297,7 +297,6 @@ class MainActivity : AppCompatActivity() {
 
                                 filenameInfo.setTextAnimation(recoveryRomInfo.currentRom.filename)
                                 filesizeInfo.setTextAnimation(recoveryRomInfo.currentRom.filesize)
-                                filemd5Info.setTextAnimation(recoveryRomInfo.currentRom.md5)
 
                                 val officialLink = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                     R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename

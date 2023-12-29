@@ -9,20 +9,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            style="?materialCardViewElevatedStyle"
+            style="?materialCardViewFilledStyle"
             android:layout_width="match_parent"
-            android:layout_height="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             app:cardBackgroundColor="?attr/colorPrimaryContainer">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginVertical="18dp">
 
                 <ImageView
                     android:id="@+id/login_icon"
@@ -69,7 +71,9 @@
             android:id="@+id/device_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             android:hint="@string/device_name"
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_device">
@@ -91,7 +95,9 @@
             android:id="@+id/code_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             android:hint="@string/code_name"
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_developer_mode">
@@ -114,7 +120,9 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             android:hint="@string/regions_code"
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_region">
@@ -133,7 +141,9 @@
             android:id="@+id/system_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             android:hint="@string/system_version"
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_conversion_path">
@@ -153,7 +163,9 @@
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             android:hint="@string/android_version"
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_android">
@@ -173,7 +185,9 @@
             style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
@@ -181,8 +195,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="18dp">
+                android:layout_margin="18dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -193,6 +207,8 @@
                         android:id="@+id/codename"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="18dp"
+                        android:contentDescription="@string/code_name"
                         android:gravity="center_vertical"
                         android:text="@string/code_name"
                         android:textColor="?attr/colorOnSurface"
@@ -204,7 +220,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1.0"
-                        android:gravity="end"
+                        android:gravity="center_vertical|end"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -219,7 +235,8 @@
                         android:id="@+id/system"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="18dp"
+                        android:contentDescription="@string/system_version"
                         android:gravity="center_vertical"
                         android:text="@string/system_version"
                         android:textColor="?attr/colorOnSurface"
@@ -230,9 +247,8 @@
                         android:id="@+id/system_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
-                        android:gravity="end"
+                        android:gravity="center_vertical|end"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -241,13 +257,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:orientation="horizontal">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/big_version"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="18dp"
+                        android:contentDescription="@string/big_version"
                         android:gravity="center_vertical"
                         android:text="@string/big_version"
                         android:textColor="?attr/colorOnSurface"
@@ -258,9 +276,8 @@
                         android:id="@+id/big_version_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
-                        android:gravity="end"
+                        android:gravity="center_vertical|end"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -275,7 +292,8 @@
                         android:id="@+id/codebase"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="18dp"
+                        android:contentDescription="@string/android_version"
                         android:gravity="center_vertical"
                         android:text="@string/android_version"
                         android:textColor="?attr/colorOnSurface"
@@ -286,9 +304,8 @@
                         android:id="@+id/codebase_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
-                        android:gravity="end"
+                        android:gravity="center_vertical|end"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -303,7 +320,7 @@
                         android:id="@+id/branch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
+                        android:contentDescription="@string/branch"
                         android:gravity="center_vertical"
                         android:text="@string/branch"
                         android:textColor="?attr/colorOnSurface"
@@ -314,9 +331,8 @@
                         android:id="@+id/branch_info"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
                         android:layout_weight="1.0"
-                        android:gravity="end"
+                        android:gravity="center_vertical|end"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -330,7 +346,9 @@
             style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="18dp"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
@@ -338,18 +356,20 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="18dp">
+                android:layout_margin="18dp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
                     android:orientation="vertical">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filename"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/filename"
                         android:gravity="center_vertical"
                         android:text="@string/filename"
                         android:textColor="?attr/colorOnSurface"
@@ -360,7 +380,6 @@
                         android:id="@+id/filename_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="24dp"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -369,12 +388,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
                     android:orientation="vertical">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/filesize"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/filesize"
                         android:gravity="center_vertical"
                         android:text="@string/filesize"
                         android:textColor="?attr/colorOnSurface"
@@ -385,33 +406,6 @@
                         android:id="@+id/filesize_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="24dp"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:textIsSelectable="true"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/filemd5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:baselineAligned="false"
-                        android:gravity="center_vertical"
-                        android:text="@string/filemd5"
-                        android:textColor="?attr/colorOnSurface"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/filemd5_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="24dp"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -427,6 +421,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
+                        android:contentDescription="@string/changelog"
                         android:gravity="center_vertical"
                         android:text="@string/changelog"
                         android:textColor="?attr/colorOnSurface"
@@ -437,7 +432,6 @@
                         android:id="@+id/changelog_info"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dp"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
                         android:textSize="15sp" />
@@ -452,7 +446,8 @@
             style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="120dp"
             android:orientation="vertical"
             android:visibility="gone"
@@ -461,13 +456,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="18dp">
+                android:layout_margin="18dp"
+                android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
                     android:gravity="center_vertical"
                     android:text="@string/download"
                     android:textColor="?attr/colorOnSurface"
@@ -483,6 +477,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:elegantTextHeight="true"
                         android:text="@string/official"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
@@ -496,20 +491,21 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/official_copy"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="18dp"
+                            android:elegantTextHeight="true"
                             android:minWidth="0dp"
-
                             android:minHeight="0dp"
                             android:text="@string/copy_buttom" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/official_download"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:elegantTextHeight="true"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
                             android:text="@string/download_buttom" />
@@ -527,6 +523,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:elegantTextHeight="true"
                         android:text="@string/cdn1"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
@@ -540,19 +537,21 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/cdn1_copy"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="18dp"
+                            android:elegantTextHeight="true"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
                             android:text="@string/copy_buttom" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/cdn1_download"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:elegantTextHeight="true"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
                             android:text="@string/download_buttom" />
@@ -570,6 +569,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:elegantTextHeight="true"
                         android:text="@string/cdn2"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
@@ -583,20 +583,21 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/cdn2_copy"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
-
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="18dp"
+                            android:elegantTextHeight="true"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
                             android:text="@string/copy_buttom" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/cdn2_download"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:elegantTextHeight="true"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
                             android:text="@string/download_buttom" />
