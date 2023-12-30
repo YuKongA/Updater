@@ -95,11 +95,10 @@ class MainActivity : AppCompatActivity() {
             androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
             // Setup DropDownList.
-            val deviceNamesAdapter = CustomArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.deviceNames)
-            val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.codeNames)
-
-            val deviceRegionsAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.regionCodes)
-            val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, DeviceInfoHelper.androidVersion)
+            val deviceNamesAdapter = CustomArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.deviceNames)
+            val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.codeNames)
+            val deviceRegionsAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.regionCodes)
+            val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.androidVersion)
             (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceNamesAdapter)
             (codeName.editText as? MaterialAutoCompleteTextView)?.setAdapter(codeNamesAdapter)
             (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionsAdapter)
