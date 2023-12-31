@@ -27,8 +27,8 @@
     <string name="login_desc">正在使用 v1 接口\n通过顶栏右侧按钮登录账号</string>
     <string name="using_v2">正在使用 v2 接口</string>
     <string name="logged_in">已登录</string>
-    <string name="copy_buttom">复制</string>
-    <string name="download_buttom">下载</string>
+    <string name="copy_button">复制</string>
+    <string name="download_button">下载</string>
     <string name="unknown_error">未知错误</string>
     <string name="logout">登出</string>
     <string name="confirm">确定</string>

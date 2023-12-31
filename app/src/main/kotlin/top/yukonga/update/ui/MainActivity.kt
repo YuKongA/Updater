@@ -297,22 +297,20 @@ class MainActivity : AppCompatActivity() {
                                 filenameInfo.setTextAnimation(recoveryRomInfo.currentRom.filename)
                                 filesizeInfo.setTextAnimation(recoveryRomInfo.currentRom.filesize)
 
+                                official.text = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                else getString(R.string.official, "bigota")
+
                                 val officialLink = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                     R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                 ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                val cdn1Link = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
-                                    R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
-                                ) else getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                val cdn2Link = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
-                                    R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
-                                ) else getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                val cdnLink = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                    R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                ) else getString(R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
 
                                 officialDownload.setDownloadClickListener(recoveryRomInfo.currentRom.filename, officialLink)
-                                cdn1Download.setDownloadClickListener(recoveryRomInfo.currentRom.filename, cdn1Link)
-                                cdn2Download.setDownloadClickListener(recoveryRomInfo.currentRom.filename, cdn2Link)
+                                cdn1Download.setDownloadClickListener(recoveryRomInfo.currentRom.filename, cdnLink)
                                 officialCopy.setCopyClickListener(officialLink)
-                                cdn1Copy.setCopyClickListener(cdn1Link)
-                                cdn2Copy.setCopyClickListener(cdn2Link)
+                                cdn1Copy.setCopyClickListener(cdnLink)
 
                                 val log = StringBuilder()
                                 recoveryRomInfo.currentRom.changelog!!.forEach {
