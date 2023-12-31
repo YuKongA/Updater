@@ -30,11 +30,11 @@
     <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">Logged in</string>
     <string name="official" translatable="false">Official</string>
-    <string name="cdn1" translatable="false">CDN (ks3orig)</string>
+    <string name="cdn1" translatable="false">CDN (orig)</string>
     <string name="cdn2" translatable="false">CDN (airtel)</string>
     <string name="official1_link" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
     <string name="official2_link" translatable="false">https://bigota.d.miui.com/%1$s/%2$s</string>
-    <string name="cdn1_link" translatable="false">http://ks3orig.bigota.d.miui.com/%1$s/%2$s</string>
+    <string name="cdn1_link" translatable="false">http://orig.bigota.d.miui.com/%1$s/%2$s</string>
     <string name="cdn2_link" translatable="false">https://airtel.bigota.d.miui.com/%1$s/%2$s</string>
     <string name="copy_buttom">Copy</string>
     <string name="download_buttom">Download</string>
