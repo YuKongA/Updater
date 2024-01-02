@@ -11,6 +11,7 @@ import android.text.Html
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
+import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -45,7 +46,7 @@ import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.FileUtils
-import top.yukonga.update.logic.utils.FileUtils.downloadFile
+import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
 import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
@@ -56,126 +57,36 @@ class MainActivity : AppCompatActivity() {
     // Start ViewBinding.
     private lateinit var _activityMainBinding: ActivityMainBinding
     private val activityMainBinding get() = _activityMainBinding
-    private val mainContentBinding: MainContentBinding get() = _activityMainBinding.mainContent
+    private val mainContentBinding: MainContentBinding get() = activityMainBinding.mainContent
 
     private lateinit var prefs: SharedPreferences
 
-    lateinit var codeNameWatcher: TextWatcher
-    lateinit var deviceNameWatcher: TextWatcher
+    private lateinit var codeNameWatcher: TextWatcher
+    private lateinit var deviceNameWatcher: TextWatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        // Get SharedPreferences.
+        prefs = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
 
         // Enable edge to edge.
-        enableEdgeToEdge()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.isNavigationBarContrastEnforced = false
-        }
+        setupEdgeToEdge()
 
         // Setup Cutout mode.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val layoutParam = window.attributes
-            layoutParam.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-            window.setAttributes(layoutParam)
-        }
+        setupCutoutMode()
 
         // Inflate view.
-        _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(activityMainBinding.root)
+        inflateView()
 
         // Setup main information.
-        mainContentBinding.apply {
-            // Setup default device information.
-            deviceName.editText!!.setText(prefs.getString("deviceName", ""))
-            codeName.editText!!.setText(prefs.getString("codeName", ""))
-            deviceRegions.editText!!.setText(prefs.getString("regions", ""))
-            systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
-            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
-
-            // Setup DropDownList.
-            val deviceNamesAdapter = CustomArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.deviceNames)
-            val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.codeNames)
-            val deviceRegionsAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.regionCodes)
-            val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.androidVersion)
-            (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceNamesAdapter)
-            (codeName.editText as? MaterialAutoCompleteTextView)?.setAdapter(codeNamesAdapter)
-            (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionsAdapter)
-            (androidVersion.editText as? MaterialAutoCompleteTextView)?.setAdapter(androidVersionAdapter)
-
-            // Setup TextChangedListener.
-            codeNameWatcher = object : TextWatcher {
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    deviceName.editText!!.removeTextChangedListener(deviceNameWatcher)
-                    val text = try {
-                        DeviceInfoHelper.deviceName(s.toString())
-                    } catch (ex: Exception) {
-                        null
-                    }
-                    if (text != null) {
-                        deviceName.editText!!.setText(text)
-                    }
-                }
-
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-                override fun afterTextChanged(s: Editable) {
-                    deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
-                }
-            }
-            deviceNameWatcher = object : TextWatcher {
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    codeName.editText!!.removeTextChangedListener(codeNameWatcher)
-                    val text = try {
-                        DeviceInfoHelper.codeName(s.toString())
-                    } catch (ex: Exception) {
-                        null
-                    }
-                    if (text != null) {
-                        codeName.editText!!.setText(text)
-                    }
-                }
-
-                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-                override fun afterTextChanged(s: Editable) {
-                    codeName.editText!!.addTextChangedListener(codeNameWatcher)
-                }
-            }
-            codeName.editText!!.addTextChangedListener(codeNameWatcher)
-            deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
-        }
+        setupMainInformation()
 
         // Setup TopAppBar.
-        activityMainBinding.topAppBar.apply {
-            setNavigationOnClickListener {
-                showAboutDialog()
-            }
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.login -> showLoginDialog()
-                    R.id.logout -> showLogoutDialog()
-                }
-                false
-            }
-        }
+        setupTopAppBar()
 
         // Check if logged in.
-        val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
-        if (cookiesFile.isNotEmpty()) {
-            val cookies = Gson().fromJson(cookiesFile, Map::class.java)
-            val description = if (cookies["description"] != null) cookies["description"].toString() else ""
-            if (description == "成功") {
-                mainContentBinding.apply {
-                    loginIcon.setImageResource(R.drawable.ic_check_circle)
-                    loginTitle.text = getString(R.string.logged_in)
-                    loginDesc.text = getString(R.string.using_v2)
-                }
-                activityMainBinding.apply {
-                    topAppBar.menu.findItem(R.id.login).isVisible = false
-                    topAppBar.menu.findItem(R.id.logout).isVisible = true
-                }
-            }
-        }
+        checkIfLoggedIn()
     }
 
     override fun onResume() {
@@ -185,16 +96,10 @@ class MainActivity : AppCompatActivity() {
 
             // Hide input method when focus is on dropdown.
             deviceRegionsDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                }
+                if (hasFocus) hideSoftInput(view)
             }
             androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(view.windowToken, 0)
-                }
+                if (hasFocus) hideSoftInput(view)
             }
 
             // Setup Fab OnClickListener.
@@ -253,12 +158,15 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             // Show a toast if we detect that the login has expired
-                            val cookiesFile = FileUtils.readFile(this@MainActivity, "cookies.json")
-                            if (cookiesFile.isNotEmpty()) {
-                                val cookies = Gson().fromJson(cookiesFile, Map::class.java)
-                                val description = if (cookies["description"] != null) cookies["description"].toString() else ""
-                                if (description == "成功" && recoveryRomInfo.authResult != 1) {
-                                    MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.login_expired), 0)
+                            if (FileUtils.cookiesFileExists(this@MainActivity)) {
+                                val cookiesFile = FileUtils.readCookiesFile(this@MainActivity)
+                                val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java) as MutableMap<String, String>
+                                val description = cookies["description"].toString()
+                                val authResult = cookies["authResult"].toString()
+                                if (description.isNotEmpty() && recoveryRomInfo.authResult != 1 && authResult != "-1") {
+                                    cookies["authResult"] = "-1"
+                                    FileUtils.saveCookiesFile(this@MainActivity, Gson().toJson(cookies))
+                                    MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
                                 }
                             }
 
@@ -297,8 +205,9 @@ class MainActivity : AppCompatActivity() {
                                 filenameInfo.setTextAnimation(recoveryRomInfo.currentRom.filename)
                                 filesizeInfo.setTextAnimation(recoveryRomInfo.currentRom.filesize)
 
-                                official.text = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                else getString(R.string.official, "bigota")
+                                official.text =
+                                    if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                    else getString(R.string.official, "bigota")
 
                                 val officialLink = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                     R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
@@ -354,87 +263,70 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _activityMainBinding
+        activityMainBinding
     }
 
     private fun showLoginDialog() {
-        val view = LinearLayout(this@MainActivity).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            orientation = LinearLayout.VERTICAL
-        }
-        val switch = MaterialSwitch(this@MainActivity).apply {
-            text = getString(R.string.global)
-            isChecked = prefs.getString("global", "") == "1"
-            textSize = 16f
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                setMargins(28.dp, 8.dp, 28.dp, 0.dp)
-            }
-        }
-        switch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) prefs.edit().putString("global", "1").apply()
-            else prefs.edit().putString("global", "0").apply()
-        }
+        val view = createDialogView()
+        val switch = createSwitchForLogin()
         val inputAccountLayout = createTextInputLayout(getString(R.string.account))
         val inputAccount = createTextInputEditText()
         inputAccountLayout.addView(inputAccount)
         val inputPasswordLayout = createTextInputLayout(getString(R.string.password), TextInputLayout.END_ICON_PASSWORD_TOGGLE)
         val inputPassword = createTextInputEditText(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         inputPasswordLayout.addView(inputPassword)
-        view.addView(switch)
-        view.addView(inputAccountLayout)
-        view.addView(inputPasswordLayout)
-        val builder = MaterialAlertDialogBuilder(this@MainActivity)
-        builder.setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-        builder.setPositiveButton(getString(R.string.login)) { _, _ ->
-            val global = prefs.getString("global", "") ?: "0"
-            val mInputAccount = inputAccount.text.toString()
-            val mInputPassword = inputPassword.text.toString()
-            CoroutineScope(Dispatchers.Default).launch {
-                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
-                if (isValid) {
-                    withContext(Dispatchers.Main) {
-                        mainContentBinding.apply {
-                            loginIcon.setImageResource(R.drawable.ic_check_circle)
-                            loginTitle.text = getString(R.string.logged_in)
-                            loginDesc.text = getString(R.string.using_v2)
-                        }
-                        activityMainBinding.apply {
-                            topAppBar.menu.findItem(R.id.login).isVisible = false
-                            topAppBar.menu.findItem(R.id.logout).isVisible = true
+        view.apply {
+            addView(switch)
+            addView(inputAccountLayout)
+            addView(inputPasswordLayout)
+        }
+        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view)
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }.setPositiveButton(getString(R.string.login)) { _, _ ->
+                val global = prefs.getString("global", "") ?: "0"
+                val mInputAccount = inputAccount.text.toString()
+                val mInputPassword = inputPassword.text.toString()
+                CoroutineScope(Dispatchers.Default).launch {
+                    val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
+                    if (isValid) {
+                        withContext(Dispatchers.Main) {
+                            mainContentBinding.apply {
+                                loginIcon.setImageResource(R.drawable.ic_check_circle)
+                                loginTitle.text = getString(R.string.logged_in)
+                                loginDesc.text = getString(R.string.using_v2)
+                            }
+                            activityMainBinding.apply {
+                                topAppBar.menu.findItem(R.id.login).isVisible = false
+                                topAppBar.menu.findItem(R.id.logout).isVisible = true
+                            }
                         }
                     }
                 }
-            }
-        }.show()
+            }.show()
     }
 
     private fun showLogoutDialog() {
-        val builder = MaterialAlertDialogBuilder(this@MainActivity)
-        builder.setTitle(getString(R.string.login)).setTitle(getString(R.string.logout)).setMessage(getString(R.string.logout_desc))
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-        builder.setPositiveButton(getString(R.string.confirm)) { _, _ ->
-            CoroutineScope(Dispatchers.Default).launch {
-                LoginUtils().logout(this@MainActivity)
-                withContext(Dispatchers.Main) {
-                    mainContentBinding.apply {
-                        loginIcon.setImageResource(R.drawable.ic_cancel)
-                        loginTitle.text = getString(R.string.no_account)
-                        loginDesc.text = getString(R.string.login_desc)
-                    }
-                    activityMainBinding.apply {
-                        topAppBar.menu.findItem(R.id.login).isVisible = true
-                        topAppBar.menu.findItem(R.id.logout).isVisible = false
+        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setTitle(getString(R.string.logout))
+            .setMessage(getString(R.string.logout_desc)).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                CoroutineScope(Dispatchers.Default).launch {
+                    LoginUtils().logout(this@MainActivity)
+                    withContext(Dispatchers.Main) {
+                        mainContentBinding.apply {
+                            loginIcon.setImageResource(R.drawable.ic_cancel)
+                            loginTitle.text = getString(R.string.no_account)
+                            loginDesc.text = getString(R.string.login_desc)
+                        }
+                        activityMainBinding.apply {
+                            topAppBar.menu.findItem(R.id.login).isVisible = true
+                            topAppBar.menu.findItem(R.id.logout).isVisible = false
+                        }
                     }
                 }
-            }
-        }.show()
+            }.show()
     }
 
     private fun showAboutDialog() {
-        val view = LinearLayout(this@MainActivity).apply {
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-            orientation = LinearLayout.VERTICAL
-        }
+        val view = createDialogView()
         val appSummary = createTextView(getString(R.string.app_summary), 14f, 25.dp, 10.dp, 25.dp, 20.dp)
         val appVersion =
             createTextView(getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 25.dp, 0.dp, 25.dp, 0.dp)
@@ -448,8 +340,150 @@ class MainActivity : AppCompatActivity() {
             addView(appBuild)
             addView(appGithub)
         }
-        val builder = MaterialAlertDialogBuilder(this@MainActivity)
-        builder.setTitle(getString(R.string.app_name)).setIcon(R.drawable.ic_launcher).setView(view).show()
+        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.app_name)).setIcon(R.drawable.ic_launcher).setView(view).show()
+    }
+
+    private fun setupEdgeToEdge() {
+        enableEdgeToEdge()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
+    }
+
+    private fun setupCutoutMode() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val layoutParam = window.attributes
+            layoutParam.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+            window.setAttributes(layoutParam)
+        }
+    }
+
+    private fun inflateView() {
+        _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityMainBinding.root)
+    }
+
+    private fun setupMainInformation() {
+        mainContentBinding.apply {
+            // Setup default device information.
+            deviceName.editText!!.setText(prefs.getString("deviceName", ""))
+            codeName.editText!!.setText(prefs.getString("codeName", ""))
+            deviceRegions.editText!!.setText(prefs.getString("regions", ""))
+            systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
+            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
+
+            // Setup DropDownList.
+            val deviceNamesAdapter = CustomArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.deviceNames)
+            val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.codeNames)
+            val deviceRegionsAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.regionCodes)
+            val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.androidVersion)
+            (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceNamesAdapter)
+            (codeName.editText as? MaterialAutoCompleteTextView)?.setAdapter(codeNamesAdapter)
+            (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionsAdapter)
+            (androidVersion.editText as? MaterialAutoCompleteTextView)?.setAdapter(androidVersionAdapter)
+
+            // Setup TextChangedListener.
+            codeNameWatcher = object : TextWatcher {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    deviceName.editText!!.removeTextChangedListener(deviceNameWatcher)
+                    val text = try {
+                        DeviceInfoHelper.deviceName(s.toString())
+                    } catch (ex: Exception) {
+                        null
+                    }
+                    if (text != null) {
+                        deviceName.editText!!.setText(text)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun afterTextChanged(s: Editable) {
+                    deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
+                }
+            }
+            deviceNameWatcher = object : TextWatcher {
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    codeName.editText!!.removeTextChangedListener(codeNameWatcher)
+                    val text = try {
+                        DeviceInfoHelper.codeName(s.toString())
+                    } catch (ex: Exception) {
+                        null
+                    }
+                    if (text != null) {
+                        codeName.editText!!.setText(text)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                override fun afterTextChanged(s: Editable) {
+                    codeName.editText!!.addTextChangedListener(codeNameWatcher)
+                }
+            }
+            codeName.editText!!.addTextChangedListener(codeNameWatcher)
+            deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
+        }
+    }
+
+    private fun setupTopAppBar() {
+        activityMainBinding.topAppBar.apply {
+            setNavigationOnClickListener {
+                showAboutDialog()
+            }
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.login -> showLoginDialog()
+                    R.id.logout -> showLogoutDialog()
+                }
+                false
+            }
+        }
+    }
+
+    private fun checkIfLoggedIn() {
+        if (FileUtils.cookiesFileExists(this@MainActivity)) {
+            val cookiesFile = FileUtils.readCookiesFile(this@MainActivity)
+            val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java)
+            val description = cookies["description"].toString()
+            val authResult = cookies["authResult"].toString()
+            if (description.isNotEmpty() && authResult == "-1") {
+                mainContentBinding.apply {
+                    loginIcon.setImageResource(R.drawable.ic_error)
+                    loginTitle.text = getString(R.string.login_expired)
+                    loginDesc.text = getString(R.string.login_expired_desc)
+                }
+            } else if (description.isNotEmpty()) {
+                mainContentBinding.apply {
+                    loginIcon.setImageResource(R.drawable.ic_check_circle)
+                    loginTitle.text = getString(R.string.logged_in)
+                    loginDesc.text = getString(R.string.using_v2)
+                }
+                activityMainBinding.apply {
+                    topAppBar.menu.findItem(R.id.login).isVisible = false
+                    topAppBar.menu.findItem(R.id.logout).isVisible = true
+                }
+            }
+        }
+    }
+
+    private fun createDialogView(): LinearLayout {
+        return LinearLayout(this@MainActivity).apply {
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            orientation = LinearLayout.VERTICAL
+        }
+    }
+
+    private fun createSwitchForLogin(): MaterialSwitch {
+        return MaterialSwitch(this@MainActivity).apply {
+            text = getString(R.string.global)
+            isChecked = prefs.getString("global", "") == "1"
+            textSize = 16f
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                setMargins(28.dp, 8.dp, 28.dp, 0.dp)
+            }
+            setOnCheckedChangeListener { _, isChecked ->
+                prefs.edit().putString("global", if (isChecked) "1" else "0").apply()
+            }
+        }
     }
 
     private fun createTextInputLayout(hint: String, endIconMode: Int = TextInputLayout.END_ICON_NONE): TextInputLayout {
@@ -482,26 +516,32 @@ class MainActivity : AppCompatActivity() {
 
     private fun MaterialButton.setDownloadClickListener(filename: String?, link: String) {
         setOnClickListener {
-            filename?.let { downloadFile(this@MainActivity, link, it) }
+            filename?.let { downloadRomFile(this@MainActivity, link, it) }
         }
     }
 
     private fun MaterialButton.setCopyClickListener(link: CharSequence?) {
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         setOnClickListener {
-            val clip = ClipData.newPlainText("label", link)
-            clipboard.setPrimaryClip(clip)
+            copyText(link)
             MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }
     }
 
     private fun MaterialTextView.setCopyClickListener(text: CharSequence?) {
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         setOnClickListener {
-            val clip = ClipData.newPlainText("label", text)
-            clipboard.setPrimaryClip(clip)
+            copyText(text)
             MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }
+    }
+
+    private fun copyText(text: CharSequence?) {
+        val cm: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        cm.setPrimaryClip(ClipData.newPlainText(packageName, text))
+    }
+
+    private fun hideSoftInput(view: View) {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

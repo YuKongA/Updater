@@ -5,25 +5,29 @@ import android.content.Context
 import android.os.Environment
 import androidx.core.net.toUri
 import java.io.File
-import java.io.FileNotFoundException
 
 object FileUtils {
-
-    fun saveFile(context: Context, fileName: String, data: String) {
-        val file = File(context.filesDir, fileName)
-        file.writeText(data)
+    private fun cookiesFile(context: Context): File {
+        return File(context.filesDir, "cookies.json")
     }
 
-    fun readFile(context: Context, fileName: String): String {
-        return try {
-            val file = File(context.filesDir, fileName)
-            file.readText()
-        } catch (e: FileNotFoundException) {
-            ""
-        }
+    fun cookiesFileExists(context: Context): Boolean {
+        return cookiesFile(context).exists()
     }
 
-    fun downloadFile(context: Context, fileLink: String, fileName: String) {
+    fun saveCookiesFile(context: Context, data: String) {
+        cookiesFile(context).writeText(data)
+    }
+
+    fun readCookiesFile(context: Context): String {
+        return cookiesFile(context).readText()
+    }
+
+    fun deleteCookiesFile(context: Context) {
+        cookiesFile(context).delete()
+    }
+
+    fun downloadRomFile(context: Context, fileLink: String, fileName: String) {
         DownloadManager.Request(fileLink.toUri()).apply {
             setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
             setAllowedOverRoaming(false)

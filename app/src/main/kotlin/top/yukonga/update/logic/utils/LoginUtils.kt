@@ -8,7 +8,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import top.yukonga.update.R
-import top.yukonga.update.logic.utils.FileUtils.saveFile
+import top.yukonga.update.logic.utils.FileUtils.deleteCookiesFile
+import top.yukonga.update.logic.utils.FileUtils.saveCookiesFile
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
 import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
@@ -57,6 +58,7 @@ class LoginUtils {
         val location = auth["location"].toString()
         val userId = auth["userId"].toString()
         val accountType = if (global == "1") "GL" else "CN"
+        val authResult = if (auth["result"].toString() == "ok") "1" else "0"
 
         if (description != "成功") {
             withContext(Dispatchers.Main) {
@@ -80,16 +82,17 @@ class LoginUtils {
         val cookies = response3.headers("Set-Cookie").joinToString("; ") { it.split(";")[0] }
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
 
-        val json = mutableMapOf(
+        val json: MutableMap<String, String> = mutableMapOf(
             "description" to description,
             "accountType" to accountType,
             "userId" to userId,
             "ssecurity" to ssecurity,
-            "serviceToken" to serviceToken
+            "serviceToken" to serviceToken,
+            "authResult" to authResult
         )
 
         withContext(Dispatchers.Main) {
-            saveFile(context, "cookies.json", gson.toJson(json))
+            saveCookiesFile(context, gson.toJson(json))
             showStringToast(context, context.getString(R.string.login_successful), 1)
         }
         return true
@@ -97,8 +100,7 @@ class LoginUtils {
 
     suspend fun logout(context: Context) {
         withContext(Dispatchers.Main) {
-            saveFile(context, "cookies.json", "")
-            showStringToast(context, context.getString(R.string.logout_successful), 1)
+            deleteCookiesFile(context)
         }
     }
 

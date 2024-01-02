@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import com.google.gson.Gson
 import top.yukonga.update.BuildConfig
-import top.yukonga.update.logic.utils.AppUtils.getProp
+import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidT
+import top.yukonga.update.logic.utils.AppUtils.isHyperOS
 import top.yukonga.update.logic.utils.miuiStringToast.res.IconParams
 import top.yukonga.update.logic.utils.miuiStringToast.res.Left
 import top.yukonga.update.logic.utils.miuiStringToast.res.Right
@@ -31,8 +31,7 @@ object MiuiStringToast {
     @SuppressLint("WrongConstant")
     fun showStringToast(context: Context, text: String?, colorType: Int?) {
         try {
-            val miCode = if (getProp("ro.miui.ui.version.code") == "") 0 else getProp("ro.miui.ui.version.code").toInt()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && miCode >= 816) {
+            if (atLeastAndroidT() && isHyperOS()) {
                 val textParams = TextParams()
                 textParams.setText(text)
                 textParams.setTextColor(if (colorType == 1) colorToInt("#4CAF50") else colorToInt("#E53935"))
@@ -99,6 +98,5 @@ object MiuiStringToast {
         TEXT_BITMAP("text_bitmap"),
         TEXT_BITMAP_INTENT("text_bitmap_intent"),
         VIDEO_TEXT_TEXT_VIDEO("video_text_text_video")
-
     }
 }

@@ -24,17 +24,19 @@
     <string name="request_sign_failed">請求 _sign 失敗！</string>
     <string name="account_or_password_empty">帳號或密碼為空</string>
     <string name="no_account">未登陸</string>
-    <string name="login_desc">正在使用 v1 端口\n透過頂欄右側按鈕登陸帳戶</string>
+    <string name="login_desc">正在使用 v1 端口</string>
     <string name="using_v2">正在使用 v2 端口</string>
     <string name="logged_in">已登入</string>
     <string name="copy_button">複製</string>
     <string name="download_button">下載</string>
-    <string name="unknown_error">未知錯誤</string>
+    <string name="unknown_error">取得密鑰失敗</string>
     <string name="logout">登出</string>
     <string name="confirm">確定</string>
     <string name="logout_successful">登出成功</string>
     <string name="logout_desc">確定要登出麼？</string>
     <string name="regions_code">區域代號</string>
-    <string name="login_expired">偵測到登陸已過期，建議重新登陸。</string>
+    <string name="login_expired">登陸已過期</string>
+    <string name="login_expired_desc">建议重新登陸</string>
+    <string name="login_expired_dialog">偵測到登陸已過期，建議重新登陸。</string>
     <string name="global">全球帳戶</string>
 </resources>
