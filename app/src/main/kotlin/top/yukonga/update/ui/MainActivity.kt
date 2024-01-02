@@ -45,6 +45,8 @@ import top.yukonga.update.logic.fadInAnimation
 import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
 import top.yukonga.update.logic.utils.AppUtils.dp
+import top.yukonga.update.logic.utils.AppUtils.hapticConfirm
+import top.yukonga.update.logic.utils.AppUtils.hapticReject
 import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
 import top.yukonga.update.logic.utils.InfoUtils
@@ -104,6 +106,8 @@ class MainActivity : AppCompatActivity() {
 
             // Setup Fab OnClickListener.
             activityMainBinding.implement.setOnClickListener {
+
+                hapticConfirm(it)
 
                 val firstViewTitleArray = arrayOf(
                     codename, system, codebase, branch, firstInfo
@@ -281,7 +285,11 @@ class MainActivity : AppCompatActivity() {
             addView(inputPasswordLayout)
         }
         MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view)
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }.setPositiveButton(getString(R.string.login)) { _, _ ->
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                hapticReject(activityMainBinding.topAppBar)
+                dialog.dismiss()
+            }.setPositiveButton(getString(R.string.login)) { _, _ ->
+                hapticConfirm(activityMainBinding.topAppBar)
                 val global = prefs.getString("global", "") ?: "0"
                 val mInputAccount = inputAccount.text.toString()
                 val mInputPassword = inputPassword.text.toString()
@@ -306,8 +314,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLogoutDialog() {
         MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setTitle(getString(R.string.logout))
-            .setMessage(getString(R.string.logout_desc)).setNegativeButton(getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton(getString(R.string.confirm)) { _, _ ->
+            .setMessage(getString(R.string.logout_desc)).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                hapticReject(activityMainBinding.topAppBar)
+                dialog.dismiss()
+            }.setPositiveButton(getString(R.string.confirm)) { _, _ ->
+                hapticConfirm(activityMainBinding.topAppBar)
                 CoroutineScope(Dispatchers.Default).launch {
                     LoginUtils().logout(this@MainActivity)
                     withContext(Dispatchers.Main) {
@@ -427,9 +438,11 @@ class MainActivity : AppCompatActivity() {
     private fun setupTopAppBar() {
         activityMainBinding.topAppBar.apply {
             setNavigationOnClickListener {
+                hapticConfirm(this)
                 showAboutDialog()
             }
             setOnMenuItemClickListener { menuItem ->
+                hapticConfirm(this)
                 when (menuItem.itemId) {
                     R.id.login -> showLoginDialog()
                     R.id.logout -> showLogoutDialog()
@@ -516,12 +529,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun MaterialButton.setDownloadClickListener(filename: String?, link: String) {
         setOnClickListener {
-            filename?.let { downloadRomFile(this@MainActivity, link, it) }
+            filename?.let {
+                hapticConfirm(this)
+                downloadRomFile(this@MainActivity, link, it)
+            }
         }
     }
 
     private fun MaterialButton.setCopyClickListener(link: CharSequence?) {
         setOnClickListener {
+            hapticConfirm(this)
             copyText(link)
             MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }
@@ -529,6 +546,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun MaterialTextView.setCopyClickListener(text: CharSequence?) {
         setOnClickListener {
+            hapticConfirm(this)
             copyText(text)
             MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }

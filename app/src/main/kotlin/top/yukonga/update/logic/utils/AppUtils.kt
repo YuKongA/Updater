@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Environment
 import android.text.TextUtils
 import android.util.TypedValue
+import android.view.HapticFeedbackConstants
+import android.view.View
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream
@@ -14,6 +16,18 @@ import java.io.InputStreamReader
 import java.util.Properties
 
 object AppUtils {
+
+    fun hapticConfirm(view: View) {
+        if (atLeastAndroidR()) view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+        else view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+    }
+
+    fun hapticReject(view: View) {
+        if (atLeastAndroidR()) view.performHapticFeedback(HapticFeedbackConstants.REJECT)
+        else view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+    }
+
+    fun atLeastAndroidR(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
     fun atLeastAndroidT(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
