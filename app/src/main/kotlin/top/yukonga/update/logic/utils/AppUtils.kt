@@ -44,7 +44,7 @@ object AppUtils {
         if (!TextUtils.isEmpty(prop)) return prop
         prop = getPropByStream(name)
         if (!TextUtils.isEmpty(prop)) return prop
-        if (Build.VERSION.SDK_INT < 28) return getPropByReflect(name)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return getPropByReflect(name)
         return prop
     }
 

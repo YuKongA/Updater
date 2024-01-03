@@ -9,7 +9,7 @@
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_logout"
-        android:title="@string/login"
+        android:title="@string/logout"
         android:visible="false"
         app:showAsAction="ifRoom" />
 </menu>
