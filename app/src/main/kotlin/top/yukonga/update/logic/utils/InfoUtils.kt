@@ -36,7 +36,7 @@ object InfoUtils {
         var securityKey = securityKey.toByteArray(Charsets.UTF_8)
         var serviceToken = ""
         var port = "1"
-        if (FileUtils.cookiesFileExists(context)) {
+        if (FileUtils.isCookiesFileExists(context)) {
             val cookiesFile = FileUtils.readCookiesFile(context)
             val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java)
             userId = cookies["userId"].toString()

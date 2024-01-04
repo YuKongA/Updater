@@ -10,6 +10,8 @@ import com.google.gson.Gson
 import top.yukonga.update.BuildConfig
 import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidT
 import top.yukonga.update.logic.utils.AppUtils.isHyperOS
+import top.yukonga.update.logic.utils.AppUtils.isLandscape
+import top.yukonga.update.logic.utils.AppUtils.isTablet
 import top.yukonga.update.logic.utils.miuiStringToast.res.IconParams
 import top.yukonga.update.logic.utils.miuiStringToast.res.Left
 import top.yukonga.update.logic.utils.miuiStringToast.res.Right
@@ -30,39 +32,38 @@ object MiuiStringToast {
 
     @SuppressLint("WrongConstant")
     fun showStringToast(context: Context, text: String?, colorType: Int?) {
+        if ((!isTablet() && isLandscape()) || !atLeastAndroidT() || !isHyperOS()) {
+            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+            return
+        }
         try {
-            if (atLeastAndroidT() && isHyperOS()) {
-                val textParams = TextParams()
-                textParams.setText(text)
-                textParams.setTextColor(if (colorType == 1) colorToInt("#4CAF50") else colorToInt("#E53935"))
-                val left = Left()
-                left.setTextParams(textParams)
-                val iconParams: IconParams = newIconParams(Category.DRAWABLE, if (colorType == 1) "ic_update_toast" else "ic_update_toast_error", 1, FileType.SVG)
-                val right = Right()
-                right.setIconParams(iconParams)
-                val stringToastBean = StringToastBean()
-                stringToastBean.setLeft(left)
-                stringToastBean.setRight(right)
-                val gson = Gson()
-                val str = gson.toJson(stringToastBean)
-                val bundle: Bundle = StringToastBundle.Builder()
-                    .setPackageName(BuildConfig.APPLICATION_ID)
-                    .setStrongToastCategory(StrongToastCategory.TEXT_BITMAP.value)
-                    .setTarget(null as PendingIntent?)
-                    .setDuration(2500L)
-                    .setLevel(0.0f)
-                    .setRapidRate(0.0f)
-                    .setCharge(null as String?)
-                    .setStringToastChargeFlag(0)
-                    .setParam(str)
-                    .setStatusBarStrongToast("show_custom_strong_toast")
-                    .onCreate()
-                val service = context.getSystemService(Context.STATUS_BAR_SERVICE)
-                service.javaClass.getMethod("setStatus", Int::class.javaPrimitiveType, String::class.java, Bundle::class.java)
-                    .invoke(service, 1, "strong_toast_action", bundle)
-            } else {
-                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
-            }
+            val textParams = TextParams()
+            textParams.setText(text)
+            textParams.setTextColor(if (colorType == 1) colorToInt("#4CAF50") else colorToInt("#E53935"))
+            val left = Left()
+            left.setTextParams(textParams)
+            val iconParams: IconParams = newIconParams(Category.DRAWABLE, if (colorType == 1) "ic_update_toast" else "ic_update_toast_error", 1, FileType.SVG)
+            val right = Right()
+            right.setIconParams(iconParams)
+            val stringToastBean = StringToastBean()
+            stringToastBean.setLeft(left)
+            stringToastBean.setRight(right)
+            val gson = Gson()
+            val str = gson.toJson(stringToastBean)
+            val bundle: Bundle = StringToastBundle.Builder()
+                .setPackageName(BuildConfig.APPLICATION_ID)
+                .setStrongToastCategory(StrongToastCategory.TEXT_BITMAP.value)
+                .setTarget(null as PendingIntent?)
+                .setDuration(2500L)
+                .setLevel(0.0f)
+                .setRapidRate(0.0f)
+                .setCharge(null as String?)
+                .setStringToastChargeFlag(0)
+                .setParam(str)
+                .setStatusBarStrongToast("show_custom_strong_toast")
+                .onCreate()
+            val service = context.getSystemService(Context.STATUS_BAR_SERVICE)
+            service.javaClass.getMethod("setStatus", Int::class.javaPrimitiveType, String::class.java, Bundle::class.java).invoke(service, 1, "strong_toast_action", bundle)
         } catch (e: IllegalAccessException) {
             throw RuntimeException(e)
         } catch (e: InvocationTargetException) {

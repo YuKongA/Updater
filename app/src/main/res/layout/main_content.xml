@@ -442,7 +442,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/download"
+            android:id="@+id/download_info"
             style="?materialCardViewElevatedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -537,7 +537,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/cdn1_copy"
+                            android:id="@+id/cdn_copy"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -548,7 +548,7 @@
                             android:text="@string/copy_button" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/cdn1_download"
+                            android:id="@+id/cdn_download"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

@@ -11,10 +11,6 @@ object FileUtils {
         return File(context.filesDir, "cookies.json")
     }
 
-    fun cookiesFileExists(context: Context): Boolean {
-        return cookiesFile(context).exists()
-    }
-
     fun saveCookiesFile(context: Context, data: String) {
         cookiesFile(context).writeText(data)
     }
@@ -25,6 +21,10 @@ object FileUtils {
 
     fun deleteCookiesFile(context: Context) {
         cookiesFile(context).delete()
+    }
+
+    fun isCookiesFileExists(context: Context): Boolean {
+        return cookiesFile(context).exists()
     }
 
     fun downloadRomFile(context: Context, fileLink: String, fileName: String) {

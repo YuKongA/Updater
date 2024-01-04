@@ -21,6 +21,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -53,6 +54,7 @@ import top.yukonga.update.logic.utils.InfoUtils
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
 import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast
+import top.yukonga.update.logic.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,11 +68,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var codeNameWatcher: TextWatcher
     private lateinit var deviceNameWatcher: TextWatcher
 
+    private lateinit var mainViewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Get SharedPreferences.
         prefs = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+
+        // Get ViewModel.
+        mainViewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
 
         // Enable edge to edge.
         setupEdgeToEdge()
@@ -96,39 +103,14 @@ class MainActivity : AppCompatActivity() {
 
         mainContentBinding.apply {
 
-            // Hide input method when focus is on dropdown.
-            deviceRegionsDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) hideSoftInput(view)
-            }
-            androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) hideSoftInput(view)
-            }
-
             // Setup Fab OnClickListener.
             activityMainBinding.implement.setOnClickListener {
 
-                hapticConfirm(it)
-
-                val firstViewTitleArray = arrayOf(
-                    codename, system, codebase, branch, firstInfo
-                )
-
-                val secondViewTitleArray = arrayOf(
-                    bigVersion, filename, filesize, download, changelog, secondInfo
-                )
-
-                val firstViewContentArray = arrayOf(
-                    codenameInfo, systemInfo, codebaseInfo, branchInfo
-                )
-
-                val secondViewContentArray = arrayOf(
-                    bigVersionInfo, filenameInfo, filesizeInfo, changelogInfo
-                )
+                hapticConfirm(activityMainBinding.implement)
 
                 CoroutineScope(Dispatchers.Default).launch {
 
                     try {
-
                         val regionsText = deviceRegions.editText?.text.toString()
                         val codeNameText = codeName.editText?.text.toString()
                         val deviceNameText = deviceName.editText?.text.toString()
@@ -152,17 +134,19 @@ class MainActivity : AppCompatActivity() {
 
                         withContext(Dispatchers.Main) {
 
-                            // Show a toast if we didn't get anything from request
+                            // Hide all cardViews & Show a toast if we didn't get anything from request.
                             if (recoveryRomInfo.currentRom?.branch == null) {
-                                activityMainBinding.implement.extend()
+                                mainViewModel.apply {
+                                    device = null
+                                    filename = null
+                                }
+                                setupCardViews()
                                 MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_no_info), 0)
                                 throw NoSuchFieldException()
-                            } else {
-                                activityMainBinding.implement.shrink()
                             }
 
-                            // Show a toast if we detect that the login has expired
-                            if (FileUtils.cookiesFileExists(this@MainActivity)) {
+                            // Show a toast if we detect that the login has expired.
+                            if (FileUtils.isCookiesFileExists(this@MainActivity)) {
                                 val cookiesFile = FileUtils.readCookiesFile(this@MainActivity)
                                 val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java) as MutableMap<String, String>
                                 val description = cookies["description"].toString()
@@ -174,87 +158,45 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
 
-                            firstViewTitleArray.forEach {
-                                if (!it.isVisible) it.fadInAnimation()
-                            }
-
-                            // Setup TextViews
-                            codenameInfo.setTextAnimation(recoveryRomInfo.currentRom.device)
-                            systemInfo.setTextAnimation(recoveryRomInfo.currentRom.version)
-                            codebaseInfo.setTextAnimation(recoveryRomInfo.currentRom.codebase)
-                            branchInfo.setTextAnimation(recoveryRomInfo.currentRom.branch)
-
-                            if (recoveryRomInfo.currentRom.filename != null) {
-                                secondViewTitleArray.forEach {
-                                    if (!it.isVisible) it.fadInAnimation()
-                                }
-                            } else {
-                                secondViewTitleArray.forEach {
-                                    if (it.isVisible) it.fadOutAnimation()
-                                }
-                                secondViewContentArray.forEach {
-                                    if (it.isVisible) it.fadOutAnimation()
-                                }
+                            mainViewModel.apply {
+                                device = recoveryRomInfo.currentRom.device
+                                version = recoveryRomInfo.currentRom.version
+                                codebase = recoveryRomInfo.currentRom.codebase
+                                branch = recoveryRomInfo.currentRom.branch
                             }
 
                             if (recoveryRomInfo.currentRom.md5 != null) {
-                                bigVersionInfo.setTextAnimation(
-                                    if (recoveryRomInfo.currentRom.bigversion?.contains("816") == true) {
-                                        recoveryRomInfo.currentRom.bigversion.replace("816", "HyperOS 1.0")
-                                    } else {
-                                        "MIUI ${recoveryRomInfo.currentRom.bigversion}"
-                                    }
-                                )
-
-                                filenameInfo.setTextAnimation(recoveryRomInfo.currentRom.filename)
-                                filesizeInfo.setTextAnimation(recoveryRomInfo.currentRom.filesize)
-
-                                official.text =
-                                    if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                    else getString(R.string.official, "bigota")
-
-                                val officialLink = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
-                                    R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
-                                ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                val cdnLink = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
-                                    R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
-                                ) else getString(R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-
-                                officialDownload.setDownloadClickListener(recoveryRomInfo.currentRom.filename, officialLink)
-                                cdn1Download.setDownloadClickListener(recoveryRomInfo.currentRom.filename, cdnLink)
-                                officialCopy.setCopyClickListener(officialLink)
-                                cdn1Copy.setCopyClickListener(cdnLink)
-
                                 val log = StringBuilder()
                                 recoveryRomInfo.currentRom.changelog!!.forEach {
                                     log.append(it.key).append("\n- ").append(it.value.txt.joinToString("\n- ")).append("\n\n")
                                 }
 
-                                changelogInfo.setTextAnimation(log.toString().trimEnd())
-                                changelogInfo.setCopyClickListener(log.toString().trimEnd())
+                                mainViewModel.apply {
+                                    filename = recoveryRomInfo.currentRom.filename
+                                    filesize = recoveryRomInfo.currentRom.filesize
+                                    bigversion = if (recoveryRomInfo.currentRom.bigversion?.contains("816") == true) {
+                                        recoveryRomInfo.currentRom.bigversion.replace("816", "HyperOS 1.0")
+                                    } else {
+                                        "MIUI ${recoveryRomInfo.currentRom.bigversion}"
+                                    }
+                                    officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                        R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                    ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                    else getString(R.string.official, "bigota")
+                                    cdnDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                        R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                    ) else getString(R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                    changelog = log.toString().trimEnd()
+                                }
+                            } else {
+                                mainViewModel.filename = null
                             }
+                            setupCardViews()
+
                         } // Main context
                     } catch (e: Exception) {
                         e.printStackTrace()
-
-                        withContext(Dispatchers.Main) {
-                            firstViewTitleArray.forEach {
-                                if (it.isVisible) it.fadOutAnimation()
-                            }
-
-                            secondViewTitleArray.forEach {
-                                if (it.isVisible) it.fadOutAnimation()
-                            }
-
-                            firstViewContentArray.forEach {
-                                if (it.isVisible) it.fadOutAnimation()
-                            }
-
-                            secondViewContentArray.forEach {
-                                if (it.isVisible) it.fadOutAnimation()
-                            }
-                        }
-
                     }
 
                 } // CoroutineScope
@@ -262,6 +204,9 @@ class MainActivity : AppCompatActivity() {
             } // Fab operation
 
         } // Main content
+
+        // Hide all card views if we didn't get anything from request.
+        setupCardViews()
 
     } // OnResume
 
@@ -284,32 +229,31 @@ class MainActivity : AppCompatActivity() {
             addView(inputAccountLayout)
             addView(inputPasswordLayout)
         }
-        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view)
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                hapticReject(activityMainBinding.topAppBar)
-                dialog.dismiss()
-            }.setPositiveButton(getString(R.string.login)) { _, _ ->
-                hapticConfirm(activityMainBinding.topAppBar)
-                val global = prefs.getString("global", "") ?: "0"
-                val mInputAccount = inputAccount.text.toString()
-                val mInputPassword = inputPassword.text.toString()
-                CoroutineScope(Dispatchers.Default).launch {
-                    val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
-                    if (isValid) {
-                        withContext(Dispatchers.Main) {
-                            mainContentBinding.apply {
-                                loginIcon.setImageResource(R.drawable.ic_check_circle)
-                                loginTitle.text = getString(R.string.logged_in)
-                                loginDesc.text = getString(R.string.using_v2)
-                            }
-                            activityMainBinding.apply {
-                                topAppBar.menu.findItem(R.id.login).isVisible = false
-                                topAppBar.menu.findItem(R.id.logout).isVisible = true
-                            }
+        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            hapticReject(activityMainBinding.topAppBar)
+            dialog.dismiss()
+        }.setPositiveButton(getString(R.string.login)) { _, _ ->
+            hapticConfirm(activityMainBinding.topAppBar)
+            val global = prefs.getString("global", "") ?: "0"
+            val mInputAccount = inputAccount.text.toString()
+            val mInputPassword = inputPassword.text.toString()
+            CoroutineScope(Dispatchers.Default).launch {
+                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
+                if (isValid) {
+                    withContext(Dispatchers.Main) {
+                        mainContentBinding.apply {
+                            loginIcon.setImageResource(R.drawable.ic_check_circle)
+                            loginTitle.text = getString(R.string.logged_in)
+                            loginDesc.text = getString(R.string.using_v2)
+                        }
+                        activityMainBinding.apply {
+                            topAppBar.menu.findItem(R.id.login).isVisible = false
+                            topAppBar.menu.findItem(R.id.logout).isVisible = true
                         }
                     }
                 }
-            }.show()
+            }
+        }.show()
     }
 
     private fun showLogoutDialog() {
@@ -376,6 +320,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupMainInformation() {
         mainContentBinding.apply {
+
+            // Hide input method when focus is on dropdown.
+            deviceRegionsDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) hideSoftInput(view)
+            }
+            androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) hideSoftInput(view)
+            }
+
             // Setup default device information.
             deviceName.editText!!.setText(prefs.getString("deviceName", ""))
             codeName.editText!!.setText(prefs.getString("codeName", ""))
@@ -435,6 +388,52 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupCardViews() {
+        mainContentBinding.apply {
+            val firstViewArray = arrayOf(firstInfo, secondInfo)
+            val secondViewArray = arrayOf(secondInfo, downloadInfo, bigVersion, bigVersionInfo)
+
+            CoroutineScope(Dispatchers.Default).launch {
+                withContext(Dispatchers.Main) {
+                    if (mainViewModel.device != null) {
+                        firstViewArray.forEach {
+                            if (!it.isVisible) it.fadInAnimation()
+                        }
+                        activityMainBinding.implement.shrink()
+                        codenameInfo.setTextAnimation(mainViewModel.device)
+                        systemInfo.setTextAnimation(mainViewModel.version)
+                        codebaseInfo.setTextAnimation(mainViewModel.codebase)
+                        branchInfo.setTextAnimation(mainViewModel.branch)
+                    } else {
+                        activityMainBinding.implement.extend()
+                        firstViewArray.forEach {
+                            if (it.isVisible) it.fadOutAnimation()
+                        }
+                    }
+                    if (mainViewModel.filename != null) {
+                        secondViewArray.forEach {
+                            if (!it.isVisible) it.fadInAnimation()
+                        }
+                        bigVersionInfo.setTextAnimation(mainViewModel.bigversion)
+                        filenameInfo.setTextAnimation(mainViewModel.filename)
+                        filesizeInfo.setTextAnimation(mainViewModel.filesize)
+                        changelogInfo.setTextAnimation(mainViewModel.changelog)
+                        changelogInfo.setCopyClickListener(mainViewModel.changelog)
+                        officialDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.officialDownload!!)
+                        official.text = mainViewModel.officialText
+                        officialCopy.setCopyClickListener(mainViewModel.officialDownload)
+                        cdnDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.cdnDownload!!)
+                        cdnCopy.setCopyClickListener(mainViewModel.cdnDownload)
+                    } else {
+                        secondViewArray.forEach {
+                            if (it.isVisible) it.fadOutAnimation()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun setupTopAppBar() {
         activityMainBinding.topAppBar.apply {
             setNavigationOnClickListener {
@@ -453,7 +452,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkIfLoggedIn() {
-        if (FileUtils.cookiesFileExists(this@MainActivity)) {
+        if (FileUtils.isCookiesFileExists(this@MainActivity)) {
             val cookiesFile = FileUtils.readCookiesFile(this@MainActivity)
             val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java)
             val description = cookies["description"].toString()

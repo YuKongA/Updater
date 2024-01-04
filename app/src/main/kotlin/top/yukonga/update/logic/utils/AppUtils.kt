@@ -1,6 +1,7 @@
 package top.yukonga.update.logic.utils
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.content.res.Resources.getSystem
 import android.os.Build
 import android.os.Environment
@@ -34,6 +35,11 @@ object AppUtils {
     fun isXiaomi(): Boolean = getProp("ro.miui.ui.version.code").isNotEmpty() && getProp("ro.miui.ui.version.name").isNotEmpty()
 
     fun isHyperOS(): Boolean = if (isXiaomi()) getProp("ro.miui.ui.version.code").toInt() >= 816 else false
+
+    fun isTablet(): Boolean =
+        getSystem().configuration.smallestScreenWidthDp >= 600 || getProp("ro.build.characteristics") == "tablet" || (getSystem().configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
+
+    fun isLandscape(): Boolean = getSystem().configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     val Int.dp: Int get() = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), getSystem().displayMetrics).toInt()
 
