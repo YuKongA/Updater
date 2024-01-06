@@ -111,26 +111,27 @@ class MainActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Default).launch {
 
                     try {
-                        val regionsText = deviceRegions.editText?.text.toString()
-                        val codeNameText = codeName.editText?.text.toString()
-                        val deviceNameText = deviceName.editText?.text.toString()
+                        val deviceRegion = deviceRegion.editText?.text.toString()
+                        val codeName = codeName.editText?.text.toString()
+                        val deviceName = deviceName.editText?.text.toString()
 
-                        val codeNameTextExtR = codeNameText + DeviceInfoHelper.regionCodeNameExt(regionsText)
-                        val androidVersionText = androidVersion.editText?.text.toString()
-                        val systemVersionText = systemVersion.editText?.text.toString()
+                        val regionCode = DeviceInfoHelper.regionCode(deviceRegion)
+                        val regionNameExt = DeviceInfoHelper.regionNameExt(deviceRegion)
+                        val codeNameExt = codeName + regionNameExt
 
-                        val deviceCode = DeviceInfoHelper.deviceCode(androidVersionText, codeNameText, regionsText)
-                        val systemVersionTextExt = systemVersionText.replace("OS1", "V816").replace("AUTO", deviceCode)
+                        val androidVersion = androidVersion.editText?.text.toString()
+                        val systemVersion = systemVersion.editText?.text.toString()
+
+                        val deviceCode = DeviceInfoHelper.deviceCode(androidVersion, codeName, regionCode)
+                        val systemVersionTextExt = systemVersion.replace("OS1", "V816").replace("AUTO", deviceCode)
 
                         // Acquire ROM info.
                         val recoveryRomInfo = InfoUtils.getRecoveryRomInfo(
-                            this@MainActivity, codeNameTextExtR, regionsText, systemVersionTextExt, androidVersionText
+                            this@MainActivity, codeNameExt, regionCode, systemVersionTextExt, androidVersion
                         ).parseJSON<RecoveryRomInfoHelper.RomInfo>()
 
-                        // val fastbootRomInfo = InfoUtils.getFastbootRomInfo(codeNameTextExtR).parseJSON<FastbootRomInfoHelper.RomInfo>()
-
-                        prefs.edit().putString("deviceName", deviceNameText).putString("codeName", codeNameText).putString("regions", regionsText)
-                            .putString("systemVersion", systemVersionText).putString("androidVersion", androidVersionText).apply()
+                        prefs.edit().putString("deviceName", deviceName).putString("codeName", codeName).putString("deviceRegion", deviceRegion)
+                            .putString("systemVersion", systemVersion).putString("androidVersion", androidVersion).apply()
 
                         withContext(Dispatchers.Main) {
 
@@ -322,7 +323,7 @@ class MainActivity : AppCompatActivity() {
         mainContentBinding.apply {
 
             // Hide input method when focus is on dropdown.
-            deviceRegionsDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+            deviceRegionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) hideSoftInput(view)
             }
             androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
@@ -332,18 +333,18 @@ class MainActivity : AppCompatActivity() {
             // Setup default device information.
             deviceName.editText!!.setText(prefs.getString("deviceName", ""))
             codeName.editText!!.setText(prefs.getString("codeName", ""))
-            deviceRegions.editText!!.setText(prefs.getString("regions", ""))
+            deviceRegion.editText!!.setText(prefs.getString("deviceRegion", ""))
             systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
             androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
             // Setup DropDownList.
             val deviceNamesAdapter = CustomArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.deviceNames)
             val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.codeNames)
-            val deviceRegionsAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.regionCodes)
-            val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.androidVersion)
+            val deviceRegionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.regionNames)
+            val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.androidVersions)
             (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceNamesAdapter)
             (codeName.editText as? MaterialAutoCompleteTextView)?.setAdapter(codeNamesAdapter)
-            (deviceRegions.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionsAdapter)
+            (deviceRegion.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionAdapter)
             (androidVersion.editText as? MaterialAutoCompleteTextView)?.setAdapter(androidVersionAdapter)
 
             // Setup TextChangedListener.

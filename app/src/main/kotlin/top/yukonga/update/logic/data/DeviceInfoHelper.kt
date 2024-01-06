@@ -2,35 +2,35 @@ package top.yukonga.update.logic.data
 
 object DeviceInfoHelper {
 
-    data class AndroidVersion(val version: String, val android: String)
+    data class Android(val androidNumericCode: String, val androidLetterCode: String)
 
-    data class DeviceRegions(val codeNameExt: String, val regionCode: String)
+    data class Region(val regionNameExt: String, val regionCode: String, val regionName: String = regionCode)
 
     data class Device(val deviceName: String, val codeName: String, val deviceCode: String)
 
     private const val Xiaomi = "XM"
 
-    private val androidR = AndroidVersion("11", "R")
-    private val androidS = AndroidVersion("12", "S")
-    private val androidT = AndroidVersion("13", "T")
-    private val androidU = AndroidVersion("14", "U")
+    private val androidR = Android("11", "R")
+    private val androidS = Android("12", "S")
+    private val androidT = Android("13", "T")
+    private val androidU = Android("14", "U")
 
-    private val androids = listOf(androidR, androidS, androidT, androidU)
+    private val androidList = listOf(androidR, androidS, androidT, androidU)
 
-    private val CN = DeviceRegions("", "CN")
-    private val GL = DeviceRegions("_global", "GL") // MI
-    private val EEA = DeviceRegions("_eea_global", "EEA")  // EU
-    private val RU = DeviceRegions("_ru_global", "RU")
-    private val TW = DeviceRegions("_tw_global", "TW")
-    private val ID = DeviceRegions("_id_global", "ID")
-    private val TR = DeviceRegions("_tr_global", "TR")
-    private val JP = DeviceRegions("_jp_global", "JP")
-    private val IN = DeviceRegions("_in_global", "IN")
-    private val KR = DeviceRegions("_kr_global", "KR")
+    private val CN = Region("", "CN")
+    private val GL = Region("_global", "MI", "GL")
+    private val EEA = Region("_eea_global", "EU", "EEA")
+    private val RU = Region("_ru_global", "RU")
+    private val TW = Region("_tw_global", "TW")
+    private val ID = Region("_id_global", "ID")
+    private val TR = Region("_tr_global", "TR")
+    private val IN = Region("_in_global", "IN")
+    private val JP = Region("_jp_global", "JP")
+    private val KR = Region("_kr_global", "KR")
 
-    private val regionCode = listOf(CN, GL, EEA, RU, TW, ID, TR, JP, IN, KR)
+    private val regionList = listOf(CN, GL, EEA, RU, TW, ID, TR, IN, JP, KR)
 
-    private val devices = listOf(
+    private val deviceList = listOf(
         Device("Redmi K30 4G", "phoenix", "GH"),
         Device("POCO X2", "phoenixin", "GH"),
         Device("Redmi K30 / K30i", "picasso", "GI"),
@@ -161,33 +161,37 @@ object DeviceInfoHelper {
         Device("Redmi K70E / POCO X6 Pro", "duchamp", "NL"),
     )
 
-    val deviceNames = devices.map { it.deviceName }
+    val deviceNames = deviceList.map { it.deviceName }
 
-    val codeNames = devices.map { it.codeName }
+    val codeNames = deviceList.map { it.codeName }
 
-    val regionCodes = regionCode.map { it.regionCode }
+    val regionNames = regionList.map { it.regionName }
 
-    val androidVersion = androids.map { it.version }
+    val androidVersions = androidList.map { it.androidNumericCode }
 
-    fun codeName(deviceName: String): String? {
-        val device = devices.find { it.deviceName == deviceName } ?: return null
+    fun codeName(deviceName: String): String {
+        val device = deviceList.find { it.deviceName == deviceName } ?: return ""
         return device.codeName
     }
 
-    fun deviceName(codeName: String): String? {
-        val device = devices.find { it.codeName == codeName } ?: return null
+    fun deviceName(codeName: String): String {
+        val device = deviceList.find { it.codeName == codeName } ?: return ""
         return device.deviceName
     }
 
-    fun regionCodeNameExt(regions: String): String {
-        val regionCode = regionCode.find { it.regionCode == regions } ?: return ""
-        return regionCode.codeNameExt
+    fun regionCode(regionName: String): String {
+        val region = regionList.find { it.regionName == regionName } ?: return ""
+        return region.regionCode
     }
 
-    fun deviceCode(android: String, codeName: String, variant: String): String {
-        val newAndroid = androids.find { it.version == android } ?: return ""
-        val device = devices.find { it.codeName == codeName } ?: return ""
-        val newVariant = variant.replace("GL", "MI").replace("EEA", "EU")
-        return "${newAndroid.android}${device.deviceCode}${newVariant}${Xiaomi}"
+    fun regionNameExt(regionName: String): String {
+        val region = regionList.find { it.regionName == regionName } ?: return ""
+        return region.regionNameExt
+    }
+
+    fun deviceCode(androidVersion: String, codeName: String, regionCode: String): String {
+        val android = androidList.find { it.androidNumericCode == androidVersion } ?: return ""
+        val device = deviceList.find { it.codeName == codeName } ?: return ""
+        return "${android.androidLetterCode}${device.deviceCode}${regionCode}${Xiaomi}"
     }
 }

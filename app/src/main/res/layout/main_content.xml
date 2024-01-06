@@ -116,7 +116,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/device_regions"
+            android:id="@+id/device_region"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
             app:startIconDrawable="@drawable/ic_region">
 
             <top.yukonga.update.logic.view.CustomMaterialAutoCompleteTextView
-                android:id="@+id/device_regions_dropdown"
+                android:id="@+id/device_region_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
