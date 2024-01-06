@@ -155,6 +155,7 @@ object DeviceInfoHelper {
         Device("Xiaomi 14", "houji", "NC"),
         Device("Xiaomi 14 Pro", "shennong", "NB"),
         Device("Redmi 13C / POCO C65", "gale", "GP"),
+        Device("Redmi 13R / POCO M6", "air", "GQ"),
         Device("Redmi K70 / POCO F6 Pro", "vermeer", "NK"),
         Device("Redmi K70 Pro", "manet", "NM"),
         Device("Redmi K70E / POCO X6 Pro", "duchamp", "NL"),
