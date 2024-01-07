@@ -4,7 +4,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
@@ -13,6 +12,7 @@ import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.View.OnFocusChangeListener
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
@@ -45,9 +45,13 @@ import top.yukonga.update.logic.data.RecoveryRomInfoHelper
 import top.yukonga.update.logic.fadInAnimation
 import top.yukonga.update.logic.fadOutAnimation
 import top.yukonga.update.logic.setTextAnimation
+import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidP
+import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidQ
+import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidR
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.AppUtils.hapticConfirm
 import top.yukonga.update.logic.utils.AppUtils.hapticReject
+import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
 import top.yukonga.update.logic.utils.InfoUtils
@@ -79,14 +83,14 @@ class MainActivity : AppCompatActivity() {
         // Get ViewModel.
         mainViewModel = ViewModelProvider(this@MainActivity)[MainViewModel::class.java]
 
+        // Inflate view.
+        inflateView()
+
         // Enable edge to edge.
         setupEdgeToEdge()
 
         // Setup Cutout mode.
         setupCutoutMode()
-
-        // Inflate view.
-        inflateView()
 
         // Setup main information.
         setupMainInformation()
@@ -301,13 +305,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupEdgeToEdge() {
         enableEdgeToEdge()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.isNavigationBarContrastEnforced = false
+        if (atLeastAndroidQ()) window.isNavigationBarContrastEnforced = false
+        if (atLeastAndroidR()) {
+            mainContentBinding.downloadInfo.setOnApplyWindowInsetsListener { _, insets ->
+                mainContentBinding.downloadInfo.layoutParams.apply {
+                    // View bottom margin + Fab bottom height + Fab bottom margin + System gestures height.
+                    (this as LinearLayout.LayoutParams).bottomMargin =
+                        18.dp + 56.dp + if (isLandscape()) 32.dp else 24.dp + insets.getInsets(WindowInsets.Type.systemGestures()).bottom
+                }
+                insets
+            }
+        } else {
+            mainContentBinding.downloadInfo.layoutParams.apply {
+                // View bottom margin + Fab bottom height + Fab bottom margin + Fixed spacing.
+                (this as LinearLayout.LayoutParams).bottomMargin = 18.dp + 56.dp + if (isLandscape()) 32.dp else 24.dp + 46.dp
+            }
         }
     }
 
     private fun setupCutoutMode() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if (atLeastAndroidP()) {
             val layoutParam = window.attributes
             layoutParam.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             window.setAttributes(layoutParam)
@@ -324,10 +341,10 @@ class MainActivity : AppCompatActivity() {
 
             // Hide input method when focus is on dropdown.
             deviceRegionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) hideSoftInput(view)
+                if (hasFocus) hideIme(view)
             }
             androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) hideSoftInput(view)
+                if (hasFocus) hideIme(view)
             }
 
             // Setup default device information.
@@ -557,9 +574,12 @@ class MainActivity : AppCompatActivity() {
         cm.setPrimaryClip(ClipData.newPlainText(packageName, text))
     }
 
-    private fun hideSoftInput(view: View) {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    private fun hideIme(view: View) {
+        if (atLeastAndroidR()) {
+            view.windowInsetsController?.hide(WindowInsets.Type.ime())
+        } else {
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
-
 }
