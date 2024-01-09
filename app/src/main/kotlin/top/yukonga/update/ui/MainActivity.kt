@@ -189,9 +189,6 @@ class MainActivity : AppCompatActivity() {
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
                                     officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
                                     else getString(R.string.official, "bigota")
-                                    cdnDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
-                                        R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
-                                    ) else getString(R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
                                     changelog = log.toString().trimEnd()
                                 }
                             } else {
@@ -440,8 +437,6 @@ class MainActivity : AppCompatActivity() {
                         officialDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.officialDownload!!)
                         official.text = mainViewModel.officialText
                         officialCopy.setCopyClickListener(mainViewModel.officialDownload)
-                        cdnDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.cdnDownload!!)
-                        cdnCopy.setCopyClickListener(mainViewModel.cdnDownload)
                     } else {
                         secondViewArray.forEach {
                             if (it.isVisible) it.fadOutAnimation()
