@@ -157,6 +157,9 @@ class MainActivity : AppCompatActivity() {
                                 val description = cookies["description"].toString()
                                 val authResult = cookies["authResult"].toString()
                                 if (description.isNotEmpty() && recoveryRomInfo.authResult != 1 && authResult != "-1") {
+                                    loginIcon.setImageResource(R.drawable.ic_error)
+                                    loginTitle.text = getString(R.string.login_expired)
+                                    loginDesc.text = getString(R.string.login_expired_desc)
                                     cookies["authResult"] = "-1"
                                     FileUtils.saveCookiesFile(this@MainActivity, Gson().toJson(cookies))
                                     MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
