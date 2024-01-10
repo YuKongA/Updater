@@ -3,6 +3,7 @@ package top.yukonga.update.logic.utils.miuiStringToast
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
@@ -18,6 +19,7 @@ import top.yukonga.update.logic.utils.miuiStringToast.res.Right
 import top.yukonga.update.logic.utils.miuiStringToast.res.StringToastBean
 import top.yukonga.update.logic.utils.miuiStringToast.res.StringToastBundle
 import top.yukonga.update.logic.utils.miuiStringToast.res.TextParams
+import top.yukonga.update.ui.MainActivity
 import java.lang.reflect.InvocationTargetException
 
 object MiuiStringToast {
@@ -52,8 +54,8 @@ object MiuiStringToast {
             val str = gson.toJson(stringToastBean)
             val bundle: Bundle = StringToastBundle.Builder()
                 .setPackageName(BuildConfig.APPLICATION_ID)
-                .setStrongToastCategory(StrongToastCategory.TEXT_BITMAP.value)
-                .setTarget(null as PendingIntent?)
+                .setStrongToastCategory(StrongToastCategory.TEXT_BITMAP_INTENT.value)
+                .setTarget(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE))
                 .setDuration(2500L)
                 .setLevel(0.0f)
                 .setRapidRate(0.0f)
