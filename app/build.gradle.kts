@@ -7,6 +7,7 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -93,7 +94,7 @@ fun getGitCommitCount(): Int {
 fun getGitDescribe(): String {
     val out = ByteArrayOutputStream()
     exec {
-        commandLine("git", "describe", "--tags", "--always")
+        commandLine("git", "describe", "--always")
         standardOutput = out
     }
     return out.toString().trim()
@@ -117,7 +118,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.google.android.material:material:1.11.0")
-    implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 }

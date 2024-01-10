@@ -1,15 +1,19 @@
 package top.yukonga.update.logic.data
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 object RecoveryRomInfoHelper {
 
+    @Serializable
     data class RomInfo(
-        @SerializedName("AuthResult") val authResult: Int? = null,
-        @SerializedName("CurrentRom") val currentRom: CurrentRom? = null,
-        @SerializedName("LatestRom") val latestRom: LatestRom? = null,
+        @SerialName("AuthResult") val authResult: Int? = null,
+        @SerialName("CurrentRom") val currentRom: CurrentRom? = null,
+        @SerialName("LatestRom") val latestRom: LatestRom? = null,
     )
 
+    @Serializable
     data class CurrentRom(
         val bigversion: String? = null,
         val branch: String? = null,
@@ -23,10 +27,12 @@ object RecoveryRomInfoHelper {
         val changelog: HashMap<String, Changelog>? = null,
     )
 
+    @Serializable
     data class Changelog(
         val txt: List<String>
     )
 
+    @Serializable
     data class LatestRom(
         val filename: String? = null,
         val md5: String? = null,

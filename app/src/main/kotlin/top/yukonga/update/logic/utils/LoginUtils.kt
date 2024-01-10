@@ -1,18 +1,22 @@
 package top.yukonga.update.logic.utils
 
 import android.content.Context
-import com.google.gson.GsonBuilder
-import com.google.gson.ToNumberPolicy
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import top.yukonga.update.R
+import top.yukonga.update.logic.data.AuthorizeInfoHelper
+import top.yukonga.update.logic.data.LoginInfoHelper
 import top.yukonga.update.logic.utils.FileUtils.deleteCookiesFile
 import top.yukonga.update.logic.utils.FileUtils.saveCookiesFile
+import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
-import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.update.logic.utils.miuiStringToast.data.MiuiStringToast.showStringToast
 import java.security.MessageDigest
 import java.util.Base64
 
@@ -21,7 +25,6 @@ class LoginUtils {
     private val loginUrl = "https://account.xiaomi.com/pass/serviceLogin"
     private val loginAuth2Url = "https://account.xiaomi.com/pass/serviceLoginAuth2"
     private val mediaType = "application/x-www-form-urlencoded".toMediaType()
-    private val gson = GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LAZILY_PARSED_NUMBER).disableHtmlEscaping().create()
 
     suspend fun login(context: Context, account: String, password: String, global: String): Boolean {
         withContext(Dispatchers.Main) {
@@ -51,15 +54,24 @@ class LoginUtils {
         val requestBody = data.toRequestBody(mediaType)
         val response2 = postRequest(loginAuth2Url, requestBody)
 
-        val auth = gson.fromJson(response2.body!!.string().replace("&&&START&&&", ""), Map::class.java)
-        val description = auth["description"].toString()
-        val nonce = auth["nonce"].toString()
-        val ssecurity = auth["ssecurity"].toString()
-        val location = auth["location"].toString()
-        val userId = auth["userId"].toString()
-        val accountType = if (global == "1") "GL" else "CN"
-        val authResult = if (auth["result"].toString() == "ok") "1" else "0"
+        val authStr = response2.body!!.string().replace("&&&START&&&", "")
 
+        val authJson = json.decodeFromString<AuthorizeInfoHelper>(authStr)
+        val description = authJson.description
+        val nonce = authJson.nonce.toString()
+        val ssecurity = authJson.ssecurity
+        val location = authJson.location
+        val userId = authJson.userId.toString()
+        val accountType = if (global == "1") "GL" else "CN"
+        val authResult = if (authJson.result == "ok") "1" else "0"
+
+        Log.d("LoginUtils", "description: $description")
+        Log.d("LoginUtils", "nonce: $nonce")
+        Log.d("LoginUtils", "ssecurity: $ssecurity")
+        Log.d("LoginUtils", "location: $location")
+        Log.d("LoginUtils", "userId: $userId")
+        Log.d("LoginUtils", "accountType: $accountType")
+        Log.d("LoginUtils", "authResult: $authResult")
         if (description != "成功") {
             withContext(Dispatchers.Main) {
                 showStringToast(context, description, 0)
@@ -82,17 +94,10 @@ class LoginUtils {
         val cookies = response3.headers("Set-Cookie").joinToString("; ") { it.split(";")[0] }
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
 
-        val json: MutableMap<String, String> = mutableMapOf(
-            "description" to description,
-            "accountType" to accountType,
-            "userId" to userId,
-            "ssecurity" to ssecurity,
-            "serviceToken" to serviceToken,
-            "authResult" to authResult
-        )
+        val loginInfo = LoginInfoHelper(description, accountType, userId, ssecurity, serviceToken, authResult)
 
         withContext(Dispatchers.Main) {
-            saveCookiesFile(context, gson.toJson(json))
+            saveCookiesFile(context, Json.encodeToString(loginInfo))
             showStringToast(context, context.getString(R.string.login_successful), 1)
         }
         return true

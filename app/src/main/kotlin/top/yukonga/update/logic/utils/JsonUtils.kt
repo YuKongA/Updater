@@ -1,11 +1,11 @@
 package top.yukonga.update.logic.utils
 
-import com.google.gson.Gson
+import kotlinx.serialization.json.Json
 
 object JsonUtils {
-    val gson = Gson()
+    val json = Json { ignoreUnknownKeys = true }
 
     inline fun <reified T> String.parseJSON(): T {
-        return gson.fromJson(this, T::class.java)
+        return json.decodeFromString<T>(this)
     }
 }

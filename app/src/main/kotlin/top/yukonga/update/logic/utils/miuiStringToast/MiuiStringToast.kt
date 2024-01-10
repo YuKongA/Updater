@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.utils.miuiStringToast
+package top.yukonga.update.logic.utils.miuiStringToast.data
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -7,52 +7,43 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
-import com.google.gson.Gson
+import kotlinx.serialization.json.Json
 import top.yukonga.update.BuildConfig
 import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidT
 import top.yukonga.update.logic.utils.AppUtils.isHyperOS
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.AppUtils.isTablet
-import top.yukonga.update.logic.utils.miuiStringToast.res.IconParams
-import top.yukonga.update.logic.utils.miuiStringToast.res.Left
-import top.yukonga.update.logic.utils.miuiStringToast.res.Right
-import top.yukonga.update.logic.utils.miuiStringToast.res.StringToastBean
-import top.yukonga.update.logic.utils.miuiStringToast.res.StringToastBundle
-import top.yukonga.update.logic.utils.miuiStringToast.res.TextParams
 import top.yukonga.update.ui.MainActivity
-import java.lang.reflect.InvocationTargetException
 
 object MiuiStringToast {
-    fun newIconParams(category: String?, iconResName: String?, iconType: Int, iconFormat: String?): IconParams {
-        val params = IconParams()
-        params.setCategory(category)
-        params.setIconResName(iconResName)
-        params.setIconType(iconType)
-        params.setIconFormat(iconFormat)
-        return params
+
+    fun newIconParams(
+        category: String?,
+        iconResName: String?,
+        iconType: Int,
+        iconFormat: String?
+    ): IconParams {
+        return IconParams(category, iconFormat, iconResName, iconType)
     }
 
     @SuppressLint("WrongConstant")
-    fun showStringToast(context: Context, text: String?, colorType: Int?) {
+    fun showStringToast(
+        context: Context,
+        text: String?,
+        colorType: Int?
+    ) {
         if ((!isTablet() && isLandscape()) || !atLeastAndroidT() || !isHyperOS()) {
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
             return
         }
         try {
-            val textParams = TextParams()
-            textParams.setText(text)
-            textParams.setTextColor(if (colorType == 1) colorToInt("#4CAF50") else colorToInt("#E53935"))
-            val left = Left()
-            left.setTextParams(textParams)
+            val textParams = TextParams(text, if (colorType == 1) colorToInt("#4CAF50") else colorToInt("#E53935"))
+            val left = Left(textParams = textParams)
             val iconParams: IconParams = newIconParams(Category.DRAWABLE, if (colorType == 1) "ic_update_toast" else "ic_update_toast_error", 1, FileType.SVG)
-            val right = Right()
-            right.setIconParams(iconParams)
-            val stringToastBean = StringToastBean()
-            stringToastBean.setLeft(left)
-            stringToastBean.setRight(right)
-            val gson = Gson()
-            val str = gson.toJson(stringToastBean)
-            val bundle: Bundle = StringToastBundle.Builder()
+            val right = Right(iconParams = iconParams)
+            val stringToastBean = StringToastBean(left = left, right = right)
+            val jsonStr = Json.encodeToString(StringToastBean.serializer(), stringToastBean)
+            val bundle = StringToastBundle.Builder()
                 .setPackageName(BuildConfig.APPLICATION_ID)
                 .setStrongToastCategory(StrongToastCategory.TEXT_BITMAP_INTENT.value)
                 .setTarget(PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE))
@@ -61,16 +52,13 @@ object MiuiStringToast {
                 .setRapidRate(0.0f)
                 .setCharge(null as String?)
                 .setStringToastChargeFlag(0)
-                .setParam(str)
+                .setParam(jsonStr)
                 .setStatusBarStrongToast("show_custom_strong_toast")
                 .onCreate()
+
             val service = context.getSystemService(Context.STATUS_BAR_SERVICE)
             service.javaClass.getMethod("setStatus", Int::class.javaPrimitiveType, String::class.java, Bundle::class.java).invoke(service, 1, "strong_toast_action", bundle)
-        } catch (e: IllegalAccessException) {
-            throw RuntimeException(e)
-        } catch (e: InvocationTargetException) {
-            throw RuntimeException(e)
-        } catch (e: NoSuchMethodException) {
+        } catch (e: Exception) {
             throw RuntimeException(e)
         }
     }
@@ -101,5 +89,6 @@ object MiuiStringToast {
         TEXT_BITMAP("text_bitmap"),
         TEXT_BITMAP_INTENT("text_bitmap_intent"),
         VIDEO_TEXT_TEXT_VIDEO("video_text_text_video")
+
     }
 }

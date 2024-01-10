@@ -1,11 +1,14 @@
 package top.yukonga.update.logic.utils
 
 import android.content.Context
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import okhttp3.FormBody
+import top.yukonga.update.logic.data.LoginInfoHelper
+import top.yukonga.update.logic.data.RequestParamHelper
 import top.yukonga.update.logic.utils.CryptoUtils.miuiDecrypt
 import top.yukonga.update.logic.utils.CryptoUtils.miuiEncrypt
-import top.yukonga.update.logic.utils.NetworkUtils.getRequest
+import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
 import java.util.Base64
 
@@ -16,17 +19,17 @@ object InfoUtils {
     private var securityKey = "miuiotavalided11"
 
     private fun generateJson(codeNameExt: String, regionCode: String, romVersion: String, androidVersion: String, userId: String): String {
-        val data = mutableMapOf(
-            "id" to userId,
-            "c" to androidVersion,
-            "d" to codeNameExt,
-            "f" to "1",
-            "ov" to romVersion,
-            "l" to if (!codeNameExt.contains("_global")) "zh_CN" else "en_US",
-            "r" to regionCode,
-            "v" to "miui-$romVersion"
+        val data = RequestParamHelper(
+            id = userId,
+            c = androidVersion,
+            d = codeNameExt,
+            f = "1",
+            ov = romVersion,
+            l = if (!codeNameExt.contains("_global")) "zh_CN" else "en_US",
+            r = regionCode,
+            v = "miui-$romVersion"
         )
-        return Gson().toJson(data)
+        return Json.encodeToString(data)
     }
 
     fun getRecoveryRomInfo(context: Context, codeNameExt: String, regionCode: String, romVersion: String, androidVersion: String): String {
@@ -37,11 +40,11 @@ object InfoUtils {
         var port = "1"
         if (FileUtils.isCookiesFileExists(context)) {
             val cookiesFile = FileUtils.readCookiesFile(context)
-            val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java)
-            userId = cookies["userId"].toString()
-            accountType = cookies["accountType"].toString().ifEmpty { "CN" }
-            securityKey = Base64.getDecoder().decode((cookies["ssecurity"].toString()))
-            serviceToken = cookies["serviceToken"].toString()
+            val cookies = json.decodeFromString<LoginInfoHelper>(cookiesFile)
+            userId = cookies.userId
+            accountType = cookies.accountType.ifEmpty { "CN" }
+            securityKey = Base64.getDecoder().decode((cookies.ssecurity))
+            serviceToken = cookies.serviceToken
             port = "2"
         }
         val jsonData = generateJson(codeNameExt, regionCode, romVersion, androidVersion, userId)

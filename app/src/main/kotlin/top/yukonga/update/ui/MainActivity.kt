@@ -30,11 +30,12 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import top.yukonga.update.BuildConfig
 import top.yukonga.update.R
 import top.yukonga.update.databinding.ActivityMainBinding
@@ -55,9 +56,10 @@ import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
 import top.yukonga.update.logic.utils.InfoUtils
+import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
-import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast
+import top.yukonga.update.logic.utils.miuiStringToast.data.MiuiStringToast
 import top.yukonga.update.logic.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -153,7 +155,7 @@ class MainActivity : AppCompatActivity() {
                             // Show a toast if we detect that the login has expired.
                             if (FileUtils.isCookiesFileExists(this@MainActivity)) {
                                 val cookiesFile = FileUtils.readCookiesFile(this@MainActivity)
-                                val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java) as MutableMap<String, String>
+                                val cookies = json.decodeFromString<MutableMap<String, String>>(cookiesFile)
                                 val description = cookies["description"].toString()
                                 val authResult = cookies["authResult"].toString()
                                 if (description.isNotEmpty() && recoveryRomInfo.authResult != 1 && authResult != "-1") {
@@ -161,7 +163,7 @@ class MainActivity : AppCompatActivity() {
                                     loginTitle.text = getString(R.string.login_expired)
                                     loginDesc.text = getString(R.string.login_expired_desc)
                                     cookies["authResult"] = "-1"
-                                    FileUtils.saveCookiesFile(this@MainActivity, Gson().toJson(cookies))
+                                    FileUtils.saveCookiesFile(this@MainActivity, Json.encodeToString(cookies))
                                     MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
                                 }
                             }
@@ -190,8 +192,9 @@ class MainActivity : AppCompatActivity() {
                                     officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                    else getString(R.string.official, "bigota")
+                                    officialText =
+                                        if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                        else getString(R.string.official, "bigota")
                                     changelog = log.toString().trimEnd()
                                 }
                             } else {
@@ -234,10 +237,11 @@ class MainActivity : AppCompatActivity() {
             addView(inputAccountLayout)
             addView(inputPasswordLayout)
         }
-        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-            hapticReject(activityMainBinding.topAppBar)
-            dialog.dismiss()
-        }.setPositiveButton(getString(R.string.login)) { _, _ ->
+        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view)
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                hapticReject(activityMainBinding.topAppBar)
+                dialog.dismiss()
+            }.setPositiveButton(getString(R.string.login)) { _, _ ->
             hapticConfirm(activityMainBinding.topAppBar)
             val global = prefs.getString("global", "") ?: "0"
             val mInputAccount = inputAccount.text.toString()
@@ -470,7 +474,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkIfLoggedIn() {
         if (FileUtils.isCookiesFileExists(this@MainActivity)) {
             val cookiesFile = FileUtils.readCookiesFile(this@MainActivity)
-            val cookies = Gson().fromJson(cookiesFile, MutableMap::class.java)
+            val cookies = json.decodeFromString<MutableMap<String, String>>(cookiesFile)
             val description = cookies["description"].toString()
             val authResult = cookies["authResult"].toString()
             if (description.isNotEmpty() && authResult == "-1") {
