@@ -10,7 +10,7 @@ data class AuthorizeInfoHelper(
     val description: String,
     val securityStatus: Int,
     val nonce: Long,
-    val userId: Int,
+    val userId: Long,
     val cUserId: String,
     val result: String,
     val psecurity: String,
