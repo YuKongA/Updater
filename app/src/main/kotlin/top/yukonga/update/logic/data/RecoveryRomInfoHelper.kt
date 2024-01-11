@@ -3,7 +3,6 @@ package top.yukonga.update.logic.data
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
 object RecoveryRomInfoHelper {
 
     @Serializable

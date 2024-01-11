@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.utils.miuiStringToast.data
+package top.yukonga.update.logic.utils.miuiStringToast
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -13,6 +13,12 @@ import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidT
 import top.yukonga.update.logic.utils.AppUtils.isHyperOS
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.AppUtils.isTablet
+import top.yukonga.update.logic.utils.miuiStringToast.data.IconParams
+import top.yukonga.update.logic.utils.miuiStringToast.data.Left
+import top.yukonga.update.logic.utils.miuiStringToast.data.Right
+import top.yukonga.update.logic.utils.miuiStringToast.data.StringToastBean
+import top.yukonga.update.logic.utils.miuiStringToast.data.StringToastBundle
+import top.yukonga.update.logic.utils.miuiStringToast.data.TextParams
 import top.yukonga.update.ui.MainActivity
 
 object MiuiStringToast {
@@ -41,7 +47,7 @@ object MiuiStringToast {
             val left = Left(textParams = textParams)
             val iconParams: IconParams = newIconParams(Category.DRAWABLE, if (colorType == 1) "ic_update_toast" else "ic_update_toast_error", 1, FileType.SVG)
             val right = Right(iconParams = iconParams)
-            val stringToastBean = StringToastBean(left = left, right = right)
+            val stringToastBean = StringToastBean(left, right)
             val jsonStr = Json.encodeToString(StringToastBean.serializer(), stringToastBean)
             val bundle = StringToastBundle.Builder()
                 .setPackageName(BuildConfig.APPLICATION_ID)

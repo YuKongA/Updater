@@ -1,7 +1,6 @@
 package top.yukonga.update.logic.utils
 
 import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
@@ -16,7 +15,7 @@ import top.yukonga.update.logic.utils.FileUtils.saveCookiesFile
 import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
-import top.yukonga.update.logic.utils.miuiStringToast.data.MiuiStringToast.showStringToast
+import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
 import java.security.MessageDigest
 import java.util.Base64
 
@@ -55,7 +54,6 @@ class LoginUtils {
         val response2 = postRequest(loginAuth2Url, requestBody)
 
         val authStr = response2.body!!.string().replace("&&&START&&&", "")
-
         val authJson = json.decodeFromString<AuthorizeInfoHelper>(authStr)
         val description = authJson.description
         val nonce = authJson.nonce.toString()
@@ -65,13 +63,6 @@ class LoginUtils {
         val accountType = if (global == "1") "GL" else "CN"
         val authResult = if (authJson.result == "ok") "1" else "0"
 
-        Log.d("LoginUtils", "description: $description")
-        Log.d("LoginUtils", "nonce: $nonce")
-        Log.d("LoginUtils", "ssecurity: $ssecurity")
-        Log.d("LoginUtils", "location: $location")
-        Log.d("LoginUtils", "userId: $userId")
-        Log.d("LoginUtils", "accountType: $accountType")
-        Log.d("LoginUtils", "authResult: $authResult")
         if (description != "成功") {
             withContext(Dispatchers.Main) {
                 showStringToast(context, description, 0)
@@ -108,5 +99,4 @@ class LoginUtils {
             deleteCookiesFile(context)
         }
     }
-
 }

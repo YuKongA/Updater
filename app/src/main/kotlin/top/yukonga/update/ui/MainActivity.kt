@@ -55,11 +55,10 @@ import top.yukonga.update.logic.utils.AppUtils.hapticReject
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
-import top.yukonga.update.logic.utils.InfoUtils
+import top.yukonga.update.logic.utils.InfoUtils.getRecoveryRomInfo
 import top.yukonga.update.logic.utils.JsonUtils.json
-import top.yukonga.update.logic.utils.JsonUtils.parseJSON
 import top.yukonga.update.logic.utils.LoginUtils
-import top.yukonga.update.logic.utils.miuiStringToast.data.MiuiStringToast
+import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast
 import top.yukonga.update.logic.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -132,10 +131,15 @@ class MainActivity : AppCompatActivity() {
                         val systemVersionTextExt = systemVersion.replace("OS1", "V816").replace("AUTO", deviceCode)
 
                         // Acquire ROM info.
-                        val recoveryRomInfo = InfoUtils.getRecoveryRomInfo(
-                            this@MainActivity, codeNameExt, regionCode, systemVersionTextExt, androidVersion
-                        ).parseJSON<RecoveryRomInfoHelper.RomInfo>()
-
+                        val recoveryRomInfo = json.decodeFromString<RecoveryRomInfoHelper.RomInfo>(
+                            getRecoveryRomInfo(
+                                this@MainActivity,
+                                codeNameExt,
+                                regionCode,
+                                systemVersionTextExt,
+                                androidVersion
+                            )
+                        )
                         prefs.edit().putString("deviceName", deviceName).putString("codeName", codeName).putString("deviceRegion", deviceRegion)
                             .putString("systemVersion", systemVersion).putString("androidVersion", androidVersion).apply()
 
@@ -192,9 +196,8 @@ class MainActivity : AppCompatActivity() {
                                     officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    officialText =
-                                        if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                        else getString(R.string.official, "bigota")
+                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                    else getString(R.string.official, "bigota")
                                     changelog = log.toString().trimEnd()
                                 }
                             } else {
@@ -237,32 +240,31 @@ class MainActivity : AppCompatActivity() {
             addView(inputAccountLayout)
             addView(inputPasswordLayout)
         }
-        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view)
-            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 hapticReject(activityMainBinding.topAppBar)
                 dialog.dismiss()
             }.setPositiveButton(getString(R.string.login)) { _, _ ->
-            hapticConfirm(activityMainBinding.topAppBar)
-            val global = prefs.getString("global", "") ?: "0"
-            val mInputAccount = inputAccount.text.toString()
-            val mInputPassword = inputPassword.text.toString()
-            CoroutineScope(Dispatchers.Default).launch {
-                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
-                if (isValid) {
-                    withContext(Dispatchers.Main) {
-                        mainContentBinding.apply {
-                            loginIcon.setImageResource(R.drawable.ic_check_circle)
-                            loginTitle.text = getString(R.string.logged_in)
-                            loginDesc.text = getString(R.string.using_v2)
-                        }
-                        activityMainBinding.apply {
-                            topAppBar.menu.findItem(R.id.login).isVisible = false
-                            topAppBar.menu.findItem(R.id.logout).isVisible = true
+                hapticConfirm(activityMainBinding.topAppBar)
+                val global = prefs.getString("global", "") ?: "0"
+                val mInputAccount = inputAccount.text.toString()
+                val mInputPassword = inputPassword.text.toString()
+                CoroutineScope(Dispatchers.Default).launch {
+                    val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
+                    if (isValid) {
+                        withContext(Dispatchers.Main) {
+                            mainContentBinding.apply {
+                                loginIcon.setImageResource(R.drawable.ic_check_circle)
+                                loginTitle.text = getString(R.string.logged_in)
+                                loginDesc.text = getString(R.string.using_v2)
+                            }
+                            activityMainBinding.apply {
+                                topAppBar.menu.findItem(R.id.login).isVisible = false
+                                topAppBar.menu.findItem(R.id.logout).isVisible = true
+                            }
                         }
                     }
                 }
-            }
-        }.show()
+            }.show()
     }
 
     private fun showLogoutDialog() {
