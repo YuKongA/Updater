@@ -3,7 +3,9 @@ package top.yukonga.update.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
@@ -20,6 +22,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -133,11 +136,7 @@ class MainActivity : AppCompatActivity() {
                         // Acquire ROM info.
                         val recoveryRomInfo = json.decodeFromString<RecoveryRomInfoHelper.RomInfo>(
                             getRecoveryRomInfo(
-                                this@MainActivity,
-                                codeNameExt,
-                                regionCode,
-                                systemVersionTextExt,
-                                androidVersion
+                                this@MainActivity, codeNameExt, regionCode, systemVersionTextExt, androidVersion
                             )
                         )
                         prefs.edit().putString("deviceName", deviceName).putString("codeName", codeName).putString("deviceRegion", deviceRegion)
@@ -241,30 +240,30 @@ class MainActivity : AppCompatActivity() {
             addView(inputPasswordLayout)
         }
         MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                hapticReject(activityMainBinding.topAppBar)
-                dialog.dismiss()
-            }.setPositiveButton(getString(R.string.login)) { _, _ ->
-                hapticConfirm(activityMainBinding.topAppBar)
-                val global = prefs.getString("global", "") ?: "0"
-                val mInputAccount = inputAccount.text.toString()
-                val mInputPassword = inputPassword.text.toString()
-                CoroutineScope(Dispatchers.Default).launch {
-                    val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
-                    if (isValid) {
-                        withContext(Dispatchers.Main) {
-                            mainContentBinding.apply {
-                                loginIcon.setImageResource(R.drawable.ic_check_circle)
-                                loginTitle.text = getString(R.string.logged_in)
-                                loginDesc.text = getString(R.string.using_v2)
-                            }
-                            activityMainBinding.apply {
-                                topAppBar.menu.findItem(R.id.login).isVisible = false
-                                topAppBar.menu.findItem(R.id.logout).isVisible = true
-                            }
+            hapticReject(activityMainBinding.topAppBar)
+            dialog.dismiss()
+        }.setPositiveButton(getString(R.string.login)) { _, _ ->
+            hapticConfirm(activityMainBinding.topAppBar)
+            val global = prefs.getString("global", "") ?: "0"
+            val mInputAccount = inputAccount.text.toString()
+            val mInputPassword = inputPassword.text.toString()
+            CoroutineScope(Dispatchers.Default).launch {
+                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
+                if (isValid) {
+                    withContext(Dispatchers.Main) {
+                        mainContentBinding.apply {
+                            loginIcon.setImageResource(R.drawable.ic_check_circle)
+                            loginTitle.text = getString(R.string.logged_in)
+                            loginDesc.text = getString(R.string.using_v2)
+                        }
+                        activityMainBinding.apply {
+                            topAppBar.menu.findItem(R.id.login).isVisible = false
+                            topAppBar.menu.findItem(R.id.logout).isVisible = true
                         }
                     }
                 }
-            }.show()
+            }
+        }.show()
     }
 
     private fun showLogoutDialog() {
@@ -548,11 +547,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun MaterialButton.setDownloadClickListener(filename: String?, link: String) {
+    private fun MaterialButton.setDownloadClickListener(fileName: String?, fileLink: String) {
         setOnClickListener {
-            filename?.let {
+            fileName?.let {
                 hapticConfirm(this)
-                downloadRomFile(this@MainActivity, link, it)
+                MaterialAlertDialogBuilder(context).apply {
+                    setTitle(R.string.download_method)
+                    setMessage(R.string.download_method_desc)
+                    setNegativeButton(R.string.android_default) { _, _ ->
+                        downloadRomFile(this@MainActivity, fileLink, it)
+                    }
+                    setPositiveButton(R.string.other) { _, _ ->
+                        Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            data = Uri.parse(fileLink)
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        }.let {
+                            context.startActivity(it)
+                        }
+                    }
+                    setNeutralButton(R.string.cancel) { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                }.show()
             }
         }
     }
