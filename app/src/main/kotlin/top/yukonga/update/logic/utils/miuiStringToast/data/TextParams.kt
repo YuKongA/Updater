@@ -6,8 +6,4 @@ import kotlinx.serialization.Serializable
 data class TextParams(
     var text: String? = null,
     var textColor: Int = 0
-) {
-    override fun toString(): String {
-        return "TextParams{text='$text', textColor=$textColor}"
-    }
-}
+)
