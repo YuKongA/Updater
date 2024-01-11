@@ -63,7 +63,9 @@ object MiuiStringToast {
                 .onCreate()
 
             val service = context.getSystemService(Context.STATUS_BAR_SERVICE)
-            service.javaClass.getMethod("setStatus", Int::class.javaPrimitiveType, String::class.java, Bundle::class.java).invoke(service, 1, "strong_toast_action", bundle)
+            service.javaClass.getMethod(
+                "setStatus", Int::class.javaPrimitiveType, String::class.java, Bundle::class.java
+            ).invoke(service, 1, "strong_toast_action", bundle)
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
