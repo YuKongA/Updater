@@ -39,4 +39,9 @@
     <string name="login_expired_desc">建议重新登陸</string>
     <string name="login_expired_dialog">偵測到登陸已過期，建議重新登陸。</string>
     <string name="global">全球帳戶</string>
+    <string name="download_method">下載方式</string>
+    <string name="download_method_desc">選擇一個下載方式</string>
+    <string name="android_default">預設</string>
+    <string name="other">其它</string>
+    <string name="download_start">已開始下載</string>
 </resources>
