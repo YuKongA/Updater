@@ -44,4 +44,9 @@
     <string name="login_expired_desc">Recommended to login again</string>
     <string name="login_expired_dialog">Checked that the login has expired. It is recommended to log in again.</string>
     <string name="global">Global account</string>
+    <string name="download_method">Download method</string>
+    <string name="download_method_desc">Select the download method</string>
+    <string name="android_default">Default</string>
+    <string name="other">Other</string>
+    <string name="download_start">Download has started</string>
 </resources>

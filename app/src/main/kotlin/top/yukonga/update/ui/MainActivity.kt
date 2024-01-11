@@ -58,7 +58,7 @@ import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
 import top.yukonga.update.logic.utils.InfoUtils.getRecoveryRomInfo
 import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.LoginUtils
-import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast
+import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
 import top.yukonga.update.logic.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
                                     filename = null
                                 }
                                 setupCardViews()
-                                MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_no_info), 0)
+                                showStringToast(this@MainActivity, getString(R.string.toast_no_info), 0)
                                 throw NoSuchFieldException()
                             }
 
@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                                     loginDesc.text = getString(R.string.login_expired_desc)
                                     cookies["authResult"] = "-1"
                                     FileUtils.saveCookiesFile(this@MainActivity, Json.encodeToString(cookies))
-                                    MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
+                                    showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
                                 }
                             }
 
@@ -561,7 +561,7 @@ class MainActivity : AppCompatActivity() {
         setOnClickListener {
             hapticConfirm(this)
             copyText(link)
-            MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
+            showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }
     }
 
@@ -569,7 +569,7 @@ class MainActivity : AppCompatActivity() {
         setOnClickListener {
             hapticConfirm(this)
             copyText(text)
-            MiuiStringToast.showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
+            showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
         }
     }
 

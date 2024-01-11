@@ -39,4 +39,9 @@
     <string name="login_expired_desc">建议重新登录</string>
     <string name="login_expired_dialog">检测到登录已过期，建议重新登录。</string>
     <string name="global">全球账号</string>
+    <string name="download_method">下载方式</string>
+    <string name="download_method_desc">选择一个下载方式</string>
+    <string name="android_default">默认</string>
+    <string name="other">其它</string>
+    <string name="download_start">已开始下载</string>
 </resources>
