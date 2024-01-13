@@ -164,9 +164,14 @@ class MainActivity : AppCompatActivity() {
                                     loginIcon.setImageResource(R.drawable.ic_error)
                                     loginTitle.text = getString(R.string.login_expired)
                                     loginDesc.text = getString(R.string.login_expired_desc)
+                                    cookies.clear()
                                     cookies["authResult"] = "-1"
                                     FileUtils.saveCookiesFile(this@MainActivity, Json.encodeToString(cookies))
                                     showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
+                                    activityMainBinding.apply {
+                                        topAppBar.menu.findItem(R.id.login).isVisible = true
+                                        topAppBar.menu.findItem(R.id.logout).isVisible = false
+                                    }
                                 }
                             }
 
@@ -496,7 +501,7 @@ class MainActivity : AppCompatActivity() {
             val cookies = json.decodeFromString<MutableMap<String, String>>(cookiesFile)
             val description = cookies["description"].toString()
             val authResult = cookies["authResult"].toString()
-            if (description.isNotEmpty() && authResult == "-1") {
+            if (authResult == "-1") {
                 mainContentBinding.apply {
                     loginIcon.setImageResource(R.drawable.ic_error)
                     loginTitle.text = getString(R.string.login_expired)

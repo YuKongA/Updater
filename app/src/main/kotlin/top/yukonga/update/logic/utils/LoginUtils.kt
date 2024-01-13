@@ -26,10 +26,13 @@ class LoginUtils {
     private val mediaType = "application/x-www-form-urlencoded".toMediaType()
 
     suspend fun login(context: Context, account: String, password: String, global: String): Boolean {
-        withContext(Dispatchers.Main) {
-            if (account.isEmpty() || password.isEmpty()) {
+        if (account.isEmpty() || password.isEmpty()) {
+            withContext(Dispatchers.Main) {
                 showStringToast(context, context.getString(R.string.account_or_password_empty), 0)
-            } else {
+            }
+            return false
+        } else {
+            withContext(Dispatchers.Main) {
                 showStringToast(context, context.getString(R.string.logging_in), 1)
             }
         }
@@ -56,7 +59,7 @@ class LoginUtils {
         val authStr = response2.body!!.string().replace("&&&START&&&", "")
         val authJson = json.decodeFromString<AuthorizeInfoHelper>(authStr)
         val description = authJson.description
-        val nonce = authJson.nonce.toString()
+        val nonce = authJson.nonce
         val ssecurity = authJson.ssecurity
         val location = authJson.location
         val userId = authJson.userId.toString()
@@ -65,13 +68,14 @@ class LoginUtils {
 
         if (description != "成功") {
             withContext(Dispatchers.Main) {
-                showStringToast(context, description, 0)
+                if (description == "登录验证失败") showStringToast(context, context.getString(R.string.login_error), 0)
+                else showStringToast(context, description, 0)
             }
             return false
         }
-        if (nonce.isEmpty() || ssecurity.isEmpty() || location.isEmpty() || userId.isEmpty()) {
+        if (nonce == null || ssecurity == null || location == null || userId.isEmpty()) {
             withContext(Dispatchers.Main) {
-                showStringToast(context, context.getString(R.string.unknown_error), 0)
+                showStringToast(context, context.getString(R.string.security_error), 0)
             }
             return false
         }
@@ -85,7 +89,7 @@ class LoginUtils {
         val cookies = response3.headers("Set-Cookie").joinToString("; ") { it.split(";")[0] }
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
 
-        val loginInfo = LoginInfoHelper(description, accountType, userId, ssecurity, serviceToken, authResult)
+        val loginInfo = LoginInfoHelper(accountType, authResult, description, ssecurity, serviceToken, userId)
 
         withContext(Dispatchers.Main) {
             saveCookiesFile(context, Json.encodeToString(loginInfo))

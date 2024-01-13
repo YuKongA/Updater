@@ -4,19 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AuthorizeInfoHelper(
-    val ssecurity: String,
-    val code: Int,
-    val passToken: String,
-    val description: String,
-    val securityStatus: Int,
-    val nonce: Long,
-    val userId: Long,
-    val cUserId: String,
-    val result: String,
-    val psecurity: String,
-    val captchaUrl: String?,
-    val location: String,
-    val pwd: Int,
-    val child: Int,
-    val desc: String,
+    val description: String? = null,
+    val location: String? = null,
+    val nonce: Long? = null,
+    val result: String? = null,
+    val ssecurity: String? = null,
+    val userId: Long? = null,
 )

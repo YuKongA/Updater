@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class LoginInfoHelper(
-    val description: String,
     val accountType: String,
-    val userId: String,
+    val authResult: String,
+    val description: String,
     val ssecurity: String,
     val serviceToken: String,
-    val authResult: String
+    val userId: String,
 )
