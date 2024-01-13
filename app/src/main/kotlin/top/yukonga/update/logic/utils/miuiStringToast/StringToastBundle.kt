@@ -1,5 +1,4 @@
-package top.yukonga.update.logic.utils.miuiStringToast.data
-
+package top.yukonga.update.logic.utils.miuiStringToast
 
 import android.app.PendingIntent
 import android.os.Bundle

@@ -17,7 +17,6 @@ import top.yukonga.update.logic.utils.miuiStringToast.data.IconParams
 import top.yukonga.update.logic.utils.miuiStringToast.data.Left
 import top.yukonga.update.logic.utils.miuiStringToast.data.Right
 import top.yukonga.update.logic.utils.miuiStringToast.data.StringToastBean
-import top.yukonga.update.logic.utils.miuiStringToast.data.StringToastBundle
 import top.yukonga.update.logic.utils.miuiStringToast.data.TextParams
 import top.yukonga.update.ui.MainActivity
 

@@ -22,13 +22,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -227,7 +226,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLoginDialog() {
         val view = createDialogView()
-        val switch = createSwitchForLogin()
+        val checkBox = createCheckBoxForLogin()
         val inputAccountLayout = createTextInputLayout(getString(R.string.account))
         val inputAccount = createTextInputEditText()
         inputAccountLayout.addView(inputAccount)
@@ -235,30 +234,35 @@ class MainActivity : AppCompatActivity() {
         val inputPassword = createTextInputEditText(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         inputPasswordLayout.addView(inputPassword)
         view.apply {
-            addView(switch)
+            addView(checkBox)
             addView(inputAccountLayout)
             addView(inputPasswordLayout)
         }
-        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setView(view).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-            hapticReject(activityMainBinding.topAppBar)
-            dialog.dismiss()
-        }.setPositiveButton(getString(R.string.login)) { _, _ ->
-            hapticConfirm(activityMainBinding.topAppBar)
-            val global = prefs.getString("global", "") ?: "0"
-            val mInputAccount = inputAccount.text.toString()
-            val mInputPassword = inputPassword.text.toString()
-            CoroutineScope(Dispatchers.Default).launch {
-                val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
-                if (isValid) {
-                    withContext(Dispatchers.Main) {
-                        mainContentBinding.apply {
-                            loginIcon.setImageResource(R.drawable.ic_check_circle)
-                            loginTitle.text = getString(R.string.logged_in)
-                            loginDesc.text = getString(R.string.using_v2)
-                        }
-                        activityMainBinding.apply {
-                            topAppBar.menu.findItem(R.id.login).isVisible = false
-                            topAppBar.menu.findItem(R.id.logout).isVisible = true
+        MaterialAlertDialogBuilder(this@MainActivity).apply {
+            setTitle(getString(R.string.login))
+            setView(view)
+            setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                hapticReject(activityMainBinding.topAppBar)
+                dialog.dismiss()
+            }
+            setPositiveButton(getString(R.string.login)) { _, _ ->
+                hapticConfirm(activityMainBinding.topAppBar)
+                val global = prefs.getString("global", "") ?: "0"
+                val mInputAccount = inputAccount.text.toString()
+                val mInputPassword = inputPassword.text.toString()
+                CoroutineScope(Dispatchers.Default).launch {
+                    val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
+                    if (isValid) {
+                        withContext(Dispatchers.Main) {
+                            mainContentBinding.apply {
+                                loginIcon.setImageResource(R.drawable.ic_check_circle)
+                                loginTitle.text = getString(R.string.logged_in)
+                                loginDesc.text = getString(R.string.using_v2)
+                            }
+                            activityMainBinding.apply {
+                                topAppBar.menu.findItem(R.id.login).isVisible = false
+                                topAppBar.menu.findItem(R.id.logout).isVisible = true
+                            }
                         }
                     }
                 }
@@ -267,11 +271,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLogoutDialog() {
-        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.login)).setTitle(getString(R.string.logout))
-            .setMessage(getString(R.string.logout_desc)).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+        MaterialAlertDialogBuilder(this@MainActivity).apply {
+            setTitle(getString(R.string.login))
+            setTitle(getString(R.string.logout))
+            setMessage(getString(R.string.logout_desc)).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 hapticReject(activityMainBinding.topAppBar)
                 dialog.dismiss()
-            }.setPositiveButton(getString(R.string.confirm)) { _, _ ->
+            }
+            setPositiveButton(getString(R.string.confirm)) { _, _ ->
                 hapticConfirm(activityMainBinding.topAppBar)
                 CoroutineScope(Dispatchers.Default).launch {
                     LoginUtils().logout(this@MainActivity)
@@ -287,7 +294,8 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-            }.show()
+            }
+        }.show()
     }
 
     private fun showAboutDialog() {
@@ -305,7 +313,11 @@ class MainActivity : AppCompatActivity() {
             addView(appBuild)
             addView(appGithub)
         }
-        MaterialAlertDialogBuilder(this@MainActivity).setTitle(getString(R.string.app_name)).setIcon(R.drawable.ic_launcher).setView(view).show()
+        MaterialAlertDialogBuilder(this@MainActivity).apply {
+            setTitle(getString(R.string.app_name))
+            setIcon(R.drawable.ic_launcher)
+            setView(view)
+        }.show()
     }
 
     private fun setupEdgeToEdge() {
@@ -505,13 +517,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createSwitchForLogin(): MaterialSwitch {
-        return MaterialSwitch(this@MainActivity).apply {
+    private fun createCheckBoxForLogin(): MaterialCheckBox {
+        return MaterialCheckBox(this@MainActivity).apply {
             text = getString(R.string.global)
             isChecked = prefs.getString("global", "") == "1"
             textSize = 16f
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                setMargins(28.dp, 8.dp, 28.dp, 0.dp)
+                setMargins(25.dp, 8.dp, 25.dp, 0.dp)
             }
             setOnCheckedChangeListener { _, isChecked ->
                 prefs.edit().putString("global", if (isChecked) "1" else "0").apply()
@@ -551,22 +563,25 @@ class MainActivity : AppCompatActivity() {
         setOnClickListener {
             fileName?.let {
                 hapticConfirm(this)
-                MaterialAlertDialogBuilder(context).apply {
+                MaterialAlertDialogBuilder(this@MainActivity).apply {
                     setTitle(R.string.download_method)
                     setMessage(R.string.download_method_desc)
                     setNegativeButton(R.string.android_default) { _, _ ->
+                        hapticConfirm(this@setDownloadClickListener)
                         downloadRomFile(this@MainActivity, fileLink, it)
                     }
                     setPositiveButton(R.string.other) { _, _ ->
+                        hapticConfirm(this@setDownloadClickListener)
                         Intent().apply {
                             action = Intent.ACTION_VIEW
                             data = Uri.parse(fileLink)
                             flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         }.let {
-                            context.startActivity(it)
+                            this@MainActivity.startActivity(it)
                         }
                     }
                     setNeutralButton(R.string.cancel) { dialog, _ ->
+                        hapticReject(this@setDownloadClickListener)
                         dialog.dismiss()
                     }
                 }.show()
