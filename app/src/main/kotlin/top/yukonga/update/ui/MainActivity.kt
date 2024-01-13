@@ -194,8 +194,12 @@ class MainActivity : AppCompatActivity() {
                                     officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                    else getString(R.string.official, "bigota")
+                                    officialText =
+                                        if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                        else getString(R.string.official, "bigota")
+                                    cdnDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                        R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                    ) else getString(R.string.cdn_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
                                     changelog = log.toString().trimEnd()
                                 }
                             } else {
@@ -454,9 +458,11 @@ class MainActivity : AppCompatActivity() {
                         filesizeInfo.setTextAnimation(mainViewModel.filesize)
                         changelogInfo.setTextAnimation(mainViewModel.changelog)
                         changelogInfo.setCopyClickListener(mainViewModel.changelog)
-                        officialDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.officialDownload!!)
                         official.text = mainViewModel.officialText
+                        officialDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.officialDownload!!)
                         officialCopy.setCopyClickListener(mainViewModel.officialDownload)
+                        cdnDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.cdnDownload!!)
+                        cdnCopy.setCopyClickListener(mainViewModel.cdnDownload)
                     } else {
                         secondViewArray.forEach {
                             if (it.isVisible) it.fadOutAnimation()

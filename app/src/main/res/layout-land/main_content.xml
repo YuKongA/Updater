@@ -525,6 +525,55 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:contentDescription="@string/cdn"
+                            android:elegantTextHeight="true"
+                            android:text="@string/cdn"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textIsSelectable="true"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/cdn_copy"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="18dp"
+                                android:contentDescription="@string/copy_button"
+                                android:elegantTextHeight="true"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:text="@string/copy_button" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/cdn_download"
+                                style="@style/Widget.Material3.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:contentDescription="@string/download_button"
+                                android:elegantTextHeight="true"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                android:text="@string/download_button" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
