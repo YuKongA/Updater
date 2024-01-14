@@ -30,10 +30,12 @@
     <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">Logged in</string>
     <string name="official" translatable="false">Official (%1$s)</string>
-    <string name="cdn" translatable="false">CDN (cdnorg)</string>
+    <string name="cdn1" translatable="false">CDN (cdnorg)</string>
+    <string name="cdn2" translatable="false">CDN (azureedge)</string>
     <string name="official1_link" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
     <string name="official2_link" translatable="false">https://bigota.d.miui.com/%1$s/%2$s</string>
-    <string name="cdn_link" translatable="false">http://cdnorg.d.miui.com/%1$s/%2$s</string>
+    <string name="cdn1_link" translatable="false">https://cdnorg.d.miui.com/%1$s/%2$s</string>
+    <string name="cdn2_link" translatable="false">https://cdn-ota.azureedge.net/%1$s/%2$s</string>
     <string name="copy_button">Copy</string>
     <string name="download_button">Download</string>
     <string name="security_error">Failed to get security key</string>

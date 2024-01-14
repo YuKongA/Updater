@@ -12,6 +12,7 @@ class MainViewModel : ViewModel() {
     var bigversion: String? = null
     var officialDownload: String? = null
     var officialText: String? = null
-    var cdnDownload: String? = null
+    var cdn1Download: String? = null
+    var cdn2Download: String? = null
     var changelog: String? = null
 }
