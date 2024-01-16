@@ -1,34 +1,47 @@
-package top.yukonga.update.logic.utils
+package top.yukonga.update.logic.utils;
 
-import java.util.Base64
-import javax.crypto.Cipher
-import javax.crypto.spec.IvParameterSpec
-import javax.crypto.spec.SecretKeySpec
+import java.security.SecureRandom;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
-object CryptoUtils {
+public class CryptoUtils {
 
-    private const val iv = "0102030405060708"
+    private static final String AES_TRANSFORMATION = "AES/CBC/PKCS5Padding";
+    private static final String AES_ALGORITHM = "AES";
+    private static final int IV_SIZE = 16;
 
-    private fun miuiCipher(mode: Int, securityKey: ByteArray): Cipher {
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-        val secretKeySpec = SecretKeySpec(securityKey, "AES")
-        val ivParameterSpec = IvParameterSpec(iv.toByteArray(Charsets.UTF_8))
-        cipher.init(mode, secretKeySpec, ivParameterSpec)
-        return cipher
+    private static IvParameterSpec generateRandomIv() {
+        byte[] iv = new byte[IV_SIZE];
+        new SecureRandom().nextBytes(iv);
+        return new IvParameterSpec(iv);
     }
 
-    fun miuiEncrypt(jsonRequest: String, securityKey: ByteArray): String {
-        val cipher = miuiCipher(Cipher.ENCRYPT_MODE, securityKey)
-        val encrypted = cipher.doFinal(jsonRequest.toByteArray(Charsets.UTF_8))
-        return Base64.getUrlEncoder().encodeToString(encrypted)
+    private static Cipher initializeCipher(int mode, byte[] securityKey, IvParameterSpec ivParameterSpec) throws Exception {
+        Cipher cipher = Cipher.getInstance(AES_TRANSFORMATION);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(securityKey, AES_ALGORITHM);
+        cipher.init(mode, secretKeySpec, ivParameterSpec);
+        return cipher;
     }
 
-    fun miuiDecrypt(encryptedText: String, securityKey: ByteArray): String {
-        val cipher = miuiCipher(Cipher.DECRYPT_MODE, securityKey)
-        if (encryptedText.isEmpty()) return ""
-        val encryptedTextBytes = Base64.getMimeDecoder().decode(encryptedText)
-        val decryptedTextBytes = cipher.doFinal(encryptedTextBytes)
-        return String(decryptedTextBytes, Charsets.UTF_8)
+    public static String encrypt(String jsonRequest, byte[] securityKey) throws Exception {
+        IvParameterSpec ivParameterSpec = generateRandomIv();
+        Cipher cipher = initializeCipher(Cipher.ENCRYPT_MODE, securityKey, ivParameterSpec);
+        byte[] encrypted = cipher.doFinal(jsonRequest.getBytes());
+        String iv = Base64.getEncoder().encodeToString(ivParameterSpec.getIV());
+        String encryptedData = Base64.getEncoder().encodeToString(encrypted);
+        return iv + ":" + encryptedData;
     }
 
+    public static String decrypt(String encryptedData, byte[] securityKey) throws Exception {
+        String[] parts = encryptedData.split(":");
+        if (parts.length != 2) {
+            throw new IllegalArgumentException("Invalid encrypted data format");
+        }
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(Base64.getDecoder().decode(parts[0]));
+        Cipher cipher = initializeCipher(Cipher.DECRYPT_MODE, securityKey, ivParameterSpec);
+        byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(parts[1]));
+        return new String(decrypted);
+    }
 }
