@@ -7,17 +7,17 @@ English 丨 [简体中文](https://github.com/YuKongA/Updater/blob/main/README.m
 </div>
 
 ## Usage:
-When obtaining the `Pubilc Release Version`, the suffix of the system version can be automatically completed using `AUTO`<br />For example: `OS1.0.26.0.AUTO` / `V14.0.4.0.AUTO`
+When obtaining the `Pubilc Release Version (F)`, the suffix of the system version can be automatically completed using `AUTO`<br />For example: `OS1.0.26.0.AUTO` / `V14.0.4.0.AUTO`
 
-When obtaining `Beta Development Version`, please enter the complete system version<br />For example: `OS1.0.23.12.19.DEV` / `V14.0.23.5.8.DEV`
+When obtaining `Beta Development Version (X)`, please enter the complete system version<br />For example: `OS1.0.23.12.19.DEV` / `V14.0.23.5.8.DEV`
 
 ## Notes:
 
-Regardless of whether you are logged in or not, you can view the basic information of the existing version on the server.
+Regardless of whether you are logged in or not, you can view the <b>basic information</b> of the <b>existing and public version</b> on the server.
 
-When you are not logged in with a Xiaomi account, you can use the v1 interface to obtain the detailed information of the `Pubilc Release Version` of any model.
+When you are not logged in with a Xiaomi account, you can use the miotaV3-v1 interface to obtain the detailed information of the `Pubilc Release Version` of any model.
 
-After logging in to your Xiaomi account, you will use the v2 interface to obtain detailed information about the `Beta Release Version` or the `Public Development Version`, corresponding to the internal test permissions you have.
+After logging in to your Xiaomi account, you will use the miotaV3-v2 interface to obtain detailed information about the `Beta Release Version` or the `Public Development Version`, corresponding to the internal test permissions you have.
 
 ## Credits:
 
