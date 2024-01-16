@@ -18,14 +18,12 @@ import java.util.Properties
 
 object AppUtils {
 
-    fun hapticConfirm(view: View) {
-        if (atLeastAndroidR()) view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
-        else view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+    fun View.hapticConfirm() {
+        performHapticFeedback(if (atLeastAndroidR()) HapticFeedbackConstants.CONFIRM else HapticFeedbackConstants.VIRTUAL_KEY)
     }
 
-    fun hapticReject(view: View) {
-        if (atLeastAndroidR()) view.performHapticFeedback(HapticFeedbackConstants.REJECT)
-        else view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+    fun View.hapticReject() {
+        performHapticFeedback(if (atLeastAndroidR()) HapticFeedbackConstants.REJECT else HapticFeedbackConstants.VIRTUAL_KEY)
     }
 
     fun atLeastAndroidP(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
@@ -38,7 +36,7 @@ object AppUtils {
 
     fun isXiaomi(): Boolean = getProp("ro.miui.ui.version.code").isNotEmpty() && getProp("ro.miui.ui.version.name").isNotEmpty()
 
-    fun isHyperOS(): Boolean = if (isXiaomi()) getProp("ro.miui.ui.version.code").toInt() >= 816 else false
+    fun isHyperOS(): Boolean = isXiaomi() && getProp("ro.miui.ui.version.code").toInt() >= 816
 
     fun isTablet(): Boolean =
         getSystem().configuration.smallestScreenWidthDp >= 600 || getProp("ro.build.characteristics") == "tablet" || (getSystem().configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE
@@ -51,52 +49,44 @@ object AppUtils {
 
     fun getProp(name: String): String {
         var prop = getPropByShell(name)
-        if (!TextUtils.isEmpty(prop)) return prop
+        if (prop.isNotEmpty()) return prop
         prop = getPropByStream(name)
-        if (!TextUtils.isEmpty(prop)) return prop
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) return getPropByReflect(name)
-        return prop
+        if (prop.isNotEmpty()) return prop
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) getPropByReflect(name) else prop
     }
 
     private fun getPropByShell(propName: String): String {
         var input: BufferedReader? = null
-        try {
+        return try {
             val p = Runtime.getRuntime().exec("getprop $propName")
             input = BufferedReader(InputStreamReader(p.inputStream), 1024)
-            val ret = input.readLine()
-            if (ret != null) return ret
+            input.readLine() ?: ""
         } catch (ignore: IOException) {
+            ""
         } finally {
-            if (input != null) {
-                try {
-                    input.close()
-                } catch (_: IOException) {
-                }
-            }
+            input?.close()
         }
-        return ""
     }
 
     private fun getPropByStream(key: String): String {
-        try {
+        return try {
             val prop = Properties()
-            val iS = FileInputStream(
-                File(Environment.getRootDirectory(), "build.prop")
-            )
+            val iS = FileInputStream(File(Environment.getRootDirectory(), "build.prop"))
             prop.load(iS)
-            return prop.getProperty(key, "")
+            prop.getProperty(key, "")
         } catch (_: Exception) {
+            ""
         }
-        return ""
     }
 
+    @SuppressLint("PrivateApi")
     private fun getPropByReflect(key: String): String {
-        try {
-            @SuppressLint("PrivateApi") val clz = Class.forName("android.os.SystemProperties")
+        return try {
+            val clz = Class.forName("android.os.SystemProperties")
             val getMethod = clz.getMethod("get", String::class.java, String::class.java)
-            return getMethod.invoke(clz, key, "") as String
+            getMethod.invoke(clz, key, "") as String
         } catch (_: Exception) {
+            ""
         }
-        return ""
     }
 }
