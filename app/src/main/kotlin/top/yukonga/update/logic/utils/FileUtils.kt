@@ -9,8 +9,12 @@ import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showString
 import java.io.File
 
 object FileUtils {
+    // Define a constant for the filename to avoid hardcoding it in multiple places
+    private const val COOKIES_FILENAME = "cookies.json"
+
+    // Use a function to get the file reference
     private fun cookiesFile(context: Context): File {
-        return File(context.filesDir, "cookies.json")
+        return File(context.filesDir, COOKIES_FILENAME)
     }
 
     fun saveCookiesFile(context: Context, data: String) {
@@ -30,16 +34,17 @@ object FileUtils {
     }
 
     fun downloadRomFile(context: Context, fileLink: String, fileName: String) {
-        DownloadManager.Request(fileLink.toUri()).apply {
+        val request = DownloadManager.Request(fileLink.toUri()).apply {
             setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
             setAllowedOverRoaming(false)
             setTitle(fileName)
-            setDescription(fileName)
+            setDescription(context.getString(R.string.download_description)) // Use a string resource for the description
             setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-            val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            downloadManager.enqueue(this)
-            showStringToast(context, context.getString(R.string.download_start), 1)
         }
+
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+        showStringToast(context, context.getString(R.string.download_start), 1)
     }
 }
