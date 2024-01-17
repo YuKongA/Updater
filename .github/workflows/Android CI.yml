@@ -24,7 +24,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Cache Gradle Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -34,7 +34,7 @@ jobs:
           restore-keys: gradle-deps
 
       - name: Cache Gradle Build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches/build-cache-*
