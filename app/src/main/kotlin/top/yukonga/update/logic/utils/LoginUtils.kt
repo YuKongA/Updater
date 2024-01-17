@@ -8,14 +8,14 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import top.yukonga.update.R
-import top.yukonga.update.logic.data.AuthorizeInfoHelper
-import top.yukonga.update.logic.data.LoginInfoHelper
+import top.yukonga.update.logic.data.AuthorizeHelper
+import top.yukonga.update.logic.data.LoginHelper
 import top.yukonga.update.logic.utils.FileUtils.deleteCookiesFile
 import top.yukonga.update.logic.utils.FileUtils.saveCookiesFile
 import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
-import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
 import java.security.MessageDigest
 import java.util.Base64
 
@@ -57,7 +57,7 @@ class LoginUtils {
         val response2 = postRequest(loginAuth2Url, requestBody)
 
         val authStr = response2.body!!.string().replace("&&&START&&&", "")
-        val authJson = json.decodeFromString<AuthorizeInfoHelper>(authStr)
+        val authJson = json.decodeFromString<AuthorizeHelper>(authStr)
         val description = authJson.description
         val nonce = authJson.nonce
         val ssecurity = authJson.ssecurity
@@ -89,7 +89,7 @@ class LoginUtils {
         val cookies = response3.headers("Set-Cookie").joinToString("; ") { it.split(";")[0] }
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
 
-        val loginInfo = LoginInfoHelper(accountType, authResult, description, ssecurity, serviceToken, userId)
+        val loginInfo = LoginHelper(accountType, authResult, description, ssecurity, serviceToken, userId)
 
         withContext(Dispatchers.Main) {
             saveCookiesFile(context, Json.encodeToString(loginInfo))
@@ -103,4 +103,5 @@ class LoginUtils {
             deleteCookiesFile(context)
         }
     }
+
 }

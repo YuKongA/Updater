@@ -3,7 +3,7 @@ package top.yukonga.update.logic.data
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LoginInfoHelper(
+data class LoginHelper(
     val accountType: String,
     val authResult: String,
     val description: String,

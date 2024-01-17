@@ -1,4 +1,4 @@
-package top.yukonga.update.ui
+package top.yukonga.update.activity
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -40,28 +40,28 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import top.yukonga.update.BuildConfig
 import top.yukonga.update.R
-import top.yukonga.update.databinding.ActivityMainBinding
-import top.yukonga.update.databinding.MainContentBinding
-import top.yukonga.update.logic.adapter.CustomArrayAdapter
+import top.yukonga.update.activity.adapter.CustomArrayAdapter
 import top.yukonga.update.logic.data.DeviceInfoHelper
-import top.yukonga.update.logic.data.RecoveryRomInfoHelper
-import top.yukonga.update.logic.fadInAnimation
-import top.yukonga.update.logic.fadOutAnimation
-import top.yukonga.update.logic.setTextAnimation
-import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidP
-import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidQ
-import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidR
+import top.yukonga.update.logic.data.RomInfoHelper
+import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidP
+import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidQ
+import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidR
 import top.yukonga.update.logic.utils.AppUtils.dp
-import top.yukonga.update.logic.utils.AppUtils.hapticConfirm
-import top.yukonga.update.logic.utils.AppUtils.hapticReject
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
+import top.yukonga.update.logic.utils.HapticUtils.hapticConfirm
+import top.yukonga.update.logic.utils.HapticUtils.hapticReject
 import top.yukonga.update.logic.utils.InfoUtils.getRecoveryRomInfo
 import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.LoginUtils
-import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
-import top.yukonga.update.logic.viewModel.MainViewModel
+import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.update.activity.viewModel.MainViewModel
+import top.yukonga.update.databinding.ActivityMainBinding
+import top.yukonga.update.databinding.MainContentBinding
+import top.yukonga.update.logic.utils.AnimUtils.fadInAnimation
+import top.yukonga.update.logic.utils.AnimUtils.fadOutAnimation
+import top.yukonga.update.logic.utils.AnimUtils.setTextAnimation
 
 class MainActivity : AppCompatActivity() {
 
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                         val systemVersionTextExt = systemVersion.replace("OS1", "V816").replace("AUTO", deviceCode)
 
                         // Acquire ROM info.
-                        val recoveryRomInfo = json.decodeFromString<RecoveryRomInfoHelper.RomInfo>(
+                        val recoveryRomInfo = json.decodeFromString<RomInfoHelper.RomInfo>(
                             getRecoveryRomInfo(
                                 this@MainActivity, codeNameExt, regionCode, systemVersionTextExt, androidVersion
                             )

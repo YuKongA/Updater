@@ -5,10 +5,11 @@ import android.content.Context
 import android.os.Environment
 import androidx.core.net.toUri
 import top.yukonga.update.R
-import top.yukonga.update.logic.utils.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
 import java.io.File
 
 object FileUtils {
+
     private fun cookiesFile(context: Context): File {
         return File(context.filesDir, "cookies.json")
     }
@@ -42,4 +43,5 @@ object FileUtils {
             showStringToast(context, context.getString(R.string.download_start), 1)
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.viewModel
+package top.yukonga.update.activity.viewModel
 
 import androidx.lifecycle.ViewModel
 

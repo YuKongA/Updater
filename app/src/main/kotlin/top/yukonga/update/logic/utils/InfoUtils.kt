@@ -4,7 +4,7 @@ import android.content.Context
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.FormBody
-import top.yukonga.update.logic.data.LoginInfoHelper
+import top.yukonga.update.logic.data.LoginHelper
 import top.yukonga.update.logic.data.RequestParamHelper
 import top.yukonga.update.logic.utils.CryptoUtils.miuiDecrypt
 import top.yukonga.update.logic.utils.CryptoUtils.miuiEncrypt
@@ -40,7 +40,7 @@ object InfoUtils {
         var port = "1"
         if (FileUtils.isCookiesFileExists(context)) {
             val cookiesFile = FileUtils.readCookiesFile(context)
-            val cookies = json.decodeFromString<LoginInfoHelper>(cookiesFile)
+            val cookies = json.decodeFromString<LoginHelper>(cookiesFile)
             userId = cookies.userId
             accountType = cookies.accountType.ifEmpty { "CN" }
             securityKey = Base64.getDecoder().decode((cookies.ssecurity))
@@ -55,4 +55,5 @@ object InfoUtils {
         val requestedEncryptedText = postRequest.body?.string() ?: ""
         return miuiDecrypt(requestedEncryptedText, securityKey)
     }
+
 }

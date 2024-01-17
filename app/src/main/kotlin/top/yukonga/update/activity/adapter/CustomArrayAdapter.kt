@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.adapter
+package top.yukonga.update.activity.adapter
 
 import android.content.Context
 import android.text.TextUtils

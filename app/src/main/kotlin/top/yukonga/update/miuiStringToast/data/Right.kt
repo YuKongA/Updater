@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.utils.miuiStringToast.data
+package top.yukonga.update.miuiStringToast.data
 
 import kotlinx.serialization.Serializable
 

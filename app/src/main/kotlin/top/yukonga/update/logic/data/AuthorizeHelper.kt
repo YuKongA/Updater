@@ -3,7 +3,7 @@ package top.yukonga.update.logic.data
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AuthorizeInfoHelper(
+data class AuthorizeHelper(
     val description: String? = null,
     val location: String? = null,
     val nonce: Long? = null,

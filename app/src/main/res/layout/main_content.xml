@@ -122,7 +122,7 @@
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_region">
 
-            <top.yukonga.update.logic.view.CustomMaterialAutoCompleteTextView
+            <top.yukonga.update.activity.view.CustomMaterialAutoCompleteTextView
                 android:id="@+id/device_region_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -163,7 +163,7 @@
             app:shapeAppearance="@style/CustomInputLayoutShapeAppearance"
             app:startIconDrawable="@drawable/ic_android">
 
-            <top.yukonga.update.logic.view.CustomMaterialAutoCompleteTextView
+            <top.yukonga.update.activity.view.CustomMaterialAutoCompleteTextView
                 android:id="@+id/android_version_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

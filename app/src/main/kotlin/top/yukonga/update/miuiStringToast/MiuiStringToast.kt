@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.utils.miuiStringToast
+package top.yukonga.update.miuiStringToast
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -9,16 +9,16 @@ import android.os.Bundle
 import android.widget.Toast
 import kotlinx.serialization.json.Json
 import top.yukonga.update.BuildConfig
-import top.yukonga.update.logic.utils.AppUtils.atLeastAndroidT
-import top.yukonga.update.logic.utils.AppUtils.isHyperOS
+import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidT
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
-import top.yukonga.update.logic.utils.AppUtils.isTablet
-import top.yukonga.update.logic.utils.miuiStringToast.data.IconParams
-import top.yukonga.update.logic.utils.miuiStringToast.data.Left
-import top.yukonga.update.logic.utils.miuiStringToast.data.Right
-import top.yukonga.update.logic.utils.miuiStringToast.data.StringToastBean
-import top.yukonga.update.logic.utils.miuiStringToast.data.TextParams
-import top.yukonga.update.ui.MainActivity
+import top.yukonga.update.logic.utils.XiaomiUtils.isHyperOS
+import top.yukonga.update.logic.utils.XiaomiUtils.isMiPad
+import top.yukonga.update.miuiStringToast.data.IconParams
+import top.yukonga.update.miuiStringToast.data.Left
+import top.yukonga.update.miuiStringToast.data.Right
+import top.yukonga.update.miuiStringToast.data.StringToastBean
+import top.yukonga.update.miuiStringToast.data.TextParams
+import top.yukonga.update.activity.MainActivity
 
 object MiuiStringToast {
 
@@ -37,7 +37,7 @@ object MiuiStringToast {
         text: String?,
         colorType: Int?
     ) {
-        if ((!isTablet() && isLandscape()) || !atLeastAndroidT() || !isHyperOS()) {
+        if ((!isMiPad() && isLandscape()) || !atLeastAndroidT() || !isHyperOS()) {
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
             return
         }
@@ -96,6 +96,6 @@ object MiuiStringToast {
         TEXT_BITMAP("text_bitmap"),
         TEXT_BITMAP_INTENT("text_bitmap_intent"),
         VIDEO_TEXT_TEXT_VIDEO("video_text_text_video")
-
     }
+
 }

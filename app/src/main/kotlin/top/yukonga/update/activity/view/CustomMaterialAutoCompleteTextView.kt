@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.view
+package top.yukonga.update.activity.view
 
 import android.content.Context
 import android.util.AttributeSet

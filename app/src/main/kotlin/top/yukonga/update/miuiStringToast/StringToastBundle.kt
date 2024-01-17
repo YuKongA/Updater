@@ -1,4 +1,4 @@
-package top.yukonga.update.logic.utils.miuiStringToast
+package top.yukonga.update.miuiStringToast
 
 import android.app.PendingIntent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class StringToastBundle {
+
     companion object {
         private var mBundle: Bundle = Bundle()
     }
@@ -90,4 +91,5 @@ class StringToastBundle {
             return mBundle
         }
     }
+
 }
