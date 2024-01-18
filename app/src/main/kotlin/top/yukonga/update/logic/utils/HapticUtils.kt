@@ -1,18 +1,21 @@
 package top.yukonga.update.logic.utils
 
+import android.os.Build
 import android.view.HapticFeedbackConstants
 import android.view.View
 
 object HapticUtils {
 
+    private fun performHapticFeedback(view: View, feedbackConstant: Int) {
+        if (AppUtils.atLeast(Build.VERSION_CODES.R)) view.performHapticFeedback(feedbackConstant) else view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+    }
+
     fun hapticConfirm(view: View) {
-        if (AndroidUtils.atLeastAndroidR()) view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
-        else view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        performHapticFeedback(view, HapticFeedbackConstants.CONFIRM)
     }
 
     fun hapticReject(view: View) {
-        if (AndroidUtils.atLeastAndroidR()) view.performHapticFeedback(HapticFeedbackConstants.REJECT)
-        else view.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        performHapticFeedback(view, HapticFeedbackConstants.REJECT)
     }
 
 }

@@ -10,38 +10,44 @@ import java.io.File
 
 object FileUtils {
 
-    private fun cookiesFile(context: Context): File {
-        return File(context.filesDir, "cookies.json")
+    private const val COOKIES_FILE_NAME = "cookies.json"
+    private lateinit var cookiesFile: File
+
+    private fun getCookiesFile(context: Context): File {
+        if (!::cookiesFile.isInitialized) {
+            cookiesFile = File(context.filesDir, COOKIES_FILE_NAME)
+        }
+        return cookiesFile
     }
 
     fun saveCookiesFile(context: Context, data: String) {
-        cookiesFile(context).writeText(data)
+        getCookiesFile(context).writeText(data)
     }
 
     fun readCookiesFile(context: Context): String {
-        return cookiesFile(context).readText()
+        return getCookiesFile(context).readText()
     }
 
     fun deleteCookiesFile(context: Context) {
-        cookiesFile(context).delete()
+        getCookiesFile(context).delete()
     }
 
     fun isCookiesFileExists(context: Context): Boolean {
-        return cookiesFile(context).exists()
+        return getCookiesFile(context).exists()
     }
 
     fun downloadRomFile(context: Context, fileLink: String, fileName: String) {
-        DownloadManager.Request(fileLink.toUri()).apply {
+        val request = DownloadManager.Request(fileLink.toUri()).apply {
             setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
             setAllowedOverRoaming(false)
             setTitle(fileName)
             setDescription(fileName)
             setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-            val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            downloadManager.enqueue(this)
-            showStringToast(context, context.getString(R.string.download_start), 1)
         }
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadManager.enqueue(request)
+        showStringToast(context, context.getString(R.string.download_start), 1)
     }
 
 }

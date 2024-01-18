@@ -10,9 +10,9 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import top.yukonga.update.R
 import top.yukonga.update.logic.data.AuthorizeHelper
 import top.yukonga.update.logic.data.LoginHelper
+import top.yukonga.update.logic.utils.AppUtils.json
 import top.yukonga.update.logic.utils.FileUtils.deleteCookiesFile
 import top.yukonga.update.logic.utils.FileUtils.saveCookiesFile
-import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
 import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
@@ -73,6 +73,7 @@ class LoginUtils {
             }
             return false
         }
+
         if (nonce == null || ssecurity == null || location == null || userId.isEmpty()) {
             withContext(Dispatchers.Main) {
                 showStringToast(context, context.getString(R.string.security_error), 0)

@@ -2,15 +2,17 @@ package top.yukonga.update.logic.utils
 
 object XiaomiUtils {
 
-    private fun isXiaomi(): Boolean = PropUtils.getProp("ro.build.fingerprint").contains("Xiaomi")
+    fun isDeviceType(vararg types: String): Boolean {
+        val fingerprint = PropUtils.getProp("ro.build.fingerprint")
+        return types.any { fingerprint.contains(it) }
+    }
 
-    private fun isRedmi(): Boolean = PropUtils.getProp("ro.build.fingerprint").contains("Redmi")
+    fun isXiaomiFamily(): Boolean = isDeviceType("Xiaomi", "Redmi", "POCO")
 
-    private fun isPOCO(): Boolean = PropUtils.getProp("ro.build.fingerprint").contains("POCO")
-
-    fun isXiaomiFamily(): Boolean = isXiaomi() || isRedmi() || isPOCO()
-
-    fun isRunningMiui(): Boolean = isXiaomiFamily() && PropUtils.getProp("persist.miui.density_v2").isNotEmpty() && PropUtils.getProp("ro.miui.ui.version.code").isNotEmpty()
+    fun isRunningMiui(): Boolean {
+        val list = listOf("persist.miui.density_v2", "ro.miui.ui.version.code", "ro.miui.ui.version.name")
+        return isXiaomiFamily() && PropUtils.getProps(list).all { it.value.isNotEmpty() }
+    }
 
     fun isMiui(): Boolean = if (isRunningMiui()) PropUtils.getProp("ro.miui.ui.version.code").toInt() <= 140 else false
 

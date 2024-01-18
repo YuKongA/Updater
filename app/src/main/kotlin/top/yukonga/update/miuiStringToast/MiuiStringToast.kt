@@ -5,11 +5,13 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.serialization.json.Json
 import top.yukonga.update.BuildConfig
-import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidT
+import top.yukonga.update.activity.MainActivity
+import top.yukonga.update.logic.utils.AppUtils.atLeast
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.XiaomiUtils.isHyperOS
 import top.yukonga.update.logic.utils.XiaomiUtils.isMiPad
@@ -18,7 +20,6 @@ import top.yukonga.update.miuiStringToast.data.Left
 import top.yukonga.update.miuiStringToast.data.Right
 import top.yukonga.update.miuiStringToast.data.StringToastBean
 import top.yukonga.update.miuiStringToast.data.TextParams
-import top.yukonga.update.activity.MainActivity
 
 object MiuiStringToast {
 
@@ -37,7 +38,7 @@ object MiuiStringToast {
         text: String?,
         colorType: Int?
     ) {
-        if ((!isMiPad() && isLandscape()) || !atLeastAndroidT() || !isHyperOS()) {
+        if ((!isMiPad() && isLandscape()) || !atLeast(Build.VERSION_CODES.TIRAMISU) || !isHyperOS()) {
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
             return
         }

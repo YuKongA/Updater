@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
@@ -41,27 +42,25 @@ import kotlinx.serialization.json.Json
 import top.yukonga.update.BuildConfig
 import top.yukonga.update.R
 import top.yukonga.update.activity.adapter.CustomArrayAdapter
+import top.yukonga.update.activity.viewModel.MainViewModel
+import top.yukonga.update.databinding.ActivityMainBinding
+import top.yukonga.update.databinding.MainContentBinding
 import top.yukonga.update.logic.data.DeviceInfoHelper
 import top.yukonga.update.logic.data.RomInfoHelper
-import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidP
-import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidQ
-import top.yukonga.update.logic.utils.AndroidUtils.atLeastAndroidR
+import top.yukonga.update.logic.utils.AnimUtils.fadInAnimation
+import top.yukonga.update.logic.utils.AnimUtils.fadOutAnimation
+import top.yukonga.update.logic.utils.AnimUtils.setTextAnimation
+import top.yukonga.update.logic.utils.AppUtils
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
+import top.yukonga.update.logic.utils.AppUtils.json
 import top.yukonga.update.logic.utils.FileUtils
 import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
 import top.yukonga.update.logic.utils.HapticUtils.hapticConfirm
 import top.yukonga.update.logic.utils.HapticUtils.hapticReject
 import top.yukonga.update.logic.utils.InfoUtils.getRecoveryRomInfo
-import top.yukonga.update.logic.utils.JsonUtils.json
 import top.yukonga.update.logic.utils.LoginUtils
 import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
-import top.yukonga.update.activity.viewModel.MainViewModel
-import top.yukonga.update.databinding.ActivityMainBinding
-import top.yukonga.update.databinding.MainContentBinding
-import top.yukonga.update.logic.utils.AnimUtils.fadInAnimation
-import top.yukonga.update.logic.utils.AnimUtils.fadOutAnimation
-import top.yukonga.update.logic.utils.AnimUtils.setTextAnimation
 
 class MainActivity : AppCompatActivity() {
 
@@ -199,9 +198,8 @@ class MainActivity : AppCompatActivity() {
                                     officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    officialText =
-                                        if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                        else getString(R.string.official, "bigota")
+                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                    else getString(R.string.official, "bigota")
                                     cdn1Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
@@ -334,8 +332,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupEdgeToEdge() {
         enableEdgeToEdge()
-        if (atLeastAndroidQ()) window.isNavigationBarContrastEnforced = false
-        if (atLeastAndroidR()) {
+        if (AppUtils.atLeast(Build.VERSION_CODES.Q)) window.isNavigationBarContrastEnforced = false
+        if (AppUtils.atLeast(Build.VERSION_CODES.R)) {
             mainContentBinding.downloadInfo.setOnApplyWindowInsetsListener { _, insets ->
                 mainContentBinding.downloadInfo.layoutParams.apply {
                     // View bottom margin + Fab bottom height + Fab bottom margin + System gestures height.
@@ -353,7 +351,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupCutoutMode() {
-        if (atLeastAndroidP()) {
+        if (AppUtils.atLeast(Build.VERSION_CODES.P)) {
             val layoutParam = window.attributes
             layoutParam.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             window.setAttributes(layoutParam)
@@ -627,7 +625,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideIme(view: View) {
-        if (atLeastAndroidR()) {
+        if (AppUtils.atLeast(Build.VERSION_CODES.R)) {
             view.windowInsetsController?.hide(WindowInsets.Type.ime())
         } else {
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

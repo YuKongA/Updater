@@ -7,28 +7,29 @@ import javax.crypto.spec.SecretKeySpec
 
 object CryptoUtils {
 
-    private const val iv = "0102030405060708"
+    private val iv = "0102030405060708".toByteArray()
+    private const val transformation = "AES/CBC/PKCS5Padding"
 
     private fun miuiCipher(mode: Int, securityKey: ByteArray): Cipher {
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
+        val cipher = Cipher.getInstance(transformation)
         val secretKeySpec = SecretKeySpec(securityKey, "AES")
-        val ivParameterSpec = IvParameterSpec(iv.toByteArray(Charsets.UTF_8))
+        val ivParameterSpec = IvParameterSpec(iv)
         cipher.init(mode, secretKeySpec, ivParameterSpec)
         return cipher
     }
 
     fun miuiEncrypt(jsonRequest: String, securityKey: ByteArray): String {
         val cipher = miuiCipher(Cipher.ENCRYPT_MODE, securityKey)
-        val encrypted = cipher.doFinal(jsonRequest.toByteArray(Charsets.UTF_8))
+        val encrypted = cipher.doFinal(jsonRequest.toByteArray())
         return Base64.getUrlEncoder().encodeToString(encrypted)
     }
 
     fun miuiDecrypt(encryptedText: String, securityKey: ByteArray): String {
-        val cipher = miuiCipher(Cipher.DECRYPT_MODE, securityKey)
         if (encryptedText.isEmpty()) return ""
+        val cipher = miuiCipher(Cipher.DECRYPT_MODE, securityKey)
         val encryptedTextBytes = Base64.getMimeDecoder().decode(encryptedText)
         val decryptedTextBytes = cipher.doFinal(encryptedTextBytes)
-        return String(decryptedTextBytes, Charsets.UTF_8)
+        return String(decryptedTextBytes)
     }
 
 }
