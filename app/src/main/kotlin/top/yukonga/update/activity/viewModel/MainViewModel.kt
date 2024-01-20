@@ -14,5 +14,6 @@ class MainViewModel : ViewModel() {
     var officialText: String? = null
     var cdn1Download: String? = null
     var cdn2Download: String? = null
+    var cdn3Download: String? = null
     var changelog: String? = null
 }
