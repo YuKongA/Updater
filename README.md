@@ -4,6 +4,8 @@
 
 [English](https://github.com/YuKongA/Updater/blob/main/README_EN.md) 丨 简体中文</b>
 
+[![Crowdin](https://badges.crowdin.net/updater-miota/localized.svg)](https://zh.crowdin.com/project/updater-miota)
+
 </div>
 
 ## 使用:
