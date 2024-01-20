@@ -206,6 +206,9 @@ class MainActivity : AppCompatActivity() {
                                     cdn2Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                    cdn3Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
+                                        R.string.cdn3_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
+                                    ) else getString(R.string.cdn3_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
                                     changelog = log.toString().trimEnd()
                                 }
                             } else {
@@ -471,6 +474,8 @@ class MainActivity : AppCompatActivity() {
                         cdn1Copy.setCopyClickListener(mainViewModel.cdn1Download)
                         cdn2Download.setDownloadClickListener(mainViewModel.filename, mainViewModel.cdn2Download!!)
                         cdn2Copy.setCopyClickListener(mainViewModel.cdn2Download)
+                        cdn3Download.setDownloadClickListener(mainViewModel.filename, mainViewModel.cdn3Download!!)
+                        cdn3Copy.setCopyClickListener(mainViewModel.cdn3Download)
                     } else {
                         secondViewArray.forEach {
                             if (it.isVisible) it.fadOutAnimation()
