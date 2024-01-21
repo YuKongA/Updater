@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_about">Hakkımızda</string>
+    <string name="app_about">Hakkında</string>
     <string name="app_summary">HyperOS/MIUI güncelleme bilgilerini alın</string>
     <string name="app_github">Kaynak kodu &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
     <string name="login">Giriş</string>
@@ -22,7 +22,7 @@
     <string name="cancel">İptal</string>
     <string name="logging_in">Giriş yapılıyor</string>
     <string name="login_successful">Giriş başarılı</string>
-    <string name="request_sign_failed">Giriş yapılıyor!</string>
+    <string name="request_sign_failed">Giriş isteği başarısız oldu!</string>
     <string name="account_or_password_empty">Xiaomi Id veya Şifre hatası!</string>
     <string name="no_account">Giriş yapılmadı</string>
     <string name="login_desc">Giriş</string>
@@ -45,5 +45,5 @@
     <string name="android_default">Varsayılan</string>
     <string name="other">Diğer</string>
     <string name="download_start">İndirme başladı</string>
-    <string name="login_error">Incorrect account or password!</string>
+    <string name="login_error">Yanlış Id veya Şifre!</string>
 </resources>
