@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_about">About</string>
+    <string name="app_about">O programie</string>
     <string name="app_summary">Get HyperOS/MIUI update info</string>
     <string name="app_github">View source code on &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
     <string name="login">Login</string>
