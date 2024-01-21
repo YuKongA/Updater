@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_about">Acerca de</string>
+    <string name="app_summary">Obtén información de las actualizaciones de MIUI y HyperOs</string>
+    <string name="app_github">Ver el código fuente en &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="code_name">Nombre en clave</string>
+    <string name="device_name">Nombre del dispositivo</string>
+    <string name="system_version">Versión del sistema</string>
+    <string name="android_version">Versión de Android</string>
+    <string name="submit">Enviar</string>
+    <string name="big_version">Versión principal</string>
+    <string name="filename">Nombre del archivo</string>
+    <string name="filesize">Peso del archivo</string>
+    <string name="download">Link de descarga</string>
+    <string name="changelog">Registro de cambios</string>
+    <string name="branch">Rama</string>
+    <string name="toast_no_info">No se ha encontrado!</string>
+    <string name="toast_copied_to_pasteboard">Copiado al portapapeles</string>
+    <string name="account">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="cancel">Cancelar</string>
+    <string name="logging_in">Iniciando sesión</string>
+    <string name="login_successful">Inicio de sesión exitoso</string>
+    <string name="request_sign_failed">¡Inicio de sesión fallido!</string>
+    <string name="account_or_password_empty">¡El correo electrónico o contraseña se encuentra vacía!</string>
+    <string name="no_account">Sin cuenta</string>
+    <string name="login_desc">Usando interfaz v1</string>
+    <string name="using_v2">Usando interfaz v2</string>
+    <string name="logged_in">Sesión iniciada</string>
+    <string name="copy_button">Copiar</string>
+    <string name="download_button">Descargar</string>
+    <string name="security_error">No se pudo obtener la clave de seguridad</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="confirm">Confirmar</string>
+    <string name="logout_successful">Se ha cerrado la sesión</string>
+    <string name="logout_desc">¿Estás segur@ de que quieres cerrar la sesión?</string>
+    <string name="regions_code">Código de región</string>
+    <string name="login_expired">Sesión caducada</string>
+    <string name="login_expired_desc">Se recomienda iniciar sesión de nuevo</string>
+    <string name="login_expired_dialog">Se comprobó que el inicio de sesión ha caducado. Se recomienda iniciar sesión nuevamente.</string>
+    <string name="global">Cuenta global</string>
+    <string name="download_method">Método de descarga</string>
+    <string name="download_method_desc">Seleccione el método de descarga</string>
+    <string name="android_default">Por defecto</string>
+    <string name="other">Otros</string>
+    <string name="download_start">La descarga ha iniciado</string>
+    <string name="login_error">Cuenta o contraseña incorrectas</string>
+</resources>

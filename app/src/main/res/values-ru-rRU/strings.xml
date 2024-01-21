@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_about">О программе</string>
+    <string name="app_summary">Получить инфо об обновлении HyperOS/MIUI</string>
+    <string name="app_github">Посмотреть исходник на &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
+    <string name="login">Вход</string>
+    <string name="code_name">Кодовое имя</string>
+    <string name="device_name">Имя устройства</string>
+    <string name="system_version">Версия системы</string>
+    <string name="android_version">Версия Android</string>
+    <string name="submit">Отправить</string>
+    <string name="big_version">Мажорная версия</string>
+    <string name="filename">Имя файла</string>
+    <string name="filesize">Размер файла</string>
+    <string name="download">Ссылка для скачивания</string>
+    <string name="changelog">Список изменений</string>
+    <string name="branch">Ветка</string>
+    <string name="toast_no_info">Нет данных!</string>
+    <string name="toast_copied_to_pasteboard">Скопировано в буфер обмена</string>
+    <string name="account">Учетная запись</string>
+    <string name="password">Пароль</string>
+    <string name="cancel">Отмена</string>
+    <string name="logging_in">Выполняется вход</string>
+    <string name="login_successful">Успешный вход</string>
+    <string name="request_sign_failed">Запрос _sign не удался!</string>
+    <string name="account_or_password_empty">Учетная запись или пароль не заполнены!</string>
+    <string name="no_account">Нет учетной записи</string>
+    <string name="login_desc">Использовать интерфейс v1</string>
+    <string name="using_v2">Использовать интерфейс v2</string>
+    <string name="logged_in">Вход выполнен</string>
+    <string name="copy_button">Копировать</string>
+    <string name="download_button">Скачать</string>
+    <string name="security_error">Не удалось получить ключ безопасности</string>
+    <string name="logout">Выход</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="logout_successful">Выход выполнен</string>
+    <string name="logout_desc">Вы уверены, что хотите выйти из аккаунта?</string>
+    <string name="regions_code">Код регионов</string>
+    <string name="login_expired">Срок действия входа истек</string>
+    <string name="login_expired_desc">Рекомендуется снова войти в систему</string>
+    <string name="login_expired_dialog">Похоже, что срок авторизация истекла. Рекомендуется снова войти в систему.</string>
+    <string name="global">Глобальный аккаунт</string>
+    <string name="download_method">Метод загрузки</string>
+    <string name="download_method_desc">Выберите метод загрузки</string>
+    <string name="android_default">По умолчанию</string>
+    <string name="other">Другой</string>
+    <string name="download_start">Скачивание началось</string>
+    <string name="login_error">Неверный идентификатор учётной записи или пароль!</string>
+</resources>

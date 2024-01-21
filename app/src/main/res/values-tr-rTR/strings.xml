@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_about">Hakkında</string>
+    <string name="app_summary">HyperOS/MIUI güncelleme bilgilerini alın</string>
+    <string name="app_github">Kaynak kodu &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
+    <string name="login">Giriş</string>
+    <string name="code_name">Model Adı</string>
+    <string name="device_name">Cihaz Adı</string>
+    <string name="system_version">Yazılım Sürümü</string>
+    <string name="android_version">Android Sürümü</string>
+    <string name="submit">Getir</string>
+    <string name="big_version">Ana Sürüm</string>
+    <string name="filename">Dosya Adı</string>
+    <string name="filesize">Rom Boyutu</string>
+    <string name="download">İndirme Bağlantıları</string>
+    <string name="changelog">Değişiklik Günlüğü</string>
+    <string name="branch">Şube</string>
+    <string name="toast_no_info">Bulunamadı!</string>
+    <string name="toast_copied_to_pasteboard">Panoya kopyalandı</string>
+    <string name="account">Hesap</string>
+    <string name="password">Şifre</string>
+    <string name="cancel">İptal</string>
+    <string name="logging_in">Giriş yapılıyor</string>
+    <string name="login_successful">Giriş başarılı</string>
+    <string name="request_sign_failed">Giriş isteği başarısız oldu!</string>
+    <string name="account_or_password_empty">Xiaomi Id veya Şifre hatası!</string>
+    <string name="no_account">Giriş yapılmadı</string>
+    <string name="login_desc">V1 arayüzü kullanılıyor</string>
+    <string name="using_v2">V2 arayüzü kullanılıyor</string>
+    <string name="logged_in">Giriş yapıldı</string>
+    <string name="copy_button">Kopyala</string>
+    <string name="download_button">İndir</string>
+    <string name="security_error">Güvenlik anahtarı hatası</string>
+    <string name="logout">Çıkış</string>
+    <string name="confirm">Onayla</string>
+    <string name="logout_successful">Başarıyla çıkış yapıldı</string>
+    <string name="logout_desc">Çıkış yapmak istediğine emin misin?</string>
+    <string name="regions_code">Bölge Kodu</string>
+    <string name="login_expired">Oturumun süresi doldu</string>
+    <string name="login_expired_desc">Tekrar giriş yapmanız gerekiyor</string>
+    <string name="login_expired_dialog">Oturum süresi doldu. Tekrar giriş yapmanız gerekiyor.</string>
+    <string name="global">Global hesap</string>
+    <string name="download_method">İndirme yöntemi</string>
+    <string name="download_method_desc">İndirme yönteminizi seçin</string>
+    <string name="android_default">Varsayılan</string>
+    <string name="other">Diğer</string>
+    <string name="download_start">İndirme başladı</string>
+    <string name="login_error">Yanlış Id veya Şifre!</string>
+</resources>
