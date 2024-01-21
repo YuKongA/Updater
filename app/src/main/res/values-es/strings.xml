@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_about">About</string>
-    <string name="app_summary">Get HyperOS/MIUI update info</string>
+    <string name="app_about">Acerca de</string>
+    <string name="app_summary">Obtén información de las actualizaciones de MIUI y HyperOs</string>
     <string name="app_github">View source code on &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
     <string name="login">Login</string>
     <string name="code_name">Code Name</string>
-    <string name="device_name">Device Name</string>
-    <string name="system_version">System Version</string>
-    <string name="android_version">Android Version</string>
-    <string name="submit">Submit</string>
+    <string name="device_name">Nombre del dispositivo</string>
+    <string name="system_version">Versión del sistema</string>
+    <string name="android_version">Versión de Android</string>
+    <string name="submit">Enviar</string>
     <string name="big_version">Major Version</string>
     <string name="filename">File Name</string>
     <string name="filesize">File Size</string>
-    <string name="download">Download Url</string>
-    <string name="changelog">Changelog</string>
-    <string name="branch">Branch</string>
+    <string name="download">Link de descarga</string>
+    <string name="changelog">Registro de cambios</string>
+    <string name="branch">Rama</string>
     <string name="toast_no_info">No information!</string>
     <string name="toast_copied_to_pasteboard">Copied to pasteboard</string>
     <string name="account">Account</string>
@@ -25,8 +25,8 @@
     <string name="request_sign_failed">Request for _sign failed!</string>
     <string name="account_or_password_empty">Account or Password empty!</string>
     <string name="no_account">No account</string>
-    <string name="login_desc">Using v1 interface</string>
-    <string name="using_v2">Using v2 interface</string>
+    <string name="login_desc">Usando interfaz v1</string>
+    <string name="using_v2">Usando interfaz v2</string>
     <string name="logged_in">Logged in</string>
     <string name="copy_button">Copy</string>
     <string name="download_button">Download</string>
