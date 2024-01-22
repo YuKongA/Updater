@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -314,19 +313,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAboutDialog() {
-
-        val drawable = GradientDrawable()
-        drawable.cornerRadius = 64f
-        val rootView = MaterialAlertDialogBuilder(this).setBackground(drawable).setView(R.layout.dialog_about).show()
+        val rootView = MaterialAlertDialogBuilder(this@MainActivity).setView(R.layout.dialog_about).show()
         val versionTextView = rootView.findViewById<TextView>(R.id.version)!!
         val githubSpannableTextView = rootView.findViewById<TextView>(R.id.github)!!
 
         versionTextView.text = getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString())
         githubSpannableTextView.text = Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT)
         githubSpannableTextView.movementMethod = LinkMovementMethod.getInstance()
-
     }
-
 
     private fun setupEdgeToEdge() {
         enableEdgeToEdge()
