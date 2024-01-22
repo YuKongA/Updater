@@ -44,4 +44,5 @@
     <string name="other">Outro</string>
     <string name="download_start">Download iniciado</string>
     <string name="login_error">Conta ou senha incorreta!</string>
+    <string name="opensource_info">Copyright © 2024 YukongA, AkaneTan</string>
 </resources>
