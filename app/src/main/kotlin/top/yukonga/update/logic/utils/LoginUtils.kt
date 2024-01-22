@@ -7,6 +7,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
 import top.yukonga.update.R
 import top.yukonga.update.logic.data.AuthorizeHelper
 import top.yukonga.update.logic.data.LoginHelper
@@ -15,7 +16,6 @@ import top.yukonga.update.logic.utils.FileUtils.deleteCookiesFile
 import top.yukonga.update.logic.utils.FileUtils.saveCookiesFile
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
-import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
 import java.security.MessageDigest
 import java.util.Base64
 
@@ -102,6 +102,7 @@ class LoginUtils {
     suspend fun logout(context: Context) {
         withContext(Dispatchers.Main) {
             deleteCookiesFile(context)
+            showStringToast(context, context.getString(R.string.logout_successful), 1)
         }
     }
 

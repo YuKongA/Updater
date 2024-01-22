@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Updater</string>
     <string name="app_version" translatable="false">%1$s(%2$s)</string>
-    <string name="app_about">About</string>
-    <string name="app_summary">Get HyperOS/MIUI update info</string>
-    <string name="app_github">View source code on &lt;a href=\"https://github.com/YuKongA/Updater\">GitHub&lt;/a></string>
+    <string name="app_github">View source code on &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
     <string name="login">Login</string>
     <string name="code_name">Code Name</string>
     <string name="device_name">Device Name</string>
@@ -56,5 +54,5 @@
     <string name="other">Other</string>
     <string name="download_start">Download has started</string>
     <string name="login_error">Incorrect account or password!</string>
-    <string name="opensource_info">Copyright © 2024 YukongA, AkaneTan</string>
+    <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
 </resources>

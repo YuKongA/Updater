@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_about">Thông tin</string>
-    <string name="app_summary">Nhận thông tin cập nhật HyperOS/MIUI</string>
     <string name="app_github">Xem mã nguồn trên &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
     <string name="login">Đăng nhập</string>
-    <string name="code_name">Mã máy</string>
+    <string name="code_name">Mã thiết bị</string>
     <string name="device_name">Tên thiết bị</string>
     <string name="system_version">Phiên bản hệ thống</string>
     <string name="android_version">Phiên bản Android</string>

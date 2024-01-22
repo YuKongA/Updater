@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_about">Sobre</string>
-    <string name="app_summary">Obtenha informações da atualização do HyperOS/MIUI</string>
     <string name="app_github">Veja o código-fonte no &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
     <string name="login">Entrar</string>
     <string name="code_name">Codinome</string>

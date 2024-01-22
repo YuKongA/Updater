@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_about">关于</string>
-    <string name="app_summary">获取 HyperOS/MIUI 更新信息</string>
     <string name="app_github">在 &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt; 查看源码</string>
     <string name="login">登录</string>
     <string name="code_name">设备代号</string>
@@ -46,5 +44,5 @@
     <string name="other">其它</string>
     <string name="download_start">已开始下载</string>
     <string name="login_error">登录验证失败！</string>
-    <string name="opensource_info">版权所有 © 2024 YukongA, AkaneTan</string>
+    <string name="opensource_info">版权所有 © 2024 YuKongA, AkaneTan</string>
 </resources>

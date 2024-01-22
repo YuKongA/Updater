@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_about">Hakkında</string>
-    <string name="app_summary">HyperOS/MIUI güncelleme bilgilerini alın</string>
     <string name="app_github">Kaynak kodu &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
     <string name="login">Giriş</string>
     <string name="code_name">Model Adı</string>
