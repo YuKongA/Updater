@@ -8,7 +8,7 @@
     <string name="device_name">Cihaz Adı</string>
     <string name="system_version">Yazılım Sürümü</string>
     <string name="android_version">Android Sürümü</string>
-    <string name="submit">Getir @chinacloudgroup</string>
+    <string name="submit">Getir</string>
     <string name="big_version">Ana Sürüm</string>
     <string name="filename">Dosya Adı</string>
     <string name="filesize">Rom Boyutu</string>
