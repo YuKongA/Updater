@@ -44,5 +44,5 @@
     <string name="other">Khác</string>
     <string name="download_start">Đã bắt đầu tải xuống</string>
     <string name="login_error">Tài khoản hoặc mật khẩu không chính xác!</string>
-    <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
+    <string name="opensource_info">Tác quyền © 2024 YuKongA, AkaneTan</string>
 </resources>
