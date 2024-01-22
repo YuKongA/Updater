@@ -5,7 +5,7 @@ import android.content.Context
 import android.os.Environment
 import androidx.core.net.toUri
 import top.yukonga.update.R
-import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
 import java.io.File
 
 object FileUtils {

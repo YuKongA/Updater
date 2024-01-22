@@ -1,4 +1,4 @@
-package top.yukonga.update.miuiStringToast
+package top.yukonga.miuiStringToast
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -15,11 +15,11 @@ import top.yukonga.update.logic.utils.AppUtils.atLeast
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.XiaomiUtils.isHyperOS
 import top.yukonga.update.logic.utils.XiaomiUtils.isMiPad
-import top.yukonga.update.miuiStringToast.data.IconParams
-import top.yukonga.update.miuiStringToast.data.Left
-import top.yukonga.update.miuiStringToast.data.Right
-import top.yukonga.update.miuiStringToast.data.StringToastBean
-import top.yukonga.update.miuiStringToast.data.TextParams
+import top.yukonga.miuiStringToast.data.IconParams
+import top.yukonga.miuiStringToast.data.Left
+import top.yukonga.miuiStringToast.data.Right
+import top.yukonga.miuiStringToast.data.StringToastBean
+import top.yukonga.miuiStringToast.data.TextParams
 
 object MiuiStringToast {
 

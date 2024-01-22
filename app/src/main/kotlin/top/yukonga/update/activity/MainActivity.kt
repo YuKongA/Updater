@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -60,7 +61,7 @@ import top.yukonga.update.logic.utils.HapticUtils.hapticConfirm
 import top.yukonga.update.logic.utils.HapticUtils.hapticReject
 import top.yukonga.update.logic.utils.InfoUtils.getRecoveryRomInfo
 import top.yukonga.update.logic.utils.LoginUtils
-import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
 
 class MainActivity : AppCompatActivity() {
 
@@ -312,26 +313,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAboutDialog() {
-        val view = createDialogView()
-        val appSummary = createTextView(getString(R.string.app_summary), 14f, 25.dp, 10.dp, 25.dp, 20.dp)
-        val appVersion =
-            createTextView(getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString()), 14f, 25.dp, 0.dp, 25.dp, 0.dp)
-        val appBuild = createTextView(BuildConfig.BUILD_TYPE, 14f, 25.dp, 0.dp, 25.dp, 20.dp)
-        val appGithub = createTextView(Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT), 12f, 25.dp, 0.dp, 25.dp, 25.dp).apply {
-            movementMethod = LinkMovementMethod.getInstance()
-        }
-        view.apply {
-            addView(appSummary)
-            addView(appVersion)
-            addView(appBuild)
-            addView(appGithub)
-        }
-        MaterialAlertDialogBuilder(this@MainActivity).apply {
-            setTitle(getString(R.string.app_name))
-            setIcon(R.drawable.ic_launcher)
-            setView(view)
-        }.show()
+
+        val drawable = GradientDrawable()
+        drawable.cornerRadius = 64f
+        val rootView = MaterialAlertDialogBuilder(this)
+            .setBackground(drawable)
+            .setView(R.layout.dialog_about)
+            .show()
+        val versionTextView = rootView.findViewById<TextView>(R.id.version)!!
+        val githubSpannableTextView = rootView.findViewById<TextView>(R.id.github)!!
+
+        versionTextView.text = getString(R.string.app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE.toString())
+        githubSpannableTextView.text = Html.fromHtml(getString(R.string.app_github), Html.FROM_HTML_MODE_COMPACT)
+        githubSpannableTextView.movementMethod = LinkMovementMethod.getInstance()
+
     }
+
+
 
     private fun setupEdgeToEdge() {
         enableEdgeToEdge()
@@ -565,16 +563,6 @@ class MainActivity : AppCompatActivity() {
     private fun createTextInputEditText(inputType: Int = InputType.TYPE_CLASS_TEXT): TextInputEditText {
         return TextInputEditText(this@MainActivity).apply {
             this.inputType = inputType
-        }
-    }
-
-    private fun createTextView(text: CharSequence, textSize: Float, leftMargin: Int, topMargin: Int, rightMargin: Int, bottomMargin: Int): TextView {
-        return TextView(this@MainActivity).apply {
-            this.text = text
-            this.textSize = textSize
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                setMargins(leftMargin, topMargin, rightMargin, bottomMargin)
-            }
         }
     }
 

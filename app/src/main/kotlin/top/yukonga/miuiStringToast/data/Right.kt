@@ -1,9 +1,9 @@
-package top.yukonga.update.miuiStringToast.data
+package top.yukonga.miuiStringToast.data
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Left(
+data class Right(
     var iconParams: IconParams? = null,
     var textParams: TextParams? = null
 )

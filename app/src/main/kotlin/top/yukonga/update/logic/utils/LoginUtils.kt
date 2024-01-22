@@ -15,7 +15,7 @@ import top.yukonga.update.logic.utils.FileUtils.deleteCookiesFile
 import top.yukonga.update.logic.utils.FileUtils.saveCookiesFile
 import top.yukonga.update.logic.utils.NetworkUtils.getRequest
 import top.yukonga.update.logic.utils.NetworkUtils.postRequest
-import top.yukonga.update.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
 import java.security.MessageDigest
 import java.util.Base64
 

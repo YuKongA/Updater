@@ -1,4 +1,4 @@
-package top.yukonga.update.application
+package top.yukonga.update
 
 import android.app.Application
 import com.google.android.material.color.DynamicColors

@@ -1,4 +1,4 @@
-package top.yukonga.update.miuiStringToast
+package top.yukonga.miuiStringToast
 
 import android.app.PendingIntent
 import android.os.Bundle
