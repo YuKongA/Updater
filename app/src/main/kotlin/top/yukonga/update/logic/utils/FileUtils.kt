@@ -4,8 +4,8 @@ import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
 import androidx.core.net.toUri
-import top.yukonga.update.R
 import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
+import top.yukonga.update.R
 import java.io.File
 
 object FileUtils {

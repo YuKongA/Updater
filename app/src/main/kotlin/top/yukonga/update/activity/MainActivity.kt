@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
 import top.yukonga.update.BuildConfig
 import top.yukonga.update.R
 import top.yukonga.update.activity.adapter.CustomArrayAdapter
@@ -61,7 +62,6 @@ import top.yukonga.update.logic.utils.HapticUtils.hapticConfirm
 import top.yukonga.update.logic.utils.HapticUtils.hapticReject
 import top.yukonga.update.logic.utils.InfoUtils.getRecoveryRomInfo
 import top.yukonga.update.logic.utils.LoginUtils
-import top.yukonga.miuiStringToast.MiuiStringToast.showStringToast
 
 class MainActivity : AppCompatActivity() {
 
@@ -199,8 +199,9 @@ class MainActivity : AppCompatActivity() {
                                     officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                    else getString(R.string.official, "bigota")
+                                    officialText =
+                                        if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                        else getString(R.string.official, "bigota")
                                     cdn1Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
@@ -316,10 +317,7 @@ class MainActivity : AppCompatActivity() {
 
         val drawable = GradientDrawable()
         drawable.cornerRadius = 64f
-        val rootView = MaterialAlertDialogBuilder(this)
-            .setBackground(drawable)
-            .setView(R.layout.dialog_about)
-            .show()
+        val rootView = MaterialAlertDialogBuilder(this).setBackground(drawable).setView(R.layout.dialog_about).show()
         val versionTextView = rootView.findViewById<TextView>(R.id.version)!!
         val githubSpannableTextView = rootView.findViewById<TextView>(R.id.github)!!
 
@@ -328,7 +326,6 @@ class MainActivity : AppCompatActivity() {
         githubSpannableTextView.movementMethod = LinkMovementMethod.getInstance()
 
     }
-
 
 
     private fun setupEdgeToEdge() {

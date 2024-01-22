@@ -9,17 +9,17 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.serialization.json.Json
+import top.yukonga.miuiStringToast.data.IconParams
+import top.yukonga.miuiStringToast.data.Left
+import top.yukonga.miuiStringToast.data.Right
+import top.yukonga.miuiStringToast.data.StringToastBean
+import top.yukonga.miuiStringToast.data.TextParams
 import top.yukonga.update.BuildConfig
 import top.yukonga.update.activity.MainActivity
 import top.yukonga.update.logic.utils.AppUtils.atLeast
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.XiaomiUtils.isHyperOS
 import top.yukonga.update.logic.utils.XiaomiUtils.isMiPad
-import top.yukonga.miuiStringToast.data.IconParams
-import top.yukonga.miuiStringToast.data.Left
-import top.yukonga.miuiStringToast.data.Right
-import top.yukonga.miuiStringToast.data.StringToastBean
-import top.yukonga.miuiStringToast.data.TextParams
 
 object MiuiStringToast {
 
