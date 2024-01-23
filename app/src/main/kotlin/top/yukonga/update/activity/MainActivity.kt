@@ -198,9 +198,8 @@ class MainActivity : AppCompatActivity() {
                                     officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    officialText =
-                                        if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                        else getString(R.string.official, "bigota")
+                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                    else getString(R.string.official, "bigota")
                                     cdn1Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
@@ -240,7 +239,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLoginDialog() {
         val view = createDialogView()
-        val checkBox = createCheckBoxForLogin()
+        val title = layoutInflater.inflate(R.layout.dialog_login, view, false)
+        title.findViewById<MaterialCheckBox>(R.id.global).apply {
+            isChecked = prefs.getString("global", "") == "1"
+            setOnCheckedChangeListener { _, isChecked ->
+                prefs.edit().putString("global", if (isChecked) "1" else "0").apply()
+            }
+        }
         val inputAccountLayout = createTextInputLayout(getString(R.string.account))
         val inputAccount = createTextInputEditText()
         inputAccountLayout.addView(inputAccount)
@@ -248,12 +253,11 @@ class MainActivity : AppCompatActivity() {
         val inputPassword = createTextInputEditText(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
         inputPasswordLayout.addView(inputPassword)
         view.apply {
-            addView(checkBox)
+            addView(title)
             addView(inputAccountLayout)
             addView(inputPasswordLayout)
         }
         MaterialAlertDialogBuilder(this@MainActivity).apply {
-            setTitle(getString(R.string.login))
             setView(view)
             setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 hapticReject(activityMainBinding.topAppBar)
@@ -286,7 +290,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLogoutDialog() {
         MaterialAlertDialogBuilder(this@MainActivity).apply {
-            setTitle(getString(R.string.login))
             setTitle(getString(R.string.logout))
             setMessage(getString(R.string.logout_desc)).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 hapticReject(activityMainBinding.topAppBar)
@@ -522,20 +525,6 @@ class MainActivity : AppCompatActivity() {
         return LinearLayout(this@MainActivity).apply {
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
             orientation = LinearLayout.VERTICAL
-        }
-    }
-
-    private fun createCheckBoxForLogin(): MaterialCheckBox {
-        return MaterialCheckBox(this@MainActivity).apply {
-            text = getString(R.string.global)
-            isChecked = prefs.getString("global", "") == "1"
-            textSize = 16f
-            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
-                setMargins(25.dp, 8.dp, 25.dp, 0.dp)
-            }
-            setOnCheckedChangeListener { _, isChecked ->
-                prefs.edit().putString("global", if (isChecked) "1" else "0").apply()
-            }
         }
     }
 
