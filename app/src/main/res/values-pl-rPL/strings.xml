@@ -44,4 +44,5 @@
     <string name="other">Inne</string>
     <string name="download_start">Rozpoczęto pobieranie</string>
     <string name="login_error">Nieprawidłowy adres e-mail lub hasło!</string>
+    <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
 </resources>

@@ -44,4 +44,5 @@
     <string name="other">Diğer</string>
     <string name="download_start">İndirme başladı</string>
     <string name="login_error">Yanlış Id veya Şifre!</string>
+    <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
 </resources>
