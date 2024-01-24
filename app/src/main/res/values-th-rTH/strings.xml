@@ -43,6 +43,6 @@
     <string name="android_default">Default</string>
     <string name="other">Other</string>
     <string name="download_start">Download has started</string>
-    <string name="login_error">Incorrect account or password!</string>
+    <string name="login_error">บัญชีหรือรหัสผ่านไม่ถูกต้อง!</string>
     <string name="opensource_info">สงวนลิขสิทธิ์ © 2024 YuKongA, AkaneTan</string>
 </resources>
