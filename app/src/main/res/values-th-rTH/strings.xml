@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_github">View source code on &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
-    <string name="login">Login</string>
-    <string name="code_name">Code Name</string>
-    <string name="device_name">Device Name</string>
-    <string name="system_version">System Version</string>
-    <string name="android_version">Android Version</string>
-    <string name="submit">Submit</string>
-    <string name="big_version">Major Version</string>
-    <string name="filename">File Name</string>
-    <string name="filesize">File Size</string>
+    <string name="app_github">ดูซอร์สโค้ดบน &lt;a href=\"https://github.com/YuKongA/Updater\"&gt;GitHub&lt;/a&gt;</string>
+    <string name="login">เข้าสู่ระบบ</string>
+    <string name="code_name">โค้ดเนม</string>
+    <string name="device_name">ชื่ออุปกรณ์</string>
+    <string name="system_version">เวอร์ชั่นระบบ</string>
+    <string name="android_version">เวอร์ชั่น Android</string>
+    <string name="submit">ส่งข้อมูล</string>
+    <string name="big_version">เวอร์ชันหลัก</string>
+    <string name="filename">ชื่อไฟล์</string>
+    <string name="filesize">ขนาดไฟล์</string>
     <string name="download">Download Url</string>
     <string name="changelog">Changelog</string>
     <string name="branch">Branch</string>
-    <string name="toast_no_info">No information!</string>
+    <string name="toast_no_info">ไม่มีข้อมูล!</string>
     <string name="toast_copied_to_pasteboard">Copied to pasteboard</string>
-    <string name="account">Account</string>
-    <string name="password">Password</string>
-    <string name="cancel">Cancel</string>
-    <string name="logging_in">Logging in</string>
-    <string name="login_successful">Login successful</string>
+    <string name="account">บัญชี</string>
+    <string name="password">รหัสผ่าน</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="logging_in">กำลังเข้าสู่ระบบ</string>
+    <string name="login_successful">ล็อกอินสำเร็จ</string>
     <string name="request_sign_failed">Request for _sign failed!</string>
     <string name="account_or_password_empty">Account or Password empty!</string>
-    <string name="no_account">No account</string>
+    <string name="no_account">ไม่มีบัญชี</string>
     <string name="login_desc">Using v1 interface</string>
     <string name="using_v2">Using v2 interface</string>
-    <string name="logged_in">Logged in</string>
-    <string name="copy_button">Copy</string>
-    <string name="download_button">Download</string>
+    <string name="logged_in">เข้าสู่ระบบแล้ว</string>
+    <string name="copy_button">คัดลอก</string>
+    <string name="download_button">ดาวน์โหลด</string>
     <string name="security_error">Failed to get security key</string>
-    <string name="logout">Logout</string>
-    <string name="confirm">Confirm</string>
+    <string name="logout">ออกจากระบบ</string>
+    <string name="confirm">ยืนยัน</string>
     <string name="logout_successful">Logout successful</string>
     <string name="logout_desc">Are you sure you want to logout?</string>
     <string name="regions_code">Regions code</string>
@@ -44,5 +44,5 @@
     <string name="other">Other</string>
     <string name="download_start">Download has started</string>
     <string name="login_error">Incorrect account or password!</string>
-    <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
+    <string name="opensource_info">สงวนลิขสิทธิ์ © 2024 YuKongA, AkaneTan</string>
 </resources>
