@@ -12,7 +12,7 @@
     <string name="filesize">Tamanho do arquivo</string>
     <string name="download">Baixar URL</string>
     <string name="changelog">Registro de alterações</string>
-    <string name="branch">Ramificação</string>
+    <string name="branch">Branch</string>
     <string name="toast_no_info">Nenhuma informação!</string>
     <string name="toast_copied_to_pasteboard">Copiado para a área de transferência</string>
     <string name="account">Conta</string>
@@ -20,7 +20,7 @@
     <string name="cancel">Cancelar</string>
     <string name="logging_in">Iniciando sessão</string>
     <string name="login_successful">Entrou com sucesso</string>
-    <string name="request_sign_failed">Solicitação de _sign falhou!</string>
+    <string name="request_sign_failed">O início da sessão falhou!</string>
     <string name="account_or_password_empty">Conta ou senha vazia!</string>
     <string name="no_account">Sem conta</string>
     <string name="login_desc">Usando interface v1</string>
