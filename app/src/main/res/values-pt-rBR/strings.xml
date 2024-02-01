@@ -25,7 +25,7 @@
     <string name="no_account">Sem conta</string>
     <string name="login_desc">Usando interface v1</string>
     <string name="using_v2">Usando interface v2</string>
-    <string name="logged_in">Sessão iniciada</string>
+    <string name="logged_in">Logado</string>
     <string name="copy_button">Copiar</string>
     <string name="download_button">Baixar</string>
     <string name="security_error">Falha ao obter a chave de segurança</string>
