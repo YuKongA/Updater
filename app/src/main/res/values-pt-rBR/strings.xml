@@ -23,8 +23,6 @@
     <string name="request_sign_failed">O início de sessão falhou!</string>
     <string name="account_or_password_empty">Conta ou Senha vazia!</string>
     <string name="no_account">Sem conta</string>
-    <string name="login_desc">Usando interface v1</string>
-    <string name="using_v2">Usando interface v2</string>
     <string name="logged_in">Sessão iniciada</string>
     <string name="copy_button">Copiar</string>
     <string name="download_button">Baixar</string>

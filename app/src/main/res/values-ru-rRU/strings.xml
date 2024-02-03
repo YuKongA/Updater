@@ -23,8 +23,6 @@
     <string name="request_sign_failed">Запрос _sign не удался!</string>
     <string name="account_or_password_empty">Учетная запись или пароль не заполнены!</string>
     <string name="no_account">Нет учетной записи</string>
-    <string name="login_desc">Использовать интерфейс v1</string>
-    <string name="using_v2">Использовать интерфейс v2</string>
     <string name="logged_in">Вход выполнен</string>
     <string name="copy_button">Копировать</string>
     <string name="download_button">Скачать</string>

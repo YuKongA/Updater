@@ -23,8 +23,6 @@
     <string name="request_sign_failed">Request for _sign failed!</string>
     <string name="account_or_password_empty">Account or Password empty!</string>
     <string name="no_account">No account</string>
-    <string name="login_desc">Using v1 interface</string>
-    <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">Logged in</string>
     <string name="copy_button">Copy</string>
     <string name="download_button">Download</string>

@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="@string/login_desc"
+                        android:text="@string/login_to_use"
                         android:textColor="?attr/colorOnPrimaryContainer"
                         android:textSize="14sp" />
 

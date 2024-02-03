@@ -23,8 +23,6 @@
     <string name="request_sign_failed">Yêu cầu _sign không thành công!</string>
     <string name="account_or_password_empty">Tài khoản hoặc mật khẩu không được để trống!</string>
     <string name="no_account">Không có tài khoản</string>
-    <string name="login_desc">Sử dụng giao diện v1</string>
-    <string name="using_v2">Sử dụng giao diện v2</string>
     <string name="logged_in">Đã đăng nhập</string>
     <string name="copy_button">Sao chép</string>
     <string name="download_button">Tải xuống</string>

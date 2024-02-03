@@ -23,8 +23,6 @@
     <string name="request_sign_failed">Żądanie _podpisu nie powiodło się!</string>
     <string name="account_or_password_empty">Brak konta lub hasła!</string>
     <string name="no_account">Brak konta</string>
-    <string name="login_desc">Używanie interfejsu v1</string>
-    <string name="using_v2">Używanie interfejsu v2</string>
     <string name="logged_in">Zalogowany</string>
     <string name="copy_button">Kopiuj</string>
     <string name="download_button">Pobierz</string>
