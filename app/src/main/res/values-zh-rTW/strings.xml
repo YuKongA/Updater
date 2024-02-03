@@ -23,8 +23,6 @@
     <string name="request_sign_failed">請求 _sign 失敗！</string>
     <string name="account_or_password_empty">帳號或密碼為空！</string>
     <string name="no_account">未登入</string>
-    <string name="login_desc">正在使用 v1 端口</string>
-    <string name="using_v2">正在使用 v2 端口</string>
     <string name="logged_in">已登入</string>
     <string name="copy_button">複製</string>
     <string name="download_button">下載</string>
@@ -45,4 +43,5 @@
     <string name="download_start">已開始下載</string>
     <string name="login_error">登入验证失败!</string>
     <string name="opensource_info">版權所有 © 2024 YuKongA, AkaneTan</string>
+    <string name="login_to_use" comment="login_to_use">請登入帳戶後使用</string>
 </resources>
