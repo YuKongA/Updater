@@ -10,9 +10,9 @@
     <string name="big_version">Versão principal</string>
     <string name="filename">Nome do arquivo</string>
     <string name="filesize">Tamanho do arquivo</string>
-    <string name="download">Url para baixar</string>
+    <string name="download">Baixar URL</string>
     <string name="changelog">Registro de alterações</string>
-    <string name="branch">Ramificação</string>
+    <string name="branch">Branch</string>
     <string name="toast_no_info">Nenhuma informação!</string>
     <string name="toast_copied_to_pasteboard">Copiado para a área de transferência</string>
     <string name="account">Conta</string>
@@ -20,18 +20,18 @@
     <string name="cancel">Cancelar</string>
     <string name="logging_in">Iniciando sessão</string>
     <string name="login_successful">Entrou com sucesso</string>
-    <string name="request_sign_failed">O início de sessão falhou!</string>
-    <string name="account_or_password_empty">Conta ou Senha vazia!</string>
+    <string name="request_sign_failed">O início da sessão falhou!</string>
+    <string name="account_or_password_empty">Conta ou senha vazia!</string>
     <string name="no_account">Sem conta</string>
-    <string name="logged_in">Sessão iniciada</string>
+    <string name="logged_in">Logado</string>
     <string name="copy_button">Copiar</string>
     <string name="download_button">Baixar</string>
-    <string name="security_error">Erro ao obter chave de segurança</string>
+    <string name="security_error">Falha ao obter a chave de segurança</string>
     <string name="logout">Sair</string>
     <string name="confirm">Confirmar</string>
     <string name="logout_successful">Sessão terminada</string>
-    <string name="logout_desc">Tem certeza que deseja encerrar a sessão?</string>
-    <string name="regions_code">Código de região</string>
+    <string name="logout_desc">Tem certeza que deseja sair?</string>
+    <string name="regions_code">Código de regiões</string>
     <string name="login_expired">A sessão expirou</string>
     <string name="login_expired_desc">É recomendado entrar novamente</string>
     <string name="login_expired_dialog">Verificado que a sessão expirou. É recomendável entrar novamente.</string>
@@ -43,4 +43,5 @@
     <string name="download_start">Download iniciado</string>
     <string name="login_error">Conta ou senha incorreta!</string>
     <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
+    <string name="login_to_use">Please login to use</string>
 </resources>
