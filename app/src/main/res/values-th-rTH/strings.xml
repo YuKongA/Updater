@@ -23,8 +23,6 @@
     <string name="request_sign_failed">Request for _sign failed!</string>
     <string name="account_or_password_empty">Account or Password empty!</string>
     <string name="no_account">ไม่มีบัญชี</string>
-    <string name="login_desc">Using v1 interface</string>
-    <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">เข้าสู่ระบบแล้ว</string>
     <string name="copy_button">คัดลอก</string>
     <string name="download_button">ดาวน์โหลด</string>
@@ -45,4 +43,5 @@
     <string name="download_start">Download has started</string>
     <string name="login_error">บัญชีหรือรหัสผ่านไม่ถูกต้อง!</string>
     <string name="opensource_info">สงวนลิขสิทธิ์ © 2024 YuKongA, AkaneTan</string>
+    <string name="login_to_use" comment="login_to_use">Please login to use</string>
 </resources>
