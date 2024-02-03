@@ -43,4 +43,5 @@
     <string name="download_start">Скачивание началось</string>
     <string name="login_error">Неверный идентификатор учётной записи или пароль!</string>
     <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
+    <string name="login_to_use">Please login to use</string>
 </resources>
