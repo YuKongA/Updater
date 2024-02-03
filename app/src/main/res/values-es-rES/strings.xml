@@ -23,8 +23,6 @@
     <string name="request_sign_failed">¡Inicio de sesión fallido!</string>
     <string name="account_or_password_empty">¡El correo electrónico o contraseña se encuentra vacía!</string>
     <string name="no_account">Sin cuenta</string>
-    <string name="login_desc">Usando interfaz v1</string>
-    <string name="using_v2">Usando interfaz v2</string>
     <string name="logged_in">Sesión iniciada</string>
     <string name="copy_button">Copiar</string>
     <string name="download_button">Descargar</string>
@@ -45,4 +43,5 @@
     <string name="download_start">La descarga ha iniciado</string>
     <string name="login_error">Cuenta o contraseña incorrectas</string>
     <string name="opensource_info">Copyright ©️ 2024 YuKongA, AkaneTan</string>
+    <string name="login_to_use" comment="login_to_use">Please login to use</string>
 </resources>
