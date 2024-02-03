@@ -43,5 +43,5 @@
     <string name="download_start">La descarga ha iniciado</string>
     <string name="login_error">Cuenta o contraseña incorrectas</string>
     <string name="opensource_info">Copyright ©️ 2024 YuKongA, AkaneTan</string>
-    <string name="login_to_use" comment="login_to_use">Please login to use</string>
+    <string name="login_to_use">Please login to use</string>
 </resources>
