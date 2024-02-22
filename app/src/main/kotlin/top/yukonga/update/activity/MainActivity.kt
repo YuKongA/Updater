@@ -194,8 +194,9 @@ class MainActivity : AppCompatActivity() {
                                     officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
-                                    else getString(R.string.official, "bigota")
+                                    officialText =
+                                        if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(R.string.official, "ultimateota")
+                                        else getString(R.string.official, "bigota")
                                     cdn1Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) getString(
                                         R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename
                                     ) else getString(R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
@@ -543,8 +544,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun mainContentBinding() = mainContentBinding
 
     private fun createDialogView(): LinearLayout {
         return LinearLayout(this@MainActivity).apply {

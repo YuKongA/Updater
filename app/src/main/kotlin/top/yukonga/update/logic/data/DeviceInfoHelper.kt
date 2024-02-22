@@ -161,6 +161,8 @@ object DeviceInfoHelper {
         Device("Redmi K70 / POCO F6 Pro", "vermeer", "NK"),
         Device("Redmi K70 Pro", "manet", "NM"),
         Device("Redmi K70E / POCO X6 Pro", "duchamp", "NL"),
+        Device("Xiaomi 14 Ultra", "aurora", "NA"),
+        Device("Xiaomi Pad 6S Pro", "sheng", "NX"),
     )
 
     val deviceNames = deviceList.map { it.deviceName }
