@@ -16,7 +16,11 @@ object InfoUtils {
 
     private const val CN_RECOVERY_URL = "https://update.miui.com/updates/miotaV3.php"
     private const val INTL_RECOVERY_URL = "https://update.intl.miui.com/updates/miotaV3.php"
-    private var port = "2"
+    private var securityKey = "miuiotavalided11".toByteArray(Charsets.UTF_8)
+    private var userId = ""
+    private var accountType = "CN"
+    private var serviceToken = ""
+    private var port = "1"
 
     private fun generateJson(codeNameExt: String, regionCode: String, romVersion: String, androidVersion: String, userId: String): String {
         val data = RequestParamHelper(
@@ -33,13 +37,16 @@ object InfoUtils {
     }
 
     fun getRecoveryRomInfo(context: Context, codeNameExt: String, regionCode: String, romVersion: String, androidVersion: String): String {
-        if (!FileUtils.isCookiesFileExists(context)) return ""
-        val cookiesFile = FileUtils.readCookiesFile(context)
-        val cookies = json.decodeFromString<LoginHelper>(cookiesFile)
-        val userId = cookies.userId
-        val accountType = cookies.accountType.ifEmpty { "CN" }
-        val securityKey = Base64.getDecoder().decode((cookies.ssecurity))
-        val serviceToken = cookies.serviceToken
+
+        if (FileUtils.isCookiesFileExists(context)) {
+            val cookiesFile = FileUtils.readCookiesFile(context)
+            val cookies = json.decodeFromString<LoginHelper>(cookiesFile)
+            userId = cookies.userId
+            accountType = cookies.accountType.ifEmpty { "CN" }
+            securityKey = Base64.getDecoder().decode((cookies.ssecurity))
+            serviceToken = cookies.serviceToken
+            port = "2"
+        }
         val jsonData = generateJson(codeNameExt, regionCode, romVersion, androidVersion, userId)
         val encryptedText = miuiEncrypt(jsonData, securityKey)
         val formBodyBuilder = FormBody.Builder().add("q", encryptedText).add("t", serviceToken).add("s", port).build()

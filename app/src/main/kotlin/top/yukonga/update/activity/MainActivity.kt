@@ -94,6 +94,9 @@ class MainActivity : AppCompatActivity() {
         // Setup Cutout mode.
         setupCutoutMode()
 
+        // Setup main information.
+        setupMainInformation()
+
         // Setup TopAppBar.
         setupTopAppBar()
 
@@ -160,6 +163,7 @@ class MainActivity : AppCompatActivity() {
                                     loginIcon.setImageResource(R.drawable.ic_error)
                                     loginTitle.text = getString(R.string.login_expired)
                                     loginDesc.text = getString(R.string.login_expired_desc)
+                                    cookies.clear()
                                     cookies["authResult"] = "-1"
                                     FileUtils.saveCookiesFile(this@MainActivity, Json.encodeToString(cookies))
                                     showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
@@ -272,19 +276,11 @@ class MainActivity : AppCompatActivity() {
                             mainContentBinding.apply {
                                 loginIcon.setImageResource(R.drawable.ic_check_circle)
                                 loginTitle.text = getString(R.string.logged_in)
-                                loginDesc.visibility = View.GONE
-                                deviceName.visibility = View.VISIBLE
-                                codeName.visibility = View.VISIBLE
-                                deviceRegion.visibility = View.VISIBLE
-                                systemVersion.visibility = View.VISIBLE
-                                androidVersion.visibility = View.VISIBLE
-                                // Setup main information.
-                                setupMainInformation()
+                                loginDesc.text = getString(R.string.using_v2)
                             }
                             activityMainBinding.apply {
                                 topAppBar.menu.findItem(R.id.login).isVisible = false
                                 topAppBar.menu.findItem(R.id.logout).isVisible = true
-                                implement.visibility = View.VISIBLE
                             }
                         }
                     }
@@ -308,18 +304,11 @@ class MainActivity : AppCompatActivity() {
                         mainContentBinding.apply {
                             loginIcon.setImageResource(R.drawable.ic_cancel)
                             loginTitle.text = getString(R.string.no_account)
-                            loginDesc.text = getString(R.string.login_to_use)
-                            loginDesc.visibility = View.VISIBLE
-                            deviceName.visibility = View.GONE
-                            codeName.visibility = View.GONE
-                            deviceRegion.visibility = View.GONE
-                            systemVersion.visibility = View.GONE
-                            androidVersion.visibility = View.GONE
+                            loginDesc.text = getString(R.string.login_desc)
                         }
                         activityMainBinding.apply {
                             topAppBar.menu.findItem(R.id.login).isVisible = true
                             topAppBar.menu.findItem(R.id.logout).isVisible = false
-                            implement.visibility = View.GONE
                         }
                     }
                 }
@@ -508,19 +497,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkIfLoggedIn() {
-        if (!FileUtils.isCookiesFileExists(this@MainActivity)) {
-            activityMainBinding.implement.visibility = View.GONE
-            mainContentBinding.apply {
-                deviceName.visibility = View.GONE
-                codeName.visibility = View.GONE
-                deviceRegion.visibility = View.GONE
-                systemVersion.visibility = View.GONE
-                androidVersion.visibility = View.GONE
-            }
-        } else {
-            // Setup main information.
-            setupMainInformation()
-
+        if (FileUtils.isCookiesFileExists(this@MainActivity)) {
             val cookiesFile = FileUtils.readCookiesFile(this@MainActivity)
             val cookies = json.decodeFromString<MutableMap<String, String>>(cookiesFile)
             val description = cookies["description"].toString()
@@ -535,7 +512,7 @@ class MainActivity : AppCompatActivity() {
                 mainContentBinding.apply {
                     loginIcon.setImageResource(R.drawable.ic_check_circle)
                     loginTitle.text = getString(R.string.logged_in)
-                    loginDesc.visibility = View.GONE
+                    loginDesc.text = getString(R.string.using_v2)
                 }
                 activityMainBinding.apply {
                     topAppBar.menu.findItem(R.id.login).isVisible = false

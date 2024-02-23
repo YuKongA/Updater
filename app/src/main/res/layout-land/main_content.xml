@@ -66,7 +66,7 @@
                             android:id="@+id/login_desc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/login_to_use"
+                            android:text="@string/login_desc"
                             android:textColor="?attr/colorOnPrimaryContainer"
                             android:textSize="14sp" />
 

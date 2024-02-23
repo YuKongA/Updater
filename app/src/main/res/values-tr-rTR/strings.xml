@@ -23,6 +23,8 @@
     <string name="request_sign_failed">Giriş isteği başarısız oldu!</string>
     <string name="account_or_password_empty">Xiaomi Id veya Şifre hatası!</string>
     <string name="no_account">Giriş yapılmadı</string>
+    <string name="login_desc">V1 arayüzü kullanılıyor</string>
+    <string name="using_v2">V2 arayüzü kullanılıyor</string>
     <string name="logged_in">Giriş yapıldı</string>
     <string name="copy_button">Kopyala</string>
     <string name="download_button">İndir</string>
