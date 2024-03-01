@@ -8,7 +8,7 @@ object DeviceInfoHelper {
 
     data class Device(val deviceName: String, val codeName: String, val deviceCode: String)
 
-    private const val Xiaomi = "XM"
+    private const val XIAOMI = "XM"
 
     private val androidR = Android("11", "R")
     private val androidS = Android("12", "S")
@@ -196,6 +196,6 @@ object DeviceInfoHelper {
     fun deviceCode(androidVersion: String, codeName: String, regionCode: String): String {
         val android = androidList.find { it.androidNumericCode == androidVersion } ?: return ""
         val device = deviceList.find { it.codeName == codeName } ?: return ""
-        return "${android.androidLetterCode}${device.deviceCode}${regionCode}${Xiaomi}"
+        return "${android.androidLetterCode}${device.deviceCode}${regionCode}${XIAOMI}"
     }
 }
