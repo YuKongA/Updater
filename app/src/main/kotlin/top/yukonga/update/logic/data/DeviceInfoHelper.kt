@@ -78,7 +78,7 @@ object DeviceInfoHelper {
         Device("Redmi Note 10 Pro (China) / POCO X3 GT", "chopin", "KP"),
         Device("Xiaomi Pad 5", "nabu", "KX"),
         Device("Xiaomi Pad 5 Pro WiFi", "elish", "KY"),
-        Device("Xiaomi Pad 5 Pro", "enuma", "KZ"),
+        Device("Xiaomi Pad 5 Pro 5G", "enuma", "KZ"),
         Device("Xiaomi MIX 4", "odin", "KM"),
         Device("Redmi 10 / 10 Prime / Note 11 4G", "selene", "KU"),
         Device("Xiaomi 11T Pro", "vili", "KD"),
