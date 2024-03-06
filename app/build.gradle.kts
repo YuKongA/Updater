@@ -29,13 +29,20 @@ android {
     val pwd = properties.getProperty("KEY_PASSWORD") ?: System.getenv("KEY_PASSWORD")
     if (keystorePath != null) {
         signingConfigs {
-            create("release") {
+            register("github") {
                 storeFile = file(keystorePath)
                 storePassword = keystorePwd
                 keyAlias = alias
                 keyPassword = pwd
-                enableV2Signing = true
                 enableV3Signing = true
+                enableV4Signing = true
+            }
+        }
+    } else {
+        signingConfigs {
+            register("release") {
+                enableV3Signing = true
+                enableV4Signing = true
             }
         }
     }
@@ -43,10 +50,10 @@ android {
         release {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            if (keystorePath != null) signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName(if (keystorePath != null) "github" else "release")
         }
         debug {
-            if (keystorePath != null) signingConfig = signingConfigs.getByName("release")
+            if (keystorePath != null) signingConfig = signingConfigs.getByName("github")
             applicationIdSuffix = ".debug"
         }
     }
