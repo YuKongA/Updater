@@ -4,7 +4,11 @@ object DeviceInfoHelper {
 
     data class Android(val androidNumericCode: String, val androidLetterCode: String)
 
-    data class Region(val regionNameExt: String, val regionCode: String, val regionName: String = regionCode)
+    data class Region(
+        val regionNameExt: String,
+        val regionCode: String,
+        val regionName: String = regionCode
+    )
 
     data class Device(val deviceName: String, val codeName: String, val deviceCode: String)
 
@@ -153,6 +157,7 @@ object DeviceInfoHelper {
         Device("Redmi Note 13 Pro+", "zircon", "NO"),
         Device("Redmi Note 13 / 13R Pro / POCO X6 Neo", "gold", "NQ"),
         Device("Redmi Note 13 Pro / POCO X6", "garnet", "NR"),
+        Device("Redmi Note 13 Pro (Global)", "emerald", "NF"),
         Device("Xiaomi 13T", "aristotle", "MF"),
         Device("Xiaomi 14", "houji", "NC"),
         Device("Xiaomi 14 Pro", "shennong", "NB"),
