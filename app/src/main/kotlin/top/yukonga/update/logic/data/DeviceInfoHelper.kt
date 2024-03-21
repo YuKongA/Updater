@@ -162,6 +162,7 @@ object DeviceInfoHelper {
         Device("Xiaomi 14", "houji", "NC"),
         Device("Xiaomi 14 Pro", "shennong", "NB"),
         Device("Xiaomi 14 Pro Ti Satellite", "shennong_t", "ND"),
+        Device("Xiaomi Civi 4 Pro", "chenfeng", "NJ"),
         Device("Redmi 13C / POCO C65 (India)", "gale", "GP"),
         Device("Redmi 13C (China) / 13R / POCO M6", "air", "GQ"),
         Device("Redmi K70 / POCO F6 Pro", "vermeer", "NK"),
