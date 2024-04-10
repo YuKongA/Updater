@@ -158,6 +158,7 @@ object DeviceInfoHelper {
         Device("Redmi Note 13 / 13R Pro / POCO X6 Neo", "gold", "NQ"),
         Device("Redmi Note 13 Pro / POCO X6", "garnet", "NR"),
         Device("Redmi Note 13 Pro (Global)", "emerald", "NF"),
+        Device("Redmi Turbo 3 / POCO F6", "peridot", "NP"),
         Device("Xiaomi 13T", "aristotle", "MF"),
         Device("Xiaomi 14", "houji", "NC"),
         Device("Xiaomi 14 Pro", "shennong", "NB"),
@@ -170,6 +171,7 @@ object DeviceInfoHelper {
         Device("Redmi K70E / POCO X6 Pro", "duchamp", "NL"),
         Device("Xiaomi 14 Ultra", "aurora", "NA"),
         Device("Xiaomi Pad 6S Pro", "sheng", "NX"),
+        Device("Redmi Pad Pro", "dizi", "NS"),
     )
 
     val deviceNames = deviceList.map { it.deviceName }
