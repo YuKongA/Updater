@@ -15,6 +15,10 @@ When obtaining `Beta Development Version (X)`, please enter the complete system 
 
 ## Notes:
 
+Only supported `MIUI9` and above versions. The most extreme case is: Redmi 1S (armani), MIUI9, Android4.4
+
+Only devices in the list of [DeviceInfoHelper](https://github.com/YuKongA/Updater/blob/main/app/src/main/kotlin/top/yukonga/update/logic/data/DeviceInfoHelper.kt#L60) are supported use `AUTO` to complete automatically, other devices still need to manually enter the full system version
+
 When you are not logged in with a Xiaomi account, you can use the miotaV3-v1 interface to obtain any detailed information of the `Pubilc Release Version` of any model.
 
 After logging in to your Xiaomi account, you will use the miotaV3-v2 interface to obtain detailed information about the `Beta Release Version` or the `Public Development Version`, corresponding to the internal test permissions you have.
