@@ -5,21 +5,44 @@ object DeviceInfoHelper {
     data class Android(val androidNumericCode: String, val androidLetterCode: String)
 
     data class Region(
-        val regionNameExt: String,
-        val regionCode: String,
-        val regionName: String = regionCode
+        val regionNameExt: String, val regionCode: String, val regionName: String = regionCode
     )
 
     data class Device(val deviceName: String, val codeName: String, val deviceCode: String)
 
     private const val XIAOMI = "XM"
 
-    private val androidR = Android("11", "R")
-    private val androidS = Android("12", "S")
-    private val androidT = Android("13", "T")
-    private val androidU = Android("14", "U")
+    private val androidU = Android("14.0", "U")
+    private val androidT = Android("13.0", "T")
+    private val androidS = Android("12.0", "S")
+    private val androidR = Android("11.0", "R")
+    private val androidQ = Android("10.0", "Q")
+    private val androidP = Android("9.0", "P")
+    private val androidOMr1 = Android("8.1", "O")
+    private val androidO = Android("8.0", "O")
+    private val androidNMr1 = Android("7.1", "N")
+    private val androidN = Android("7.0", "N")
+    private val androidM = Android("6.0", "M")
+    private val androidLMr1 = Android("5.1", "L")
+    private val androidL = Android("5.0", "L")
+    private val androidK = Android("4.4", "K")
 
-    private val androidList = listOf(androidR, androidS, androidT, androidU)
+    private val androidList = listOf(
+        androidU,
+        androidT,
+        androidS,
+        androidR,
+        androidQ,
+        androidP,
+        androidOMr1,
+        androidO,
+        androidNMr1,
+        androidN,
+        androidM,
+        androidLMr1,
+        androidL,
+        androidK
+    )
 
     private val CN = Region("", "CN")
     private val GL = Region("_global", "MI", "GL")
