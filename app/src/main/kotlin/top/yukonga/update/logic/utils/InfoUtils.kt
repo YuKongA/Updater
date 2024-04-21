@@ -41,11 +41,14 @@ object InfoUtils {
         if (FileUtils.isCookiesFileExists(context)) {
             val cookiesFile = FileUtils.readCookiesFile(context)
             val cookies = json.decodeFromString<LoginHelper>(cookiesFile)
-            userId = cookies.userId
-            accountType = cookies.accountType.ifEmpty { "CN" }
-            securityKey = Base64.getDecoder().decode((cookies.ssecurity))
-            serviceToken = cookies.serviceToken
-            port = "2"
+            val authResult = cookies.authResult
+            if (authResult != "-1") {
+                userId = cookies.userId.toString()
+                accountType = cookies.accountType.toString().ifEmpty { "CN" }
+                securityKey = Base64.getDecoder().decode((cookies.ssecurity))
+                serviceToken = cookies.serviceToken.toString()
+                port = "2"
+            }
         }
         val jsonData = generateJson(codeNameExt, regionCode, romVersion, androidVersion, userId)
         val encryptedText = miuiEncrypt(jsonData, securityKey)
