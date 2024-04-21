@@ -31,7 +31,8 @@ object InfoUtils {
             ov = romVersion,
             l = if (!codeNameExt.contains("_global")) "zh_CN" else "en_US",
             r = regionCode,
-            v = "miui-$romVersion"
+            v = "miui-$romVersion",
+            unlock = "0"
         )
         return Json.encodeToString(data)
     }
