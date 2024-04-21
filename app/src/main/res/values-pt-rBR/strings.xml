@@ -36,7 +36,7 @@
     <string name="regions_code">Código de regiões</string>
     <string name="login_expired">Login expirou</string>
     <string name="login_expired_desc">Recomendado fazer login novamente</string>
-    <string name="login_expired_dialog">Verificado se o login expirou. É recomendado fazer login novamente.</string>
+    <string name="login_expired_dialog">login expired!</string>
     <string name="global">Conta global</string>
     <string name="download_method">Método de download</string>
     <string name="download_method_desc">Selecione o método de download</string>
@@ -45,4 +45,7 @@
     <string name="download_start">Download iniciado</string>
     <string name="login_error">Conta ou senha incorreta!</string>
     <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
+    <string name="save_password">Save password</string>
+    <string name="auto_login">Auto login</string>
+    <string name="login_expired_auto">Auto logging!</string>
 </resources>
