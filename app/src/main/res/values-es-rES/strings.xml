@@ -36,7 +36,7 @@
     <string name="regions_code">Código de región</string>
     <string name="login_expired">Sesión caducada</string>
     <string name="login_expired_desc">Se recomienda iniciar sesión de nuevo</string>
-    <string name="login_expired_dialog">Se comprobó que el inicio de sesión ha caducado. Se recomienda iniciar sesión nuevamente.</string>
+    <string name="login_expired_dialog">login expired!</string>
     <string name="global">Cuenta global</string>
     <string name="download_method">Método de descarga</string>
     <string name="download_method_desc">Seleccione el método de descarga</string>
@@ -45,4 +45,7 @@
     <string name="download_start">La descarga ha iniciado</string>
     <string name="login_error">Cuenta o contraseña incorrectas</string>
     <string name="opensource_info">Copyright ©️ 2024 YuKongA, AkaneTan</string>
+    <string name="save_password">Save password</string>
+    <string name="auto_login">Auto login</string>
+    <string name="login_expired_auto">Auto logging!</string>
 </resources>
