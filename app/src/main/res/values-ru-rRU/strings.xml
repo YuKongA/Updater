@@ -36,7 +36,7 @@
     <string name="regions_code">Код регионов</string>
     <string name="login_expired">Срок действия входа истек</string>
     <string name="login_expired_desc">Рекомендуется снова войти в систему</string>
-    <string name="login_expired_dialog">Похоже, что срок авторизация истекла. Рекомендуется снова войти в систему.</string>
+    <string name="login_expired_dialog">login expired!</string>
     <string name="global">Глобальный аккаунт</string>
     <string name="download_method">Метод загрузки</string>
     <string name="download_method_desc">Выберите метод загрузки</string>
@@ -45,4 +45,7 @@
     <string name="download_start">Скачивание началось</string>
     <string name="login_error">Неверный идентификатор учётной записи или пароль!</string>
     <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
+    <string name="save_password">Save password</string>
+    <string name="auto_login">Auto login</string>
+    <string name="login_expired_auto">Auto logging!</string>
 </resources>
