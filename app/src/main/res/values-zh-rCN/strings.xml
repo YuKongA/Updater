@@ -36,7 +36,7 @@
     <string name="regions_code">区域代号</string>
     <string name="login_expired">登录已过期</string>
     <string name="login_expired_desc">建议重新登录</string>
-    <string name="login_expired_dialog">检测到登录已过期，建议重新登录。</string>
+    <string name="login_expired_dialog">登录已过期！</string>
     <string name="global">全球账号</string>
     <string name="download_method">下载方式</string>
     <string name="download_method_desc">选择一个下载方式</string>
@@ -45,4 +45,7 @@
     <string name="download_start">已开始下载</string>
     <string name="login_error">登录验证失败！</string>
     <string name="opensource_info">版权所有 © 2024 YuKongA, AkaneTan</string>
+    <string name="save_password">保存密码</string>
+    <string name="auto_login">自动登录</string>
+    <string name="login_expired_auto">自动登录中！</string>
 </resources>
