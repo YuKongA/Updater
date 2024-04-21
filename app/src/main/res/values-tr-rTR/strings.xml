@@ -36,7 +36,7 @@
     <string name="regions_code">Bölge Kodu</string>
     <string name="login_expired">Oturumun süresi doldu</string>
     <string name="login_expired_desc">Tekrar giriş yapmanız gerekiyor</string>
-    <string name="login_expired_dialog">Oturum süresi doldu. Tekrar giriş yapmanız gerekiyor.</string>
+    <string name="login_expired_dialog">login expired!</string>
     <string name="global">Global hesap</string>
     <string name="download_method">İndirme yöntemi</string>
     <string name="download_method_desc">İndirme yönteminizi seçin</string>
@@ -45,4 +45,7 @@
     <string name="download_start">İndirme başladı</string>
     <string name="login_error">Yanlış Id veya Şifre!</string>
     <string name="opensource_info">Copyright © 2024 YuKongA, AkaneTan</string>
+    <string name="save_password">Save password</string>
+    <string name="auto_login">Auto login</string>
+    <string name="login_expired_auto">Auto logging!</string>
 </resources>
