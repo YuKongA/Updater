@@ -4,18 +4,45 @@ object DeviceInfoHelper {
 
     data class Android(val androidNumericCode: String, val androidLetterCode: String)
 
-    data class Region(val regionNameExt: String, val regionCode: String, val regionName: String = regionCode)
+    data class Region(
+        val regionNameExt: String, val regionCode: String, val regionName: String = regionCode
+    )
 
     data class Device(val deviceName: String, val codeName: String, val deviceCode: String)
 
     private const val XIAOMI = "XM"
 
-    private val androidR = Android("11", "R")
-    private val androidS = Android("12", "S")
-    private val androidT = Android("13", "T")
-    private val androidU = Android("14", "U")
+    private val androidU = Android("14.0", "U")
+    private val androidT = Android("13.0", "T")
+    private val androidS = Android("12.0", "S")
+    private val androidR = Android("11.0", "R")
+    private val androidQ = Android("10.0", "Q")
+    private val androidP = Android("9.0", "P")
+    private val androidOMr1 = Android("8.1", "O")
+    private val androidO = Android("8.0", "O")
+    private val androidNMr1 = Android("7.1", "N")
+    private val androidN = Android("7.0", "N")
+    private val androidM = Android("6.0", "M")
+    private val androidLMr1 = Android("5.1", "L")
+    private val androidL = Android("5.0", "L")
+    private val androidK = Android("4.4", "K")
 
-    private val androidList = listOf(androidR, androidS, androidT, androidU)
+    private val androidList = listOf(
+        androidU,
+        androidT,
+        androidS,
+        androidR,
+        androidQ,
+        androidP,
+        androidOMr1,
+        androidO,
+        androidNMr1,
+        androidN,
+        androidM,
+        androidLMr1,
+        androidL,
+        androidK
+    )
 
     private val CN = Region("", "CN")
     private val GL = Region("_global", "MI", "GL")
@@ -78,7 +105,7 @@ object DeviceInfoHelper {
         Device("Redmi Note 10 Pro (China) / POCO X3 GT", "chopin", "KP"),
         Device("Xiaomi Pad 5", "nabu", "KX"),
         Device("Xiaomi Pad 5 Pro WiFi", "elish", "KY"),
-        Device("Xiaomi Pad 5 Pro", "enuma", "KZ"),
+        Device("Xiaomi Pad 5 Pro 5G", "enuma", "KZ"),
         Device("Xiaomi MIX 4", "odin", "KM"),
         Device("Redmi 10 / 10 Prime / Note 11 4G", "selene", "KU"),
         Device("Xiaomi 11T Pro", "vili", "KD"),
@@ -153,9 +180,13 @@ object DeviceInfoHelper {
         Device("Redmi Note 13 Pro+", "zircon", "NO"),
         Device("Redmi Note 13 / 13R Pro / POCO X6 Neo", "gold", "NQ"),
         Device("Redmi Note 13 Pro / POCO X6", "garnet", "NR"),
+        Device("Redmi Note 13 Pro (Global)", "emerald", "NF"),
+        Device("Redmi Turbo 3 / POCO F6", "peridot", "NP"),
         Device("Xiaomi 13T", "aristotle", "MF"),
         Device("Xiaomi 14", "houji", "NC"),
         Device("Xiaomi 14 Pro", "shennong", "NB"),
+        Device("Xiaomi 14 Pro Ti Satellite", "shennong_t", "ND"),
+        Device("Xiaomi Civi 4 Pro", "chenfeng", "NJ"),
         Device("Redmi 13C / POCO C65 (India)", "gale", "GP"),
         Device("Redmi 13C (China) / 13R / POCO M6", "air", "GQ"),
         Device("Redmi K70 / POCO F6 Pro", "vermeer", "NK"),
@@ -163,6 +194,7 @@ object DeviceInfoHelper {
         Device("Redmi K70E / POCO X6 Pro", "duchamp", "NL"),
         Device("Xiaomi 14 Ultra", "aurora", "NA"),
         Device("Xiaomi Pad 6S Pro", "sheng", "NX"),
+        Device("Redmi Pad Pro", "dizi", "NS"),
     )
 
     val deviceNames = deviceList.map { it.deviceName }

@@ -47,5 +47,5 @@
     <string name="opensource_info">版权所有 © 2024 YuKongA, AkaneTan</string>
     <string name="save_password">保存密码</string>
     <string name="auto_login">自动登录</string>
-    <string name="login_expired_auto">正在自动登录！</string>
+    <string name="login_expired_auto">尝试自动登录！</string>
 </resources>

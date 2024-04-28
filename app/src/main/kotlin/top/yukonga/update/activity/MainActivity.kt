@@ -166,10 +166,22 @@ class MainActivity : AppCompatActivity() {
                                     cookies.clear()
                                     cookies["authResult"] = "-1"
                                     FileUtils.saveCookiesFile(this@MainActivity, Json.encodeToString(cookies))
-                                    showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
-                                    activityMainBinding.apply {
-                                        topAppBar.menu.findItem(R.id.login).isVisible = true
-                                        topAppBar.menu.findItem(R.id.logout).isVisible = false
+                                    if (prefs.getString("auto_login", "") == "1") {
+                                        showStringToast(this@MainActivity, getString(R.string.login_expired_auto), 1)
+                                        LoginUtils().login(
+                                            this@MainActivity,
+                                            LoginUtils().getAccountAndPassword(this@MainActivity).first,
+                                            LoginUtils().getAccountAndPassword(this@MainActivity).second,
+                                            prefs.getString("global", "") ?: "0",
+                                            prefs.getString("save_password", "") ?: "0",
+                                            true
+                                        )
+                                    } else {
+                                        showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
+                                        activityMainBinding.apply {
+                                            topAppBar.menu.findItem(R.id.login).isVisible = true
+                                            topAppBar.menu.findItem(R.id.logout).isVisible = false
+                                        }
                                     }
                                 }
                             }
@@ -253,15 +265,40 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val inputAccountLayout = createTextInputLayout(getString(R.string.account))
-        val inputAccount = createTextInputEditText()
+        val inputAccount = createTextInputEditText().apply {
+            setText(LoginUtils().getAccountAndPassword(this@MainActivity).first)
+        }
         inputAccountLayout.addView(inputAccount)
         val inputPasswordLayout = createTextInputLayout(getString(R.string.password), TextInputLayout.END_ICON_PASSWORD_TOGGLE)
-        val inputPassword = createTextInputEditText(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        val inputPassword = createTextInputEditText(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD).apply {
+            setText(LoginUtils().getAccountAndPassword(this@MainActivity).second)
+        }
         inputPasswordLayout.addView(inputPassword)
+        val savePasswordCheckBox = createCheckBox(
+            R.string.save_password, "save_password", createLayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f, 0)
+        )
+        val autoLoginCheckBox = createCheckBox(
+            R.string.auto_login, "auto_login", createLayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f, 27)
+        )
+        savePasswordCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (!isChecked) {
+                autoLoginCheckBox.isChecked = false
+                autoLoginCheckBox.isEnabled = false
+            } else {
+                autoLoginCheckBox.isEnabled = true
+            }
+        }
+        val linearLayout = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            addView(savePasswordCheckBox)
+            addView(autoLoginCheckBox)
+        }
         view.apply {
             addView(title)
             addView(inputAccountLayout)
             addView(inputPasswordLayout)
+            addView(linearLayout)
         }
         MaterialAlertDialogBuilder(this@MainActivity).apply {
             setView(view)
@@ -272,10 +309,11 @@ class MainActivity : AppCompatActivity() {
             setPositiveButton(getString(R.string.login)) { _, _ ->
                 hapticConfirm(activityMainBinding.topAppBar)
                 val global = prefs.getString("global", "") ?: "0"
+                val savePassword = prefs.getString("save_password", "") ?: "0"
                 val mInputAccount = inputAccount.text.toString()
                 val mInputPassword = inputPassword.text.toString()
                 CoroutineScope(Dispatchers.Default).launch {
-                    val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global)
+                    val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global, savePassword)
                     if (isValid) {
                         withContext(Dispatchers.Main) {
                             mainContentBinding.apply {
@@ -547,6 +585,24 @@ class MainActivity : AppCompatActivity() {
     private fun createTextInputEditText(inputType: Int = InputType.TYPE_CLASS_TEXT): TextInputEditText {
         return TextInputEditText(this@MainActivity).apply {
             this.inputType = inputType
+        }
+    }
+
+    private fun createCheckBox(textId: Int, prefKey: String, layoutParams: LinearLayout.LayoutParams): MaterialCheckBox {
+        return MaterialCheckBox(this).apply {
+            isChecked = prefs.getString(prefKey, "") == "1"
+            setOnCheckedChangeListener { _, isChecked ->
+                prefs.edit().putString(prefKey, if (isChecked) "1" else "0").apply()
+            }
+            minimumHeight = 0
+            text = getString(textId)
+            this.layoutParams = layoutParams
+        }
+    }
+
+    private fun createLayoutParams(width: Int, height: Int, weight: Float, marginEnd: Int): LinearLayout.LayoutParams {
+        return LinearLayout.LayoutParams(width, height, weight).apply {
+            setMargins(23.dp, 0.dp, marginEnd.dp, 0.dp)
         }
     }
 
