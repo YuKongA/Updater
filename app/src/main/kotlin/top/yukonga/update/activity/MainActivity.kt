@@ -274,21 +274,25 @@ class MainActivity : AppCompatActivity() {
             setText(LoginUtils().getAccountAndPassword(this@MainActivity).second)
         }
         inputPasswordLayout.addView(inputPassword)
-        val savePasswordCheckBox = createCheckBox(
-            R.string.save_password, "save_password", createLayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f, 0)
-        )
-        val autoLoginCheckBox = createCheckBox(
-            R.string.auto_login, "auto_login", createLayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f, 27)
-        )
+        val savePasswordCheckBox =
+            createCheckBox("save_password", R.string.save_password, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                setMargins(23.dp, 0.dp, 0.dp, 0.dp)
+            })
+        val autoLoginCheckBox = createCheckBox("auto_login",
+            R.string.auto_login,
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0f).apply {
+                setMargins(23.dp, 0.dp, 27.dp, 0.dp)
+            })
         savePasswordCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            if (!isChecked) {
-                autoLoginCheckBox.isChecked = false
-                autoLoginCheckBox.isEnabled = false
-            } else {
-                autoLoginCheckBox.isEnabled = true
-            }
+            prefs.edit().putString("save_password", if (isChecked) "1" else "0").apply()
+            autoLoginCheckBox.isEnabled = isChecked
+            if (!isChecked) autoLoginCheckBox.isChecked = false
         }
-        val linearLayout = LinearLayout(this).apply {
+        autoLoginCheckBox.isEnabled = savePasswordCheckBox.isChecked
+        autoLoginCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putString("auto_login", if (isChecked) "1" else "0").apply()
+        }
+        val checkBoxLinearLayout = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             addView(savePasswordCheckBox)
@@ -298,7 +302,7 @@ class MainActivity : AppCompatActivity() {
             addView(title)
             addView(inputAccountLayout)
             addView(inputPasswordLayout)
-            addView(linearLayout)
+            addView(checkBoxLinearLayout)
         }
         MaterialAlertDialogBuilder(this@MainActivity).apply {
             setView(view)
@@ -588,21 +592,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createCheckBox(textId: Int, prefKey: String, layoutParams: LinearLayout.LayoutParams): MaterialCheckBox {
+    private fun createCheckBox(prefKey: String, textId: Int, layoutParams: LinearLayout.LayoutParams): MaterialCheckBox {
         return MaterialCheckBox(this).apply {
             isChecked = prefs.getString(prefKey, "") == "1"
-            setOnCheckedChangeListener { _, isChecked ->
-                prefs.edit().putString(prefKey, if (isChecked) "1" else "0").apply()
-            }
             minimumHeight = 0
             text = getString(textId)
             this.layoutParams = layoutParams
-        }
-    }
-
-    private fun createLayoutParams(width: Int, height: Int, weight: Float, marginEnd: Int): LinearLayout.LayoutParams {
-        return LinearLayout.LayoutParams(width, height, weight).apply {
-            setMargins(23.dp, 0.dp, marginEnd.dp, 0.dp)
         }
     }
 
