@@ -18,8 +18,6 @@ object AnimUtils {
         }
     }
 
-// ViewExtensions
-
     fun View.fadOutAnimation(duration: Long = 300, visibility: Int = View.GONE, completion: (() -> Unit)? = null) {
         animate().alpha(0f).setDuration(duration).withEndAction {
             this.visibility = visibility

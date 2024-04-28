@@ -1,11 +1,6 @@
 package top.yukonga.update.activity
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -13,11 +8,9 @@ import android.text.Html
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
-import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -26,13 +19,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -53,10 +44,12 @@ import top.yukonga.update.logic.utils.AnimUtils.fadOutAnimation
 import top.yukonga.update.logic.utils.AnimUtils.setTextAnimation
 import top.yukonga.update.logic.utils.AppUtils
 import top.yukonga.update.logic.utils.AppUtils.dp
+import top.yukonga.update.logic.utils.AppUtils.hideKeyBoard
 import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.AppUtils.json
+import top.yukonga.update.logic.utils.AppUtils.setCopyClickListener
+import top.yukonga.update.logic.utils.AppUtils.setDownloadClickListener
 import top.yukonga.update.logic.utils.FileUtils
-import top.yukonga.update.logic.utils.FileUtils.downloadRomFile
 import top.yukonga.update.logic.utils.HapticUtils.hapticConfirm
 import top.yukonga.update.logic.utils.HapticUtils.hapticReject
 import top.yukonga.update.logic.utils.InfoUtils.getRecoveryRomInfo
@@ -411,10 +404,10 @@ class MainActivity : AppCompatActivity() {
 
             // Hide input method when focus is on dropdown.
             deviceRegionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) hideIme(view)
+                if (hasFocus) hideKeyBoard(this@MainActivity, view)
             }
             androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) hideIme(view)
+                if (hasFocus) hideKeyBoard(this@MainActivity, view)
             }
 
             // Setup default device information.
@@ -506,14 +499,14 @@ class MainActivity : AppCompatActivity() {
                         filenameInfo.setTextAnimation(mainViewModel.filename)
                         filesizeInfo.setTextAnimation(mainViewModel.filesize)
                         changelogInfo.setTextAnimation(mainViewModel.changelog)
-                        changelogInfo.setCopyClickListener(mainViewModel.changelog)
+                        changelogInfo.setCopyClickListener(this@MainActivity, mainViewModel.changelog)
                         official.text = mainViewModel.officialText
-                        officialDownload.setDownloadClickListener(mainViewModel.filename, mainViewModel.officialDownload!!)
-                        officialCopy.setCopyClickListener(mainViewModel.officialDownload)
-                        cdn1Download.setDownloadClickListener(mainViewModel.filename, mainViewModel.cdn1Download!!)
-                        cdn1Copy.setCopyClickListener(mainViewModel.cdn1Download)
-                        cdn2Download.setDownloadClickListener(mainViewModel.filename, mainViewModel.cdn2Download!!)
-                        cdn2Copy.setCopyClickListener(mainViewModel.cdn2Download)
+                        officialDownload.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.officialDownload!!)
+                        officialCopy.setCopyClickListener(this@MainActivity, mainViewModel.officialDownload)
+                        cdn1Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn1Download!!)
+                        cdn1Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn1Download)
+                        cdn2Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn2Download!!)
+                        cdn2Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn2Download)
                     } else {
                         secondViewArray.forEach {
                             if (it.isVisible) it.fadOutAnimation()
@@ -598,66 +591,6 @@ class MainActivity : AppCompatActivity() {
             minimumHeight = 0
             text = getString(textId)
             this.layoutParams = layoutParams
-        }
-    }
-
-    private fun MaterialButton.setDownloadClickListener(fileName: String?, fileLink: String) {
-        setOnClickListener {
-            fileName?.let {
-                hapticConfirm(this)
-                MaterialAlertDialogBuilder(this@MainActivity).apply {
-                    setTitle(R.string.download_method)
-                    setMessage(R.string.download_method_desc)
-                    setNegativeButton(R.string.android_default) { _, _ ->
-                        hapticConfirm(this@setDownloadClickListener)
-                        downloadRomFile(this@MainActivity, fileLink, it)
-                    }
-                    setPositiveButton(R.string.other) { _, _ ->
-                        hapticConfirm(this@setDownloadClickListener)
-                        Intent().apply {
-                            action = Intent.ACTION_VIEW
-                            data = Uri.parse(fileLink)
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        }.let {
-                            this@MainActivity.startActivity(it)
-                        }
-                    }
-                    setNeutralButton(R.string.cancel) { dialog, _ ->
-                        hapticReject(this@setDownloadClickListener)
-                        dialog.dismiss()
-                    }
-                }.show()
-            }
-        }
-    }
-
-    private fun MaterialButton.setCopyClickListener(link: CharSequence?) {
-        setOnClickListener {
-            hapticConfirm(this)
-            copyText(link)
-            showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
-        }
-    }
-
-    private fun MaterialTextView.setCopyClickListener(text: CharSequence?) {
-        setOnClickListener {
-            hapticConfirm(this)
-            copyText(text)
-            showStringToast(this@MainActivity, getString(R.string.toast_copied_to_pasteboard), 1)
-        }
-    }
-
-    private fun copyText(text: CharSequence?) {
-        val cm: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.setPrimaryClip(ClipData.newPlainText(packageName, text))
-    }
-
-    private fun hideIme(view: View) {
-        if (AppUtils.atLeast(Build.VERSION_CODES.R)) {
-            view.windowInsetsController?.hide(WindowInsets.Type.ime())
-        } else {
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }
