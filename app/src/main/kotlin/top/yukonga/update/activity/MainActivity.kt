@@ -16,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -422,10 +423,24 @@ class MainActivity : AppCompatActivity() {
             val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.codeNames)
             val deviceRegionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.regionNames)
             val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.androidVersions)
-            (deviceName.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceNamesAdapter)
-            (codeName.editText as? MaterialAutoCompleteTextView)?.setAdapter(codeNamesAdapter)
-            (deviceRegion.editText as? MaterialAutoCompleteTextView)?.setAdapter(deviceRegionAdapter)
-            (androidVersion.editText as? MaterialAutoCompleteTextView)?.setAdapter(androidVersionAdapter)
+            (deviceName.editText as? MaterialAutoCompleteTextView)?.apply {
+                setAdapter(deviceNamesAdapter)
+                setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
+            }
+            (codeName.editText as? MaterialAutoCompleteTextView)?.apply {
+                setAdapter(codeNamesAdapter)
+                setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
+            }
+            (deviceRegion.editText as? MaterialAutoCompleteTextView)?.apply {
+                setAdapter(deviceRegionAdapter)
+                dropDownHeight = 280.dp
+                setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
+            }
+            (androidVersion.editText as? MaterialAutoCompleteTextView)?.apply {
+                setAdapter(androidVersionAdapter)
+                dropDownHeight = 280.dp
+                setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
+            }
 
             // Setup TextChangedListener.
             codeNameWatcher = object : TextWatcher {
