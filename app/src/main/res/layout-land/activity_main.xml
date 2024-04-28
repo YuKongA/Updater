@@ -42,6 +42,7 @@
         android:textColor="?attr/colorOnSecondaryContainer"
         app:backgroundTint="?attr/colorSecondaryContainer"
         app:icon="@drawable/ic_check"
-        app:iconTint="?attr/colorOnSecondaryContainer" />
+        app:iconTint="?attr/colorOnSecondaryContainer"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

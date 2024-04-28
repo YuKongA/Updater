@@ -373,16 +373,14 @@ class MainActivity : AppCompatActivity() {
         if (AppUtils.atLeast(Build.VERSION_CODES.R)) {
             mainContentBinding.downloadInfo.setOnApplyWindowInsetsListener { _, insets ->
                 mainContentBinding.downloadInfo.layoutParams.apply {
-                    // View bottom margin + Fab bottom height + Fab bottom margin + System gestures height.
                     (this as LinearLayout.LayoutParams).bottomMargin =
-                        18.dp + 56.dp + if (isLandscape()) 32.dp else 24.dp + insets.getInsets(WindowInsets.Type.systemGestures()).bottom
+                        if (isLandscape()) 32.dp else 24.dp + insets.getInsets(WindowInsets.Type.systemGestures()).bottom
                 }
                 insets
             }
         } else {
             mainContentBinding.downloadInfo.layoutParams.apply {
-                // View bottom margin + Fab bottom height + Fab bottom margin + Fixed spacing.
-                (this as LinearLayout.LayoutParams).bottomMargin = 18.dp + 56.dp + if (isLandscape()) 32.dp else 24.dp + 46.dp
+                (this as LinearLayout.LayoutParams).bottomMargin = if (isLandscape()) 32.dp else 24.dp + 46.dp
             }
         }
     }
