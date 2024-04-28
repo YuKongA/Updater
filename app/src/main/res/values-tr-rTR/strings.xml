@@ -36,7 +36,7 @@
     <string name="regions_code">Bölge Kodu</string>
     <string name="login_expired">Oturumun süresi doldu</string>
     <string name="login_expired_desc">Tekrar giriş yapmanız gerekiyor</string>
-    <string name="login_expired_dialog">login expired!</string>
+    <string name="login_expired_dialog">Login expired!</string>
     <string name="global">Global hesap</string>
     <string name="download_method">İndirme yöntemi</string>
     <string name="download_method_desc">İndirme yönteminizi seçin</string>
