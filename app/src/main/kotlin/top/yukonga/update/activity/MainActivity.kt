@@ -9,7 +9,6 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.view.View.OnFocusChangeListener
-import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
@@ -44,9 +43,10 @@ import top.yukonga.update.logic.utils.AnimUtils.fadInAnimation
 import top.yukonga.update.logic.utils.AnimUtils.fadOutAnimation
 import top.yukonga.update.logic.utils.AnimUtils.setTextAnimation
 import top.yukonga.update.logic.utils.AppUtils
+import top.yukonga.update.logic.utils.AppUtils.addInsetsByMargin
+import top.yukonga.update.logic.utils.AppUtils.addInsetsByPadding
 import top.yukonga.update.logic.utils.AppUtils.dp
 import top.yukonga.update.logic.utils.AppUtils.hideKeyBoard
-import top.yukonga.update.logic.utils.AppUtils.isLandscape
 import top.yukonga.update.logic.utils.AppUtils.json
 import top.yukonga.update.logic.utils.AppUtils.setCopyClickListener
 import top.yukonga.update.logic.utils.AppUtils.setDownloadClickListener
@@ -173,8 +173,8 @@ class MainActivity : AppCompatActivity() {
                                     } else {
                                         showStringToast(this@MainActivity, getString(R.string.login_expired_dialog), 0)
                                         activityMainBinding.apply {
-                                            topAppBar.menu.findItem(R.id.login).isVisible = true
-                                            topAppBar.menu.findItem(R.id.logout).isVisible = false
+                                            toolbar.menu.findItem(R.id.login).isVisible = true
+                                            toolbar.menu.findItem(R.id.logout).isVisible = false
                                         }
                                     }
                                 }
@@ -301,11 +301,11 @@ class MainActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this@MainActivity).apply {
             setView(view)
             setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                hapticReject(activityMainBinding.topAppBar)
+                hapticReject(activityMainBinding.toolbar)
                 dialog.dismiss()
             }
             setPositiveButton(getString(R.string.login)) { _, _ ->
-                hapticConfirm(activityMainBinding.topAppBar)
+                hapticConfirm(activityMainBinding.toolbar)
                 val global = prefs.getString("global", "") ?: "0"
                 val savePassword = prefs.getString("save_password", "") ?: "0"
                 val mInputAccount = inputAccount.text.toString()
@@ -320,8 +320,8 @@ class MainActivity : AppCompatActivity() {
                                 loginDesc.text = getString(R.string.using_v2)
                             }
                             activityMainBinding.apply {
-                                topAppBar.menu.findItem(R.id.login).isVisible = false
-                                topAppBar.menu.findItem(R.id.logout).isVisible = true
+                                toolbar.menu.findItem(R.id.login).isVisible = false
+                                toolbar.menu.findItem(R.id.logout).isVisible = true
                             }
                         }
                     }
@@ -334,11 +334,11 @@ class MainActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this@MainActivity).apply {
             setTitle(getString(R.string.logout))
             setMessage(getString(R.string.logout_desc)).setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                hapticReject(activityMainBinding.topAppBar)
+                hapticReject(activityMainBinding.toolbar)
                 dialog.dismiss()
             }
             setPositiveButton(getString(R.string.confirm)) { _, _ ->
-                hapticConfirm(activityMainBinding.topAppBar)
+                hapticConfirm(activityMainBinding.toolbar)
                 CoroutineScope(Dispatchers.Default).launch {
                     LoginUtils().logout(this@MainActivity)
                     withContext(Dispatchers.Main) {
@@ -348,8 +348,8 @@ class MainActivity : AppCompatActivity() {
                             loginDesc.text = getString(R.string.login_desc)
                         }
                         activityMainBinding.apply {
-                            topAppBar.menu.findItem(R.id.login).isVisible = true
-                            topAppBar.menu.findItem(R.id.logout).isVisible = false
+                            toolbar.menu.findItem(R.id.login).isVisible = true
+                            toolbar.menu.findItem(R.id.logout).isVisible = false
                         }
                     }
                 }
@@ -368,21 +368,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupEdgeToEdge() {
+
+        // Enable edge to edge
         enableEdgeToEdge()
         if (AppUtils.atLeast(Build.VERSION_CODES.Q)) window.isNavigationBarContrastEnforced = false
-        if (AppUtils.atLeast(Build.VERSION_CODES.R)) {
-            mainContentBinding.downloadInfo.setOnApplyWindowInsetsListener { _, insets ->
-                mainContentBinding.downloadInfo.layoutParams.apply {
-                    (this as LinearLayout.LayoutParams).bottomMargin =
-                        if (isLandscape()) 32.dp else 24.dp + insets.getInsets(WindowInsets.Type.systemGestures()).bottom
-                }
-                insets
-            }
-        } else {
-            mainContentBinding.downloadInfo.layoutParams.apply {
-                (this as LinearLayout.LayoutParams).bottomMargin = if (isLandscape()) 32.dp else 24.dp + 46.dp
-            }
-        }
+
+        // Add insets
+        activityMainBinding.root.addInsetsByPadding(top = true)
+        activityMainBinding.appBarLayout.addInsetsByPadding(left = true, right = true)
+        activityMainBinding.implement.addInsetsByMargin(bottom = true, left = true, right = true)
+        mainContentBinding.scrollView.addInsetsByPadding(left = true, right = true, bottom = true)
+
     }
 
     private fun setupCutoutMode() {
@@ -531,7 +527,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupTopAppBar() {
-        activityMainBinding.topAppBar.apply {
+        activityMainBinding.toolbar.apply {
             setNavigationOnClickListener {
                 hapticConfirm(this)
                 showAboutDialog()
@@ -566,8 +562,8 @@ class MainActivity : AppCompatActivity() {
                     loginDesc.text = getString(R.string.using_v2)
                 }
                 activityMainBinding.apply {
-                    topAppBar.menu.findItem(R.id.login).isVisible = false
-                    topAppBar.menu.findItem(R.id.logout).isVisible = true
+                    toolbar.menu.findItem(R.id.login).isVisible = false
+                    toolbar.menu.findItem(R.id.logout).isVisible = true
                 }
             }
         }
