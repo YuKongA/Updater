@@ -5,9 +5,9 @@ import java.io.ByteArrayOutputStream
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
@@ -49,8 +49,11 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName(if (keystorePath != null) "github" else "release")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
+            signingConfig =
+                signingConfigs.getByName(if (keystorePath != null) "github" else "release")
         }
         debug {
             if (keystorePath != null) signingConfig = signingConfigs.getByName("github")
@@ -58,11 +61,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
         freeCompilerArgs = listOf(
             "-Xno-param-assertions",
             "-Xno-call-assertions",
@@ -83,7 +86,8 @@ android {
         }
         applicationVariants.all {
             outputs.all {
-                (this as BaseVariantOutputImpl).outputFileName = "Updater-$versionName($versionCode)-$name.apk"
+                (this as BaseVariantOutputImpl).outputFileName =
+                    "Updater-$versionName($versionCode)-$name.apk"
             }
         }
     }
@@ -118,14 +122,14 @@ fun getVersionName(): String {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
-    implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.preference.ktx)
+    implementation(libs.material)
+    implementation(libs.okhttp)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.serialization.json)
 }
