@@ -19,7 +19,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = getVersionCode()
-        versionName = "1.2" + "-" + getVersionName()
+        versionName = "1.3" + "-" + getVersionName()
     }
     val properties = Properties()
     runCatching { properties.load(project.rootProject.file("local.properties").inputStream()) }
