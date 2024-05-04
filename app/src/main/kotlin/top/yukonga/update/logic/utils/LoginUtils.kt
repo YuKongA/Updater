@@ -26,20 +26,15 @@ class LoginUtils {
     private val loginAuth2Url = "https://account.xiaomi.com/pass/serviceLoginAuth2"
     private val mediaType = "application/x-www-form-urlencoded".toMediaType()
 
-    suspend fun login(context: Context, account: String, password: String, global: String, savePassword: String, autoLogin: Boolean = false): Boolean {
+    fun login(context: Context, account: String, password: String, global: String, savePassword: String, autoLogin: Boolean = false): Boolean {
         if (account.isEmpty() || password.isEmpty()) {
-            withContext(Dispatchers.Main) {
-                showStringToast(context, context.getString(R.string.account_or_password_empty), 0)
-            }
+            showStringToast(context, context.getString(R.string.account_or_password_empty), 0)
             return false
         } else {
-            withContext(Dispatchers.Main) {
-                if (!autoLogin) showStringToast(context, context.getString(R.string.logging_in), 1)
-            }
+            if (!autoLogin) showStringToast(context, context.getString(R.string.logging_in), 1)
         }
 
         if (savePassword == "1") saveAccountAndPassword(context, account, password) else deleteAccountAndPassword(context)
-
 
         val md = MessageDigest.getInstance("MD5")
         md.update(password.toByteArray())
@@ -48,9 +43,7 @@ class LoginUtils {
         val response1 = getRequest(loginUrl)
         val sign = response1.request.url.queryParameter("_sign")?.replace("2&V1_passport&", "")
         if (sign == null) {
-            withContext(Dispatchers.Main) {
-                showStringToast(context, context.getString(R.string.request_sign_failed), 0)
-            }
+            showStringToast(context, context.getString(R.string.request_sign_failed), 0)
             return false
         }
 
@@ -71,17 +64,13 @@ class LoginUtils {
         val authResult = if (authJson.result == "ok") "1" else "0"
 
         if (description != "成功") {
-            withContext(Dispatchers.Main) {
-                if (description == "登录验证失败") showStringToast(context, context.getString(R.string.login_error), 0)
-                else showStringToast(context, description, 0)
-            }
+            if (description == "登录验证失败") showStringToast(context, context.getString(R.string.login_error), 0)
+            else showStringToast(context, description, 0)
             return false
         }
 
         if (nonce == null || ssecurity == null || location == null || userId.isEmpty()) {
-            withContext(Dispatchers.Main) {
-                showStringToast(context, context.getString(R.string.security_error), 0)
-            }
+            showStringToast(context, context.getString(R.string.security_error), 0)
             return false
         }
 
@@ -95,19 +84,14 @@ class LoginUtils {
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
 
         val loginInfo = LoginHelper(accountType, authResult, description, ssecurity, serviceToken, userId)
-
-        withContext(Dispatchers.Main) {
-            saveCookiesFile(context, Json.encodeToString(loginInfo))
-            showStringToast(context, context.getString(R.string.login_successful), 1)
-        }
+        saveCookiesFile(context, Json.encodeToString(loginInfo))
+        showStringToast(context, context.getString(R.string.login_successful), 1)
         return true
     }
 
-    suspend fun logout(context: Context) {
-        withContext(Dispatchers.Main) {
+    fun logout(context: Context) {
             deleteCookiesFile(context)
             showStringToast(context, context.getString(R.string.logout_successful), 1)
-        }
     }
 
     private fun saveAccountAndPassword(context: Context, account: String, password: String) {

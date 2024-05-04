@@ -38,7 +38,6 @@ object InfoUtils {
     }
 
     fun getRecoveryRomInfo(context: Context, codeNameExt: String, regionCode: String, romVersion: String, androidVersion: String): String {
-
         if (FileUtils.isCookiesFileExists(context)) {
             val cookiesFile = FileUtils.readCookiesFile(context)
             val cookies = json.decodeFromString<LoginHelper>(cookiesFile)

@@ -18,13 +18,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -105,36 +105,39 @@ class MainActivity : AppCompatActivity() {
 
             // Setup Fab OnClickListener.
             activityMainBinding.implement.setOnClickListener {
-
                 hapticConfirm(activityMainBinding.implement)
 
-                CoroutineScope(Dispatchers.Default).launch {
 
+                val deviceRegion = deviceRegion.editText?.text.toString()
+                val codeName = codeName.editText?.text.toString()
+                val deviceName = deviceName.editText?.text.toString()
+
+                val regionCode = DeviceInfoHelper.regionCode(deviceRegion)
+                val regionNameExt = DeviceInfoHelper.regionNameExt(deviceRegion)
+                val codeNameExt = codeName + regionNameExt
+
+                val androidVersion = androidVersion.editText?.text.toString()
+                val systemVersion = systemVersion.editText?.text.toString()
+
+                val deviceCode = DeviceInfoHelper.deviceCode(androidVersion, codeName, regionCode)
+                val systemVersionTextExt = systemVersion.replace("OS1", "V816").replace("AUTO", deviceCode)
+
+                // Acquire ROM info.
+                lifecycleScope.launch(Dispatchers.IO) {
                     try {
-                        val deviceRegion = deviceRegion.editText?.text.toString()
-                        val codeName = codeName.editText?.text.toString()
-                        val deviceName = deviceName.editText?.text.toString()
-
-                        val regionCode = DeviceInfoHelper.regionCode(deviceRegion)
-                        val regionNameExt = DeviceInfoHelper.regionNameExt(deviceRegion)
-                        val codeNameExt = codeName + regionNameExt
-
-                        val androidVersion = androidVersion.editText?.text.toString()
-                        val systemVersion = systemVersion.editText?.text.toString()
-
-                        val deviceCode = DeviceInfoHelper.deviceCode(androidVersion, codeName, regionCode)
-                        val systemVersionTextExt = systemVersion.replace("OS1", "V816").replace("AUTO", deviceCode)
-
-                        // Acquire ROM info.
                         val recoveryRomInfo = json.decodeFromString<RomInfoHelper.RomInfo>(
                             getRecoveryRomInfo(
-                                this@MainActivity, codeNameExt, regionCode, systemVersionTextExt, androidVersion
+                                this@MainActivity,
+                                codeNameExt,
+                                regionCode,
+                                systemVersionTextExt,
+                                androidVersion
                             )
                         )
-                        prefs.edit().putString("deviceName", deviceName).putString("codeName", codeName).putString("deviceRegion", deviceRegion)
-                            .putString("systemVersion", systemVersion).putString("androidVersion", androidVersion).apply()
 
                         withContext(Dispatchers.Main) {
+                            prefs.edit().putString("deviceName", deviceName).putString("codeName", codeName).putString("deviceRegion", deviceRegion)
+                                .putString("systemVersion", systemVersion).putString("androidVersion", androidVersion).apply()
 
                             // Hide all cardViews & Show a toast if we didn't get anything from request.
                             if (recoveryRomInfo.currentRom?.branch == null) {
@@ -228,12 +231,13 @@ class MainActivity : AppCompatActivity() {
                             }
                             setupCardViews()
 
-                        } // Main context
+                        } // Dispatchers.Main
+
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
 
-                } // CoroutineScope
+                } // Coroutine
 
             } // Fab operation
 
@@ -310,10 +314,10 @@ class MainActivity : AppCompatActivity() {
                 val savePassword = prefs.getString("save_password", "") ?: "0"
                 val mInputAccount = inputAccount.text.toString()
                 val mInputPassword = inputPassword.text.toString()
-                CoroutineScope(Dispatchers.Default).launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     val isValid = LoginUtils().login(this@MainActivity, mInputAccount, mInputPassword, global, savePassword)
-                    if (isValid) {
-                        withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
+                        if (isValid) {
                             mainContentBinding.apply {
                                 loginIcon.setImageResource(R.drawable.ic_check_circle)
                                 loginTitle.text = getString(R.string.logged_in)
@@ -339,19 +343,15 @@ class MainActivity : AppCompatActivity() {
             }
             setPositiveButton(getString(R.string.confirm)) { _, _ ->
                 hapticConfirm(activityMainBinding.toolbar)
-                CoroutineScope(Dispatchers.Default).launch {
-                    LoginUtils().logout(this@MainActivity)
-                    withContext(Dispatchers.Main) {
-                        mainContentBinding.apply {
-                            loginIcon.setImageResource(R.drawable.ic_cancel)
-                            loginTitle.text = getString(R.string.no_account)
-                            loginDesc.text = getString(R.string.login_desc)
-                        }
-                        activityMainBinding.apply {
-                            toolbar.menu.findItem(R.id.login).isVisible = true
-                            toolbar.menu.findItem(R.id.logout).isVisible = false
-                        }
-                    }
+                LoginUtils().logout(this@MainActivity)
+                mainContentBinding.apply {
+                    loginIcon.setImageResource(R.drawable.ic_cancel)
+                    loginTitle.text = getString(R.string.no_account)
+                    loginDesc.text = getString(R.string.login_desc)
+                }
+                activityMainBinding.apply {
+                    toolbar.menu.findItem(R.id.login).isVisible = true
+                    toolbar.menu.findItem(R.id.logout).isVisible = false
                 }
             }
         }.show()
@@ -483,44 +483,40 @@ class MainActivity : AppCompatActivity() {
             val firstViewArray = arrayOf(firstInfo, secondInfo)
             val secondViewArray = arrayOf(secondInfo, downloadInfo, bigVersion, bigVersionInfo)
 
-            CoroutineScope(Dispatchers.Default).launch {
-                withContext(Dispatchers.Main) {
-                    if (mainViewModel.device != null) {
-                        firstViewArray.forEach {
-                            if (!it.isVisible) it.fadInAnimation()
-                        }
-                        activityMainBinding.implement.shrink()
-                        codenameInfo.setTextAnimation(mainViewModel.device)
-                        systemInfo.setTextAnimation(mainViewModel.version)
-                        codebaseInfo.setTextAnimation(mainViewModel.codebase)
-                        branchInfo.setTextAnimation(mainViewModel.branch)
-                    } else {
-                        activityMainBinding.implement.extend()
-                        firstViewArray.forEach {
-                            if (it.isVisible) it.fadOutAnimation()
-                        }
-                    }
-                    if (mainViewModel.filename != null) {
-                        secondViewArray.forEach {
-                            if (!it.isVisible) it.fadInAnimation()
-                        }
-                        bigVersionInfo.setTextAnimation(mainViewModel.bigversion)
-                        filenameInfo.setTextAnimation(mainViewModel.filename)
-                        filesizeInfo.setTextAnimation(mainViewModel.filesize)
-                        changelogInfo.setTextAnimation(mainViewModel.changelog)
-                        changelogInfo.setCopyClickListener(this@MainActivity, mainViewModel.changelog)
-                        official.text = mainViewModel.officialText
-                        officialDownload.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.officialDownload!!)
-                        officialCopy.setCopyClickListener(this@MainActivity, mainViewModel.officialDownload)
-                        cdn1Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn1Download!!)
-                        cdn1Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn1Download)
-                        cdn2Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn2Download!!)
-                        cdn2Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn2Download)
-                    } else {
-                        secondViewArray.forEach {
-                            if (it.isVisible) it.fadOutAnimation()
-                        }
-                    }
+            if (mainViewModel.device != null) {
+                firstViewArray.forEach {
+                    if (!it.isVisible) it.fadInAnimation()
+                }
+                activityMainBinding.implement.shrink()
+                codenameInfo.setTextAnimation(mainViewModel.device)
+                systemInfo.setTextAnimation(mainViewModel.version)
+                codebaseInfo.setTextAnimation(mainViewModel.codebase)
+                branchInfo.setTextAnimation(mainViewModel.branch)
+            } else {
+                activityMainBinding.implement.extend()
+                firstViewArray.forEach {
+                    if (it.isVisible) it.fadOutAnimation()
+                }
+            }
+            if (mainViewModel.filename != null) {
+                secondViewArray.forEach {
+                    if (!it.isVisible) it.fadInAnimation()
+                }
+                bigVersionInfo.setTextAnimation(mainViewModel.bigversion)
+                filenameInfo.setTextAnimation(mainViewModel.filename)
+                filesizeInfo.setTextAnimation(mainViewModel.filesize)
+                changelogInfo.setTextAnimation(mainViewModel.changelog)
+                changelogInfo.setCopyClickListener(this@MainActivity, mainViewModel.changelog)
+                official.text = mainViewModel.officialText
+                officialDownload.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.officialDownload!!)
+                officialCopy.setCopyClickListener(this@MainActivity, mainViewModel.officialDownload)
+                cdn1Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn1Download!!)
+                cdn1Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn1Download)
+                cdn2Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn2Download!!)
+                cdn2Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn2Download)
+            } else {
+                secondViewArray.forEach {
+                    if (it.isVisible) it.fadOutAnimation()
                 }
             }
         }
