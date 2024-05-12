@@ -8,6 +8,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import kotlinx.serialization.json.Json
 import top.yukonga.miuiStringToast.data.IconParams
@@ -27,7 +29,9 @@ object MiuiStringToast {
     @SuppressLint("WrongConstant")
     fun showStringToast(context: Context, text: String?, colorType: Int) {
         if ((!isMiPad() && isLandscape()) || !atLeast(Build.VERSION_CODES.TIRAMISU) || !isHyperOS()) {
-            Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+            }
             return
         }
         try {

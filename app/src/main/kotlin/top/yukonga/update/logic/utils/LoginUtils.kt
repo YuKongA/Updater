@@ -2,8 +2,6 @@ package top.yukonga.update.logic.utils
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -90,8 +88,8 @@ class LoginUtils {
     }
 
     fun logout(context: Context) {
-            deleteCookiesFile(context)
-            showStringToast(context, context.getString(R.string.logout_successful), 1)
+        deleteCookiesFile(context)
+        showStringToast(context, context.getString(R.string.logout_successful), 1)
     }
 
     private fun saveAccountAndPassword(context: Context, account: String, password: String) {
