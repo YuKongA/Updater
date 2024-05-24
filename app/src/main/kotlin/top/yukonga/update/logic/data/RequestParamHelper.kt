@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RequestParamHelper(
+    val security: String,
+    val token: String,
     val id: String,
     val c: String,
     val d: String,
