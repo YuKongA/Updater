@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
                 val systemVersion = systemVersion.editText?.text.toString()
 
                 val deviceCode = DeviceInfoHelper.deviceCode(androidVersion, codeName, regionCode)
-                val systemVersionTextExt = systemVersion.replace("OS1", "V816").replace("AUTO", deviceCode)
+                val systemVersionTextExt = systemVersion.uppercase().replace("OS1", "V816").replace("AUTO", deviceCode)
 
                 // Acquire ROM info.
                 lifecycleScope.launch(Dispatchers.IO) {
