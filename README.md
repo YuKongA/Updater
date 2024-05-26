@@ -18,7 +18,7 @@
 
 仅支持获取 <b>MIUI9</b> 及以上版本, 最极端的情况为: Redmi 1S(armani), MIUI9, Android4.4
 
-仅 [DeviceInfoHelper](https://github.com/YuKongA/Updater/blob/main/app/src/main/kotlin/top/yukonga/update/logic/data/DeviceInfoHelper.kt#L60) 内存在的设备支持使用 `AUTO` 自动补全，其余设备仍需手动输入完整版本号
+仅 [DeviceInfoHelper](https://github.com/YuKongA/Updater/blob/main/app/src/main/kotlin/top/yukonga/update/logic/data/DeviceInfoHelper.kt#L62) 内存在的设备支持使用 `AUTO` 自动补全，其余设备仍需手动输入完整版本号
 
 <b>未登录</b>小米账号时使用 miotaV3-v1 接口, 可正常获取任何<b>存在且公开</b>机型的 `正式版公测` 的<b>详情信息</b>
 
