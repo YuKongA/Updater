@@ -248,6 +248,8 @@
                         android:gravity="center_vertical|end"
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textIsSelectable="true"
+                        android:singleLine="true"
+                        android:ellipsize="start"
                         android:textSize="15sp" />
                 </LinearLayout>
 
