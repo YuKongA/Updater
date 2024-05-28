@@ -45,7 +45,7 @@
     <string name="download_start">已開始下載</string>
     <string name="login_error">登入验证失败!</string>
     <string name="opensource_info">版權所有 © 2024 YuKongA, AkaneTan</string>
-    <string name="save_password">Save password</string>
-    <string name="auto_login">Auto login</string>
-    <string name="login_expired_auto">Auto logging!</string>
+    <string name="save_password">儲存密碼</string>
+    <string name="auto_login">自動登入</string>
+    <string name="login_expired_auto">嘗試自動登入!</string>
 </resources>
