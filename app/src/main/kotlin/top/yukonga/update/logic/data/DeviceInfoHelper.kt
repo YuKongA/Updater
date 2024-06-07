@@ -162,6 +162,7 @@ object DeviceInfoHelper {
         Device("Redmi Note 12 Pro Speed / POCO X5 Pro", "redwood", "MS"),
         Device("Redmi 12C / POCO C55", "earth", "CV"),
         Device("Redmi A2/A2+ / POCO C51", "water", "GO"),
+        Device("Redmi A3", "blue", "GR"),
         Device("Redmi Note 12 Turbo / POCO F5", "marble", "MR"),
         Device("Redmi Note 12 4G", "tapas", "MT"),
         Device("Redmi Note 12 4G NFC", "topaz", "MG"),
@@ -197,7 +198,8 @@ object DeviceInfoHelper {
         Device("Xiaomi 14 Ultra", "aurora", "NA"),
         Device("Xiaomi Pad 6S Pro", "sheng", "NX"),
         Device("Redmi Pad Pro", "dizi", "NS"),
-        Device("Redmi Pad Pro 5G","ruan","FS")
+        Device("Redmi Pad Pro 5G", "ruan", "FS"),
+        Device("Redmi Note 13R / POCO M6 Plus", "breeze", "NU")
     )
 
     val deviceNames = deviceList.map { it.deviceName }

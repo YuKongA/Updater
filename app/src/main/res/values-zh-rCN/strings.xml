@@ -14,7 +14,7 @@
     <string name="changelog">更新日志</string>
     <string name="branch">版本分支</string>
     <string name="toast_no_info">未获取到有效信息！</string>
-    <string name="toast_wrong_info">Wrong information!</string>
+    <string name="toast_wrong_info">查询版本不存在！</string>
     <string name="toast_copied_to_pasteboard">已复制到剪贴板</string>
     <string name="account">账号</string>
     <string name="password">密码</string>
