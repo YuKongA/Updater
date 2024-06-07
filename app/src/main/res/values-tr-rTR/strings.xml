@@ -14,6 +14,7 @@
     <string name="changelog">Değişiklik Günlüğü</string>
     <string name="branch">Şube</string>
     <string name="toast_no_info">Bulunamadı!</string>
+    <string name="toast_wrong_info">Wrong information!</string>
     <string name="toast_copied_to_pasteboard">Panoya kopyalandı</string>
     <string name="account">Hesap</string>
     <string name="password">Şifre</string>
