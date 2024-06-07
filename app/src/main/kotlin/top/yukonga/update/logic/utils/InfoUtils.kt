@@ -24,7 +24,7 @@ object InfoUtils {
     private var serviceToken = ""
 
     private fun generateJson(
-        branch: String = "",
+        branch: String,
         codeNameExt: String,
         regionCode: String,
         romVersion: String,

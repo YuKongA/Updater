@@ -121,12 +121,14 @@ class MainActivity : AppCompatActivity() {
                 val deviceCode = DeviceInfoHelper.deviceCode(androidVersion, codeName, regionCode)
                 val systemVersionTextExt = systemVersion.uppercase().replace("OS1", "V816").replace("AUTO", deviceCode)
 
+                val branchExt = if (systemVersion.contains(".DEV")) "X" else "F"
+
                 // Acquire ROM info.
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
                         val recoveryRomInfo = json.decodeFromString<RomInfoHelper.RomInfo>(
                             getRecoveryRomInfo(
-                                this@MainActivity, "F", codeNameExt, regionCode, systemVersionTextExt, androidVersion
+                                this@MainActivity, branchExt, codeNameExt, regionCode, systemVersionTextExt, androidVersion
                             )
                         )
 
