@@ -15,6 +15,7 @@
     <string name="changelog">Changelog</string>
     <string name="branch">Branch</string>
     <string name="toast_no_info">No information!</string>
+    <string name="toast_wrong_info">Wrong information!</string>
     <string name="toast_copied_to_pasteboard">Copied to pasteboard</string>
     <string name="account">Account</string>
     <string name="password">Password</string>
@@ -27,11 +28,10 @@
     <string name="login_desc">Using v1 interface</string>
     <string name="using_v2">Using v2 interface</string>
     <string name="logged_in">Logged in</string>
-    <string name="official" translatable="false">Official (%1$s)</string>
+    <string name="official" translatable="false">Official (ultimateota)</string>
     <string name="cdn1" translatable="false">CDN (cdnorg)</string>
     <string name="cdn2" translatable="false">CDN (aliyuncs)</string>
-    <string name="official1_link" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
-    <string name="official2_link" translatable="false">https://bigota.d.miui.com/%1$s/%2$s</string>
+    <string name="official_link" translatable="false">https://ultimateota.d.miui.com/%1$s/%2$s</string>
     <string name="cdn1_link" translatable="false">https://cdnorg.d.miui.com/%1$s/%2$s</string>
     <string name="cdn2_link" translatable="false">https://bkt-sgp-miui-ota-update-alisgp.oss-ap-southeast-1.aliyuncs.com/%1$s/%2$s</string>
     <string name="copy_button">Copy</string>
