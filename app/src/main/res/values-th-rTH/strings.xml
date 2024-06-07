@@ -14,6 +14,7 @@
     <string name="changelog">Changelog</string>
     <string name="branch">Branch</string>
     <string name="toast_no_info">ไม่มีข้อมูล!</string>
+    <string name="toast_wrong_info">Wrong information!</string>
     <string name="toast_copied_to_pasteboard">Copied to pasteboard</string>
     <string name="account">บัญชี</string>
     <string name="password">รหัสผ่าน</string>
