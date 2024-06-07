@@ -31,6 +31,5 @@ object AnimUtils {
         animate().alpha(1f).setDuration(duration).withEndAction {
             completion?.invoke()
         }
-
     }
 }

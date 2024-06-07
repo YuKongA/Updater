@@ -107,17 +107,16 @@ class MainActivity : AppCompatActivity() {
             activityMainBinding.implement.setOnClickListener {
                 hapticConfirm(activityMainBinding.implement)
 
-
-                val deviceRegion = deviceRegion.editText?.text.toString()
-                val codeName = codeName.editText?.text.toString()
-                val deviceName = deviceName.editText?.text.toString()
+                val deviceRegion = textFields.deviceRegion.editText?.text.toString()
+                val codeName = textFields.codeName.editText?.text.toString()
+                val deviceName = textFields.deviceName.editText?.text.toString()
 
                 val regionCode = DeviceInfoHelper.regionCode(deviceRegion)
                 val regionNameExt = DeviceInfoHelper.regionNameExt(deviceRegion)
                 val codeNameExt = codeName + regionNameExt
 
-                val androidVersion = androidVersion.editText?.text.toString()
-                val systemVersion = systemVersion.editText?.text.toString()
+                val androidVersion = textFields.androidVersion.editText?.text.toString()
+                val systemVersion = textFields.systemVersion.editText?.text.toString()
 
                 val deviceCode = DeviceInfoHelper.deviceCode(androidVersion, codeName, regionCode)
                 val systemVersionTextExt = systemVersion.uppercase().replace("OS1", "V816").replace("AUTO", deviceCode)
@@ -127,11 +126,7 @@ class MainActivity : AppCompatActivity() {
                     try {
                         val recoveryRomInfo = json.decodeFromString<RomInfoHelper.RomInfo>(
                             getRecoveryRomInfo(
-                                this@MainActivity,
-                                codeNameExt,
-                                regionCode,
-                                systemVersionTextExt,
-                                androidVersion
+                                this@MainActivity, "F", codeNameExt, regionCode, systemVersionTextExt, androidVersion
                             )
                         )
 
@@ -140,14 +135,40 @@ class MainActivity : AppCompatActivity() {
                                 .putString("systemVersion", systemVersion).putString("androidVersion", androidVersion).apply()
 
                             // Hide all cardViews & Show a toast if we didn't get anything from request.
-                            if (recoveryRomInfo.currentRom?.branch == null) {
+                            if (recoveryRomInfo.currentRom?.bigversion == null && recoveryRomInfo.incrementRom?.bigversion == null) {
                                 mainViewModel.apply {
+                                    type = null
                                     device = null
+                                    version = null
+                                    codebase = null
+                                    branch = null
                                     filename = null
+                                    filesize = null
+                                    bigversion = null
+                                    officialDownload = null
+                                    cdn1Download = null
+                                    cdn2Download = null
+                                    changelog = null
+                                    typeIncrement = null
+                                    deviceIncrement = null
+                                    versionIncrement = null
+                                    codebaseIncrement = null
+                                    branchIncrement = null
+                                    filenameIncrement = null
+                                    filesizeIncrement = null
+                                    bigversionIncrement = null
+                                    officialDownloadIncrement = null
+                                    cdn1DownloadIncrement = null
+                                    cdn2DownloadIncrement = null
+                                    changelogIncrement = null
                                 }
                                 setupCardViews()
                                 showStringToast(this@MainActivity, getString(R.string.toast_no_info), 0)
                                 throw NoSuchFieldException()
+                            }
+
+                            if (recoveryRomInfo.currentRom?.bigversion == null) {
+                                showStringToast(this@MainActivity, getString(R.string.toast_wrong_info), 0)
                             }
 
                             // Show a toast if we detect that the login has expired.
@@ -157,9 +178,9 @@ class MainActivity : AppCompatActivity() {
                                 val description = cookies["description"].toString()
                                 val authResult = cookies["authResult"].toString()
                                 if (description.isNotEmpty() && recoveryRomInfo.authResult != 1 && authResult != "-1") {
-                                    loginIcon.setImageResource(R.drawable.ic_error)
-                                    loginTitle.text = getString(R.string.login_expired)
-                                    loginDesc.text = getString(R.string.login_expired_desc)
+                                    loginCard.loginIcon.setImageResource(R.drawable.ic_error)
+                                    loginCard.loginTitle.text = getString(R.string.login_expired)
+                                    loginCard.loginDesc.text = getString(R.string.login_expired_desc)
                                     cookies.clear()
                                     cookies["authResult"] = "-1"
                                     FileUtils.saveCookiesFile(this@MainActivity, Json.encodeToString(cookies))
@@ -183,51 +204,103 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
 
-                            mainViewModel.apply {
-                                device = recoveryRomInfo.currentRom.device
-                                version = recoveryRomInfo.currentRom.version
-                                codebase = recoveryRomInfo.currentRom.codebase
-                                branch = recoveryRomInfo.currentRom.branch
-                            }
-
-                            if (recoveryRomInfo.currentRom.md5 != null) {
+                            if (recoveryRomInfo.currentRom?.bigversion != null) {
                                 val log = StringBuilder()
                                 recoveryRomInfo.currentRom.changelog!!.forEach {
                                     log.append(it.key).append("\n- ").append(it.value.txt.joinToString("\n- ")).append("\n\n")
                                 }
 
                                 mainViewModel.apply {
+                                    type = recoveryRomInfo.currentRom.type?.uppercase()
+                                    device = recoveryRomInfo.currentRom.device
+                                    version = recoveryRomInfo.currentRom.version
+                                    codebase = recoveryRomInfo.currentRom.codebase
+                                    branch = recoveryRomInfo.currentRom.branch
                                     filename = recoveryRomInfo.currentRom.filename
                                     filesize = recoveryRomInfo.currentRom.filesize
-                                    bigversion = if (recoveryRomInfo.currentRom.bigversion?.contains("816") == true) {
+                                    bigversion = if (recoveryRomInfo.currentRom.bigversion.contains("816")) {
                                         recoveryRomInfo.currentRom.bigversion.replace("816", "HyperOS 1.0")
                                     } else {
                                         "MIUI ${recoveryRomInfo.currentRom.bigversion}"
                                     }
-                                    officialDownload = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) {
-                                        getString(R.string.official1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename)
+                                    officialDownload = if (recoveryRomInfo.currentRom.md5 != recoveryRomInfo.latestRom?.md5) {
+                                        withContext(Dispatchers.IO) {
+                                            val recoveryRomInfoCurrent = json.decodeFromString<RomInfoHelper.RomInfo>(
+                                                getRecoveryRomInfo(
+                                                    this@MainActivity, "", codeNameExt, regionCode, systemVersionTextExt, androidVersion
+                                                )
+                                            )
+                                            getString(
+                                                R.string.official_link, recoveryRomInfoCurrent.currentRom?.version, recoveryRomInfoCurrent.latestRom?.filename
+                                            )
+
+                                        }
                                     } else {
-                                        getString(R.string.official2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                        getString(R.string.official_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom?.filename)
                                     }
-                                    officialText = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) {
-                                        getString(R.string.official, "ultimateota")
-                                    } else {
-                                        getString(R.string.official, "bigota")
-                                    }
-                                    cdn1Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) {
-                                        getString(R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename)
-                                    } else {
-                                        getString(R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    }
-                                    cdn2Download = if (recoveryRomInfo.currentRom.md5 == recoveryRomInfo.latestRom?.md5) {
-                                        getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.latestRom.filename)
-                                    } else {
-                                        getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
-                                    }
+                                    cdn1Download = getString(R.string.cdn1_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
+                                    cdn2Download = getString(R.string.cdn2_link, recoveryRomInfo.currentRom.version, recoveryRomInfo.currentRom.filename)
                                     changelog = log.toString().trimEnd()
                                 }
                             } else {
-                                mainViewModel.filename = null
+                                mainViewModel.apply {
+                                    type = null
+                                    device = null
+                                    version = null
+                                    codebase = null
+                                    branch = null
+                                    filename = null
+                                    filesize = null
+                                    bigversion = null
+                                    officialDownload = null
+                                    cdn1Download = null
+                                    cdn2Download = null
+                                    changelog = null
+                                }
+                            }
+
+                            if (recoveryRomInfo.incrementRom?.bigversion != null) {
+                                val incrementRomLog = StringBuilder()
+                                recoveryRomInfo.incrementRom.changelog!!.forEach {
+                                    incrementRomLog.append(it.key).append("\n- ").append(it.value.txt.joinToString("\n- ")).append("\n\n")
+                                }
+
+                                mainViewModel.apply {
+                                    typeIncrement = recoveryRomInfo.incrementRom.type?.uppercase()
+                                    deviceIncrement = recoveryRomInfo.incrementRom.device
+                                    versionIncrement = recoveryRomInfo.incrementRom.version
+                                    codebaseIncrement = recoveryRomInfo.incrementRom.codebase
+                                    branchIncrement = recoveryRomInfo.incrementRom.branch
+                                    filenameIncrement = recoveryRomInfo.incrementRom.filename.toString().substringBefore(".zip") + ".zip"
+                                    filesizeIncrement = recoveryRomInfo.incrementRom.filesize
+                                    bigversionIncrement = if (recoveryRomInfo.incrementRom.bigversion.contains("816")) {
+                                        recoveryRomInfo.incrementRom.bigversion.replace("816", "HyperOS 1.0")
+                                    } else {
+                                        "MIUI ${recoveryRomInfo.incrementRom.bigversion}"
+                                    }
+                                    officialDownloadIncrement =
+                                        getString(R.string.official_link, recoveryRomInfo.incrementRom.version, recoveryRomInfo.incrementRom.filename)
+                                    cdn1DownloadIncrement =
+                                        getString(R.string.cdn1_link, recoveryRomInfo.incrementRom.version, recoveryRomInfo.incrementRom.filename)
+                                    cdn2DownloadIncrement =
+                                        getString(R.string.cdn2_link, recoveryRomInfo.incrementRom.version, recoveryRomInfo.incrementRom.filename)
+                                    changelogIncrement = incrementRomLog.toString().trimEnd()
+                                }
+                            } else {
+                                mainViewModel.apply {
+                                    typeIncrement = null
+                                    deviceIncrement = null
+                                    versionIncrement = null
+                                    codebaseIncrement = null
+                                    branchIncrement = null
+                                    filenameIncrement = null
+                                    filesizeIncrement = null
+                                    bigversionIncrement = null
+                                    officialDownloadIncrement = null
+                                    cdn1DownloadIncrement = null
+                                    cdn2DownloadIncrement = null
+                                    changelogIncrement = null
+                                }
                             }
                             setupCardViews()
 
@@ -319,9 +392,9 @@ class MainActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         if (isValid) {
                             mainContentBinding.apply {
-                                loginIcon.setImageResource(R.drawable.ic_check_circle)
-                                loginTitle.text = getString(R.string.logged_in)
-                                loginDesc.text = getString(R.string.using_v2)
+                                loginCard.loginIcon.setImageResource(R.drawable.ic_check_circle)
+                                loginCard.loginTitle.text = getString(R.string.logged_in)
+                                loginCard.loginDesc.text = getString(R.string.using_v2)
                             }
                             activityMainBinding.apply {
                                 toolbar.menu.findItem(R.id.login).isVisible = false
@@ -345,9 +418,9 @@ class MainActivity : AppCompatActivity() {
                 hapticConfirm(activityMainBinding.toolbar)
                 LoginUtils().logout(this@MainActivity)
                 mainContentBinding.apply {
-                    loginIcon.setImageResource(R.drawable.ic_cancel)
-                    loginTitle.text = getString(R.string.no_account)
-                    loginDesc.text = getString(R.string.login_desc)
+                    loginCard.loginIcon.setImageResource(R.drawable.ic_cancel)
+                    loginCard.loginTitle.text = getString(R.string.no_account)
+                    loginCard.loginDesc.text = getString(R.string.login_desc)
                 }
                 activityMainBinding.apply {
                     toolbar.menu.findItem(R.id.login).isVisible = true
@@ -368,7 +441,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupEdgeToEdge() {
-
         // Enable edge to edge
         enableEdgeToEdge()
         if (AppUtils.atLeast(Build.VERSION_CODES.Q)) window.isNavigationBarContrastEnforced = false
@@ -378,7 +450,6 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding.appBarLayout.addInsetsByPadding(left = true, right = true)
         activityMainBinding.implement.addInsetsByMargin(bottom = true, left = true, right = true)
         mainContentBinding.scrollView.addInsetsByPadding(left = true, right = true, bottom = true)
-
     }
 
     private fun setupCutoutMode() {
@@ -398,39 +469,39 @@ class MainActivity : AppCompatActivity() {
         mainContentBinding.apply {
 
             // Hide input method when focus is on dropdown.
-            deviceRegionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+            textFields.deviceRegionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) hideKeyBoard(this@MainActivity, view)
             }
-            androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+            textFields.androidVersionDropdown.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) hideKeyBoard(this@MainActivity, view)
             }
 
             // Setup default device information.
-            deviceName.editText!!.setText(prefs.getString("deviceName", ""))
-            codeName.editText!!.setText(prefs.getString("codeName", ""))
-            deviceRegion.editText!!.setText(prefs.getString("deviceRegion", ""))
-            systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
-            androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
+            textFields.deviceName.editText!!.setText(prefs.getString("deviceName", ""))
+            textFields.codeName.editText!!.setText(prefs.getString("codeName", ""))
+            textFields.deviceRegion.editText!!.setText(prefs.getString("deviceRegion", ""))
+            textFields.systemVersion.editText!!.setText(prefs.getString("systemVersion", ""))
+            textFields.androidVersion.editText!!.setText(prefs.getString("androidVersion", ""))
 
             // Setup DropDownList.
             val deviceNamesAdapter = CustomArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.deviceNames)
             val codeNamesAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.codeNames)
             val deviceRegionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.regionNames)
             val androidVersionAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, DeviceInfoHelper.androidVersions)
-            (deviceName.editText as? MaterialAutoCompleteTextView)?.apply {
+            (textFields.deviceName.editText as? MaterialAutoCompleteTextView)?.apply {
                 setAdapter(deviceNamesAdapter)
                 setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
             }
-            (codeName.editText as? MaterialAutoCompleteTextView)?.apply {
+            (textFields.codeName.editText as? MaterialAutoCompleteTextView)?.apply {
                 setAdapter(codeNamesAdapter)
                 setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
             }
-            (deviceRegion.editText as? MaterialAutoCompleteTextView)?.apply {
+            (textFields.deviceRegion.editText as? MaterialAutoCompleteTextView)?.apply {
                 setAdapter(deviceRegionAdapter)
                 dropDownHeight = 280.dp
                 setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
             }
-            (androidVersion.editText as? MaterialAutoCompleteTextView)?.apply {
+            (textFields.androidVersion.editText as? MaterialAutoCompleteTextView)?.apply {
                 setAdapter(androidVersionAdapter)
                 dropDownHeight = 280.dp
                 setDropDownBackgroundDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.ic_dropdown_background))
@@ -439,59 +510,64 @@ class MainActivity : AppCompatActivity() {
             // Setup TextChangedListener.
             codeNameWatcher = object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    deviceName.editText!!.removeTextChangedListener(deviceNameWatcher)
+                    textFields.deviceName.editText!!.removeTextChangedListener(deviceNameWatcher)
                     val text = try {
                         DeviceInfoHelper.deviceName(s.toString())
                     } catch (ex: Exception) {
                         null
                     }
                     if (text != null) {
-                        deviceName.editText!!.setText(text)
+                        textFields.deviceName.editText!!.setText(text)
                     }
                 }
 
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable) {
-                    deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
+                    textFields.deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
                 }
             }
             deviceNameWatcher = object : TextWatcher {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                    codeName.editText!!.removeTextChangedListener(codeNameWatcher)
+                    textFields.codeName.editText!!.removeTextChangedListener(codeNameWatcher)
                     val text = try {
                         DeviceInfoHelper.codeName(s.toString())
                     } catch (ex: Exception) {
                         null
                     }
                     if (text != null) {
-                        codeName.editText!!.setText(text)
+                        textFields.codeName.editText!!.setText(text)
                     }
                 }
 
                 override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
                 override fun afterTextChanged(s: Editable) {
-                    codeName.editText!!.addTextChangedListener(codeNameWatcher)
+                    textFields.codeName.editText!!.addTextChangedListener(codeNameWatcher)
                 }
             }
-            codeName.editText!!.addTextChangedListener(codeNameWatcher)
-            deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
+            textFields.codeName.editText!!.addTextChangedListener(codeNameWatcher)
+            textFields.deviceName.editText!!.addTextChangedListener(deviceNameWatcher)
         }
     }
 
     private fun setupCardViews() {
         mainContentBinding.apply {
-            val firstViewArray = arrayOf(firstInfo, secondInfo)
-            val secondViewArray = arrayOf(secondInfo, downloadInfo, bigVersion, bigVersionInfo)
+            val firstViewArray = arrayOf(massageCard.romInfo, massageCard.firstInfo, massageCard.secondInfo)
+            val secondViewArray = arrayOf(massageCard.secondInfo, massageCard.downloadInfo, massageCard.bigVersion, massageCard.bigVersionInfo)
+            val firstViewArrayIncrement = arrayOf(incrementMassageCard.romInfo, incrementMassageCard.firstInfo, incrementMassageCard.secondInfo)
+            val secondViewArrayIncrement = arrayOf(
+                incrementMassageCard.secondInfo, incrementMassageCard.downloadInfo, incrementMassageCard.bigVersion, incrementMassageCard.bigVersionInfo
+            )
 
             if (mainViewModel.device != null) {
                 firstViewArray.forEach {
                     if (!it.isVisible) it.fadInAnimation()
                 }
                 activityMainBinding.implement.shrink()
-                codenameInfo.setTextAnimation(mainViewModel.device)
-                systemInfo.setTextAnimation(mainViewModel.version)
-                codebaseInfo.setTextAnimation(mainViewModel.codebase)
-                branchInfo.setTextAnimation(mainViewModel.branch)
+                massageCard.romInfo.setTextAnimation(mainViewModel.type)
+                massageCard.codenameInfo.setTextAnimation(mainViewModel.device)
+                massageCard.systemInfo.setTextAnimation(mainViewModel.version)
+                massageCard.codebaseInfo.setTextAnimation(mainViewModel.codebase)
+                massageCard.branchInfo.setTextAnimation(mainViewModel.branch)
             } else {
                 activityMainBinding.implement.extend()
                 firstViewArray.forEach {
@@ -502,20 +578,59 @@ class MainActivity : AppCompatActivity() {
                 secondViewArray.forEach {
                     if (!it.isVisible) it.fadInAnimation()
                 }
-                bigVersionInfo.setTextAnimation(mainViewModel.bigversion)
-                filenameInfo.setTextAnimation(mainViewModel.filename)
-                filesizeInfo.setTextAnimation(mainViewModel.filesize)
-                changelogInfo.setTextAnimation(mainViewModel.changelog)
-                changelogInfo.setCopyClickListener(this@MainActivity, mainViewModel.changelog)
-                official.text = mainViewModel.officialText
-                officialDownload.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.officialDownload!!)
-                officialCopy.setCopyClickListener(this@MainActivity, mainViewModel.officialDownload)
-                cdn1Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn1Download!!)
-                cdn1Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn1Download)
-                cdn2Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn2Download!!)
-                cdn2Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn2Download)
+                massageCard.bigVersionInfo.setTextAnimation(mainViewModel.bigversion)
+                massageCard.filenameInfo.setTextAnimation(mainViewModel.filename)
+                massageCard.filesizeInfo.setTextAnimation(mainViewModel.filesize)
+                massageCard.changelogInfo.setTextAnimation(mainViewModel.changelog)
+                massageCard.changelogInfo.setCopyClickListener(this@MainActivity, mainViewModel.changelog)
+                massageCard.officialDownload.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.officialDownload!!)
+                massageCard.officialCopy.setCopyClickListener(this@MainActivity, mainViewModel.officialDownload)
+                massageCard.cdn1Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn1Download!!)
+                massageCard.cdn1Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn1Download)
+                massageCard.cdn2Download.setDownloadClickListener(this@MainActivity, mainViewModel.filename, mainViewModel.cdn2Download!!)
+                massageCard.cdn2Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn2Download)
             } else {
                 secondViewArray.forEach {
+                    if (it.isVisible) it.fadOutAnimation()
+                }
+            }
+            if (mainViewModel.deviceIncrement != null) {
+                firstViewArrayIncrement.forEach {
+                    if (!it.isVisible) it.fadInAnimation()
+                }
+                incrementMassageCard.romInfo.setTextAnimation(mainViewModel.typeIncrement)
+                incrementMassageCard.codenameInfo.setTextAnimation(mainViewModel.deviceIncrement)
+                incrementMassageCard.systemInfo.setTextAnimation(mainViewModel.versionIncrement)
+                incrementMassageCard.codebaseInfo.setTextAnimation(mainViewModel.codebaseIncrement)
+                incrementMassageCard.branchInfo.setTextAnimation(mainViewModel.branchIncrement)
+            } else {
+                firstViewArrayIncrement.forEach {
+                    if (it.isVisible) it.fadOutAnimation()
+                }
+            }
+            if (mainViewModel.filenameIncrement != null) {
+                secondViewArrayIncrement.forEach {
+                    if (!it.isVisible) it.fadInAnimation()
+                }
+                incrementMassageCard.bigVersionInfo.setTextAnimation(mainViewModel.bigversionIncrement)
+                incrementMassageCard.filenameInfo.setTextAnimation(mainViewModel.filenameIncrement)
+                incrementMassageCard.filesizeInfo.setTextAnimation(mainViewModel.filesizeIncrement)
+                incrementMassageCard.changelogInfo.setTextAnimation(mainViewModel.changelogIncrement)
+                incrementMassageCard.changelogInfo.setCopyClickListener(this@MainActivity, mainViewModel.changelogIncrement)
+                incrementMassageCard.officialDownload.setDownloadClickListener(
+                    this@MainActivity, mainViewModel.filenameIncrement, mainViewModel.officialDownloadIncrement!!
+                )
+                incrementMassageCard.officialCopy.setCopyClickListener(this@MainActivity, mainViewModel.officialDownloadIncrement)
+                incrementMassageCard.cdn1Download.setDownloadClickListener(
+                    this@MainActivity, mainViewModel.filenameIncrement, mainViewModel.cdn1DownloadIncrement!!
+                )
+                incrementMassageCard.cdn1Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn1DownloadIncrement)
+                incrementMassageCard.cdn2Download.setDownloadClickListener(
+                    this@MainActivity, mainViewModel.filenameIncrement, mainViewModel.cdn2DownloadIncrement!!
+                )
+                incrementMassageCard.cdn2Copy.setCopyClickListener(this@MainActivity, mainViewModel.cdn2DownloadIncrement)
+            } else {
+                secondViewArrayIncrement.forEach {
                     if (it.isVisible) it.fadOutAnimation()
                 }
             }
@@ -547,15 +662,15 @@ class MainActivity : AppCompatActivity() {
             val authResult = cookies["authResult"].toString()
             if (authResult == "-1") {
                 mainContentBinding.apply {
-                    loginIcon.setImageResource(R.drawable.ic_error)
-                    loginTitle.text = getString(R.string.login_expired)
-                    loginDesc.text = getString(R.string.login_expired_desc)
+                    loginCard.loginIcon.setImageResource(R.drawable.ic_error)
+                    loginCard.loginTitle.text = getString(R.string.login_expired)
+                    loginCard.loginDesc.text = getString(R.string.login_expired_desc)
                 }
             } else if (description.isNotEmpty()) {
                 mainContentBinding.apply {
-                    loginIcon.setImageResource(R.drawable.ic_check_circle)
-                    loginTitle.text = getString(R.string.logged_in)
-                    loginDesc.text = getString(R.string.using_v2)
+                    loginCard.loginIcon.setImageResource(R.drawable.ic_check_circle)
+                    loginCard.loginTitle.text = getString(R.string.logged_in)
+                    loginCard.loginDesc.text = getString(R.string.using_v2)
                 }
                 activityMainBinding.apply {
                     toolbar.menu.findItem(R.id.login).isVisible = false

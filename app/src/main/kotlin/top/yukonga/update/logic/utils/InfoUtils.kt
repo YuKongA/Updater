@@ -24,6 +24,7 @@ object InfoUtils {
     private var serviceToken = ""
 
     private fun generateJson(
+        branch: String = "",
         codeNameExt: String,
         regionCode: String,
         romVersion: String,
@@ -33,22 +34,27 @@ object InfoUtils {
         token: String
     ): String {
         val data = RequestParamHelper(
-            security = security,
-            token = token,
-            id = userId,
+            b = branch,
             c = androidVersion,
             d = codeNameExt,
             f = "1",
-            ov = romVersion,
+            id = userId,
             l = if (!codeNameExt.contains("_global")) "zh_CN" else "en_US",
+            ov = romVersion,
+            p = codeNameExt,
+            pn = codeNameExt,
             r = regionCode,
-            v = "MIUI-$romVersion",
-            unlock = "0"
+            security = security,
+            token = token,
+            unlock = "0",
+            v = "MIUI-$romVersion"
         )
         return Json.encodeToString(data)
     }
 
-    fun getRecoveryRomInfo(context: Context, codeNameExt: String, regionCode: String, romVersion: String, androidVersion: String): String {
+    fun getRecoveryRomInfo(
+        context: Context, branch: String, codeNameExt: String, regionCode: String, romVersion: String, androidVersion: String
+    ): String {
         if (FileUtils.isCookiesFileExists(context)) {
             val cookiesFile = FileUtils.readCookiesFile(context)
             val cookies = json.decodeFromString<LoginHelper>(cookiesFile)
@@ -62,7 +68,7 @@ object InfoUtils {
                 port = "2"
             }
         }
-        val jsonData = generateJson(codeNameExt, regionCode, romVersion, androidVersion, userId, security, serviceToken)
+        val jsonData = generateJson(branch, codeNameExt, regionCode, romVersion, androidVersion, userId, security, serviceToken)
         val encryptedText = miuiEncrypt(jsonData, securityKey)
         val formBodyBuilder = FormBody.Builder().add("q", encryptedText).add("t", serviceToken).add("s", port).build()
         val recoveryUrl = if (accountType == "GL") INTL_RECOVERY_URL else CN_RECOVERY_URL
