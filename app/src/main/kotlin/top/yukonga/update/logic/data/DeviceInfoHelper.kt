@@ -163,6 +163,7 @@ object DeviceInfoHelper {
         Device("Redmi 12C / POCO C55", "earth", "CV"),
         Device("Redmi A2/A2+ / POCO C51", "water", "GO"),
         Device("Redmi A3", "blue", "GR"),
+        Device("Redmi A3x", "klein", "GS"),
         Device("Redmi Note 12 Turbo / POCO F5", "marble", "MR"),
         Device("Redmi Note 12 4G", "tapas", "MT"),
         Device("Redmi Note 12 4G NFC", "topaz", "MG"),
