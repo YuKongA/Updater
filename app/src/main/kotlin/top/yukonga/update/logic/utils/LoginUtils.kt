@@ -54,7 +54,6 @@ class LoginUtils {
         val authStr = response2.body!!.string().replace("&&&START&&&", "")
         val authJson = json.decodeFromString<AuthorizeHelper>(authStr)
         val description = authJson.description
-        val nonce = authJson.nonce
         val ssecurity = authJson.ssecurity
         val location = authJson.location
         val userId = authJson.userId.toString()
@@ -67,16 +66,12 @@ class LoginUtils {
             return false
         }
 
-        if (nonce == null || ssecurity == null || location == null || userId.isEmpty()) {
+        if (ssecurity == null || location == null || userId.isEmpty()) {
             showStringToast(context, context.getString(R.string.security_error), 0)
             return false
         }
 
-        val sha1 = MessageDigest.getInstance("SHA-1")
-        sha1.update(("nonce=$nonce&$ssecurity").toByteArray())
-        val clientSign = Base64.getEncoder().encodeToString(sha1.digest())
-
-        val newUrl = "$location&_userIdNeedEncrypt=true&clientSign=$clientSign"
+        val newUrl = "$location&_userIdNeedEncrypt=true"
         val response3 = getRequest(newUrl)
         val cookies = response3.headers("Set-Cookie").joinToString("; ") { it.split(";")[0] }
         val serviceToken = cookies.split("serviceToken=")[1].split(";")[0]
