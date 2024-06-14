@@ -8,6 +8,9 @@ English 丨 [简体中文](https://github.com/YuKongA/Updater/blob/main/README.m
 
 </div>
 
+## Preface:
+The Multi-platform version written using [Kotlin MultiPlatform](https://developer.android.google.cn/kotlin/multiplatform) has completely replicated all the feature of this application. [It is recommended to switch to the KMP version](https://github.com/YuKongA/Updater-KMP)
+
 ## Usage:
 When obtaining the `Pubilc Release Version (F)`, the suffix of the system version can be automatically completed using `AUTO`<br />For example: `OS1.0.26.0.AUTO` / `V14.0.4.0.AUTO`
 

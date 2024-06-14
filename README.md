@@ -8,6 +8,9 @@
 
 </div>
 
+## 前言:
+使用 [Kotlin MultiPlatform](https://developer.android.google.cn/kotlin/multiplatform?hl=zh-cn) 编写的跨平台版本已经完全复刻本应用的所有功能，[推荐切换到 KMP 版本使用](https://github.com/YuKongA/Updater-KMP)
+
 ## 使用:
 
 获取 `正式版公测 (F)` 时, 系统版本后缀部分可使用 `AUTO` 实现自动补全<br />例如: `OS1.0.26.0.AUTO` / `V14.0.4.0.AUTO`
