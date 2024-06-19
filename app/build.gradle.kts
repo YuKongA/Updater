@@ -12,12 +12,12 @@ plugins {
 
 android {
     namespace = "top.yukonga.update"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "top.yukonga.update"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = getVersionCode()
         versionName = "1.3" + "-" + getVersionName()
     }
@@ -69,8 +69,7 @@ android {
             freeCompilerArgs = listOf(
                 "-Xno-param-assertions",
                 "-Xno-call-assertions",
-                "-Xno-receiver-assertions",
-                "-language-version=2.0"
+                "-Xno-receiver-assertions"
             )
         }
     }
