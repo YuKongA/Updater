@@ -14,6 +14,7 @@
     <string name="changelog">Nhật ký thay đổi</string>
     <string name="branch">Nhánh</string>
     <string name="toast_no_info">Chưa có thông tin!</string>
+    <string name="toast_wrong_info">Wrong information!</string>
     <string name="toast_copied_to_pasteboard">Sao chép vào bộ nhớ tạm</string>
     <string name="account">Tài khoản</string>
     <string name="password">Mật khẩu</string>

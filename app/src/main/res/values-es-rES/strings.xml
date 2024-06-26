@@ -14,6 +14,7 @@
     <string name="changelog">Registro de cambios</string>
     <string name="branch">Rama</string>
     <string name="toast_no_info">No se ha encontrado!</string>
+    <string name="toast_wrong_info">Wrong information!</string>
     <string name="toast_copied_to_pasteboard">Copiado al portapapeles</string>
     <string name="account">Correo electrónico</string>
     <string name="password">Contraseña</string>

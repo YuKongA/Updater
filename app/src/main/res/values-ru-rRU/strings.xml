@@ -14,6 +14,7 @@
     <string name="changelog">Список изменений</string>
     <string name="branch">Ветка</string>
     <string name="toast_no_info">Нет данных!</string>
+    <string name="toast_wrong_info">Wrong information!</string>
     <string name="toast_copied_to_pasteboard">Скопировано в буфер обмена</string>
     <string name="account">Учетная запись</string>
     <string name="password">Пароль</string>

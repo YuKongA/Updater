@@ -14,6 +14,7 @@
     <string name="changelog">Lista zmian</string>
     <string name="branch">Oddział</string>
     <string name="toast_no_info">Brak informacji!</string>
+    <string name="toast_wrong_info">Wrong information!</string>
     <string name="toast_copied_to_pasteboard">Skopiowano do wklejania</string>
     <string name="account">Konto</string>
     <string name="password">Hasło</string>
