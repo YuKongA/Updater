@@ -1,35 +1,28 @@
-![Updater](https://socialify.git.ci/YuKongA/Updater/image?description=1&descriptionEditable=%E8%8E%B7%E5%8F%96%20HyperOS%2FMIUI%20%E6%9B%B4%E6%96%B0%E4%BF%A1%E6%81%AF&font=Inter&language=1&name=1&owner=1&pattern=Signal&theme=Auto)
+English 丨 [简体中文](https://github.com/YuKongA/Updater/blob/main/README_CN.md)</b>
 
-<div align="center">
+## Preface:
 
-[English](https://github.com/YuKongA/Updater/blob/main/README_EN.md) 丨 简体中文</b>
+The Multi-platform version written using [Kotlin MultiPlatform](https://developer.android.google.cn/kotlin/multiplatform) has completely replicated all the feature of this application. [It is recommended to switch to the KMP version](https://github.com/YuKongA/Updater-KMP)
 
-[![Crowdin](https://badges.crowdin.net/updater-miota/localized.svg)](https://zh.crowdin.com/project/updater-miota)
+## Usage:
 
-</div>
+When obtaining the `Pubilc Release Version (F)`, the suffix of the system version can be automatically completed using `AUTO`<br />For example: `OS1.0.26.0.AUTO` / `V14.0.4.0.AUTO`
 
-## 前言:
-使用 [Kotlin MultiPlatform](https://developer.android.google.cn/kotlin/multiplatform?hl=zh-cn) 编写的跨平台版本已经完全复刻本应用的所有功能，[推荐切换到 KMP 版本使用](https://github.com/YuKongA/Updater-KMP)
+When obtaining `Beta Development Version (X)`, please enter the complete system version<br />For example: `OS1.0.23.12.19.DEV` / `V14.0.23.5.8.DEV`
 
-## 使用:
+## Notes:
 
-获取 `正式版公测 (F)` 时, 系统版本后缀部分可使用 `AUTO` 实现自动补全<br />例如: `OS1.0.26.0.AUTO` / `V14.0.4.0.AUTO`
+Only supported `MIUI9` and above versions. The most extreme case is: Redmi 1S (armani), MIUI9, Android4.4
 
-获取 `开发版公测 (X)` 时, 系统版本请自行输入完整 `DEV` 后缀<br />例如: `OS1.0.23.12.19.DEV` / `V14.0.23.5.8.DEV`
+Only devices in the list of [DeviceInfoHelper](https://github.com/YuKongA/Updater/blob/main/app/src/main/kotlin/top/yukonga/update/logic/data/DeviceInfoHelper.kt#L62) are supported use `AUTO` to complete automatically, other devices still need to manually enter the full system version
 
-## 注意:
+When you are not logged in with a Xiaomi account, you can use the miotaV3-v1 interface to obtain any detailed information of the `Pubilc Release Version` of any model.
 
-仅支持获取 <b>MIUI9</b> 及以上版本, 最极端的情况为: Redmi 1S(armani), MIUI9, Android4.4
+After logging in to your Xiaomi account, you will use the miotaV3-v2 interface to obtain detailed information about the `Beta Release Version` or the `Public Development Version`, corresponding to the internal test permissions you have.
 
-仅 [DeviceInfoHelper](https://github.com/YuKongA/Updater/blob/main/app/src/main/kotlin/top/yukonga/update/logic/data/DeviceInfoHelper.kt#L62) 内存在的设备支持使用 `AUTO` 自动补全，其余设备仍需手动输入完整版本号
-
-<b>未登录</b>小米账号时使用 miotaV3-v1 接口, 可正常获取任何<b>存在且公开</b>机型的 `正式版公测` 的<b>详情信息</b>
-
-<b>登录</b>小米账号后使用 miotaV3-v2 接口, 可同时获取当前账号<b>拥有权限</b>对应机型的 `正式版内测`/`开发版公测` 的<b>详情信息</b>
-
-## 引用:
+## Credits:
 
 - [Xiaomi-Update-Info](https://github.com/YuKongA/Xiaomi-Update-Info)
 - [XiaoMiToolV2](https://github.com/francescotescari/XiaoMiToolV2)
 - [Xiaomi-Community-AutoTask](https://github.com/CMDQ8575/Xiaomi-Community-AutoTask)
-- [小米手机型号汇总](https://github.com/KHwang9883/MobileModels/blob/master/brands/xiaomi.md)
+- [MobileModels-Xiaomi](https://github.com/KHwang9883/MobileModels/blob/master/brands/xiaomi.md)
