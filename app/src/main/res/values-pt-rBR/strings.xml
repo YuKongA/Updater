@@ -14,6 +14,7 @@
     <string name="changelog">Registro de alterações</string>
     <string name="branch">Branch</string>
     <string name="toast_no_info">Nenhuma informação!</string>
+    <string name="toast_wrong_info">Informação errada!</string>
     <string name="toast_copied_to_pasteboard">Copiado para a área de transferência</string>
     <string name="account">Conta</string>
     <string name="password">Senha</string>
